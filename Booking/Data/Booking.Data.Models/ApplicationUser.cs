@@ -4,8 +4,7 @@ namespace Booking.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using Booking.Data.Common.Models;
-
+    using global::Booking.Data.Common.Models;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -13,9 +12,13 @@ namespace Booking.Data.Models
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+
+            this.Reservations = new HashSet<Reservation>();
+            this.Offers = new HashSet<Offer>();
         }
 
         // Audit info
@@ -33,5 +36,9 @@ namespace Booking.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<Offer> Offers { get; set; }
+
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

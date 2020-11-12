@@ -24,7 +24,35 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Country> Countries { get; set; }
+
+        public DbSet<BedType> BedTypes { get; set; }
+
+        public DbSet<Currency> Currencies { get; set; }
+
+        public DbSet<Facility> Facilities { get; set; }
+
+        public DbSet<FacilityCategory> FacilityCategories { get; set; }
+
+        public DbSet<Offer> Offers { get; set; }
+
+        public DbSet<Property> Properties { get; set; }
+
+        public DbSet<PropertyCategory> PropertyCategories { get; set; }
+
+        public DbSet<PropertyRule> PropertyRules { get; set; }
+
+        public DbSet<PropertyType> PropertyTypes { get; set; }
+
+        public DbSet<Reservation> Reservations { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
+
+        public DbSet<RoomBedType> RoomBedTypes { get; set; }
+
+        public DbSet<Rule> Rules { get; set; }
+
+        public DbSet<Town> Towns { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
