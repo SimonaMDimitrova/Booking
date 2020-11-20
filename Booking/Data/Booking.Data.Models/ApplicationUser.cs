@@ -17,8 +17,8 @@ namespace Booking.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
-            this.Reservations = new HashSet<Reservation>();
             this.Offers = new HashSet<Offer>();
+            this.Reservations = new HashSet<Reservation>();
         }
 
         // Audit info

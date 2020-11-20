@@ -1,17 +1,14 @@
 ﻿namespace Booking.Data.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Booking.Data.Common.Models;
 
-    public class Currency : BaseDeletableModel<string>
+    public class Currency : BaseDeletableModel<int>
     {
         public Currency()
         {
-            this.Id = Guid.NewGuid().ToString();
-
             this.Countries = new HashSet<Country>();
         }
 

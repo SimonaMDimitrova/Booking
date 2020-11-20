@@ -5,7 +5,7 @@
 
     using Booking.Data.Common.Models;
 
-    public class PropertyRule : BaseDeletableModel<int>
+    public class PropertyFacility : BaseDeletableModel<int>
     {
         [Required]
         [ForeignKey(nameof(Property))]
@@ -14,11 +14,9 @@
         public virtual Property Property { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Rule))]
-        public int RuleId { get; set; }
+        [ForeignKey(nameof(Facility))]
+        public int FacilityId { get; set; }
 
-        public virtual Rule Rule { get; set; }
-
-        public bool IsAllowed { get; set; }
+        public virtual Facility Facility { get; set; }
     }
 }

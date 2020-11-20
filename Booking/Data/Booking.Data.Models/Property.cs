@@ -14,6 +14,8 @@
             this.Id = Guid.NewGuid().ToString();
 
             this.PropertyRules = new HashSet<PropertyRule>();
+            this.Offers = new HashSet<Offer>();
+            this.PropertyFacilities = new HashSet<PropertyFacility>();
         }
 
         [Required]
@@ -21,23 +23,27 @@
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(150)]
+        [MaxLength(200)]
         public string Address { get; set; }
 
-        public byte? Floors { get; set; }
+        public byte Floors { get; set; }
 
-        [ForeignKey(nameof(Town))]
         [Required]
-        public string TownId { get; set; }
+        [ForeignKey(nameof(Town))]
+        public int TownId { get; set; }
 
         public virtual Town Town { get; set; }
 
-        [ForeignKey(nameof(PropertyCategory))]
         [Required]
-        public string PropertyCategoryId { get; set; }
+        [ForeignKey(nameof(PropertyCategory))]
+        public int PropertyCategoryId { get; set; }
 
         public virtual PropertyCategory PropertyCategory { get; set; }
 
         public virtual ICollection<PropertyRule> PropertyRules { get; set; }
+
+        public virtual ICollection<Offer> Offers { get; set; }
+
+        public virtual ICollection<PropertyFacility> PropertyFacilities { get; set; }
     }
 }

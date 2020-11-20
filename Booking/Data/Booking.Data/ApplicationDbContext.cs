@@ -19,6 +19,10 @@
                 nameof(SetIsDeletedQueryFilter),
                 BindingFlags.NonPublic | BindingFlags.Static);
 
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -53,6 +57,10 @@
         public DbSet<Rule> Rules { get; set; }
 
         public DbSet<Town> Towns { get; set; }
+
+        public DbSet<PropertyFacility> PropertyFacilities { get; set; }
+
+        public DbSet<OfferFacility> OfferFacilities { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

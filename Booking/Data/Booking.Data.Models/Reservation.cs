@@ -13,14 +13,14 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
-        [ForeignKey(nameof(ApplicationUser))]
         [Required]
+        [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 
-        [ForeignKey(nameof(Offer))]
         [Required]
+        [ForeignKey(nameof(Offer))]
         public string OfferId { get; set; }
 
         public Offer Offer { get; set; }

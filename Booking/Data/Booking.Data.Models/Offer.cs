@@ -13,7 +13,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
 
-            this.Facilities = new HashSet<Facility>();
+            this.OfferFacilities = new HashSet<OfferFacility>();
             this.Rooms = new HashSet<Room>();
         }
 
@@ -27,18 +27,24 @@
 
         public DateTime CheckOut { get; set; }
 
-        [ForeignKey(nameof(ApplicationUser))]
         [Required]
+        [ForeignKey(nameof(Property))]
+        public string PropertyId { get; set; }
+
+        public virtual Property Property { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        [ForeignKey(nameof(Offer))]
+        [ForeignKey(nameof(Reservation))]
         public string ReservationId { get; set; }
 
-        public Reservation Reservation { get; set; }
+        public virtual Reservation Reservation { get; set; }
 
-        public virtual ICollection<Facility> Facilities { get; set; }
+        public virtual ICollection<OfferFacility> OfferFacilities { get; set; }
 
         public virtual ICollection<Room> Rooms { get; set; }
 
