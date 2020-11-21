@@ -1,0 +1,9 @@
+﻿.about-us {
+    z-index: -1;
+}
+
+.header-area {
+    background: #4d4e54;
+    position: fixed;
+    z-index: 999;
+}
