@@ -28,6 +28,8 @@
 
         public byte Floors { get; set; }
 
+        public byte Stars { get; set; }
+
         [Required]
         [ForeignKey(nameof(Town))]
         public int TownId { get; set; }

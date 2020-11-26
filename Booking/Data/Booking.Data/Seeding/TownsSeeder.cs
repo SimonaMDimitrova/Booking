@@ -14,6 +14,11 @@
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
+            if (dbContext.Towns.Any())
+            {
+                return;
+            }
+
             using (var reader = new StreamReader("../../Data/Booking.Data/Seeding/Datasets/countries-towns.json"))
             {
                 var json = reader.ReadToEnd();
@@ -35,11 +40,6 @@
                         .First(c => c.Name == countryTowns.Key)
                         .Id;
                     var length = countryTowns.Value.Length;
-                    if (countryTowns.Value.Length > 30)
-                    {
-                        length = 30;
-                    }
-
                     for (int i = 0; i < length; i++)
                     {
                         var townName = countryTowns.Value[i];
