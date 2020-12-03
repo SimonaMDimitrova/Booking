@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
     public class Property : BaseDeletableModel<string>
     {
@@ -41,6 +41,12 @@
         public int PropertyCategoryId { get; set; }
 
         public virtual PropertyCategory PropertyCategory { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(ApplicationUser))]
+        public string ApplicationUserId { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         public virtual ICollection<PropertyRule> PropertyRules { get; set; }
 

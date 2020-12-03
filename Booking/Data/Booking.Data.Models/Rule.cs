@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
-    public class Rule : BaseDeletableModel<int>
+    public class Rule : BaseModel<int>
     {
         public Rule()
         {

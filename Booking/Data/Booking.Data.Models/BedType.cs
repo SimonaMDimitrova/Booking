@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
-    public class BedType : BaseDeletableModel<int>
+    public class BedType : BaseModel<int>
     {
         public BedType()
         {

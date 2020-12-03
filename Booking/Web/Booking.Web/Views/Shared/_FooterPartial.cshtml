@@ -1,0 +1,11 @@
+﻿@using Booking.Common
+@using Booking.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (this.SignInManager.IsSignedIn(this.User))
+{
+    <p><a href="#">My bookings</a></p>
+    <p><a href="#">My hotels</a></p>
+}

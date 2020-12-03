@@ -4,9 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
-    public class Town : BaseDeletableModel<int>
+    public class Town : BaseModel<int>
     {
         public Town()
         {

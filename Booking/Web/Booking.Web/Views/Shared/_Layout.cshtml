@@ -7,45 +7,24 @@
     <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
 
     <link href="https://fonts.googleapis.com/css?family=Rufina:400,700" rel="stylesheet" />
-
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/assets/css/all.css" />
 
-    <!-- favicon img -->
-    <link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png" />
+    <link rel="shortcut icon" type="image/icon" href="~/assets/logo/favicon.ico" />
 
-    <!--font-awesome.min.css-->
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/assets/css/animate.css" />
+    <link rel="stylesheet" href="~/assets/css/hover-min.css">
+    <link rel="stylesheet" href="~/assets/css/datepicker.css">
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/assets/css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="~/assets/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/bootsnav.css" />
+    <link rel="stylesheet" href="~/assets/css/style.css" />
+    <link rel="stylesheet" href="~/assets/css/responsive.css" />
 
-    <!--animate.css-->
-    <link rel="stylesheet" href="assets/css/animate.css" />
-
-    <!--hover.css-->
-    <link rel="stylesheet" href="assets/css/hover-min.css">
-
-    <!--datepicker.css-->
-    <link rel="stylesheet" href="assets/css/datepicker.css">
-
-    <!--owl.carousel.css-->
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css" />
-
-    <!-- range css-->
-    <link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
-
-    <!--bootstrap.min.css-->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-
-    <!-- bootsnav -->
-    <link rel="stylesheet" href="assets/css/bootsnav.css" />
-
-    <!--style.css-->
-    <link rel="stylesheet" href="assets/css/style.css" />
-
-    <!--responsive.css-->
-    <link rel="stylesheet" href="assets/css/responsive.css" />
-
-    <link rel="stylesheet" href="assets/css/site.css" />
-
+    <link rel="stylesheet" href="~/assets/css/site.css" />
 </head>
 <body>
     <header class="top-area">
@@ -54,45 +33,33 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="logo">
-                            <a href="index.html">
-                                tour<span>Nest</span>
+                            <a asp-controller="Home" asp-action="Index">
+                                book<span>IN</span>g
                             </a>
-                        </div><!-- /.logo-->
-                    </div><!-- /.col-->
+                        </div>
+                    </div>
                     <div class="col-sm-10">
                         <div class="main-menu">
-
-                            <!-- Brand and toggle get grouped for better mobile display -->
                             <div class="navbar-header">
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                     <i class="fa fa-bars"></i>
-                                </button><!-- / button-->
-                            </div><!-- /.navbar-header-->
+                                </button>
+                            </div>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="smooth-menu"><a href="#home">home</a></li>
-                                    <li class="smooth-menu"><a href="#gallery">Destination</a></li>
-                                    <li class="smooth-menu"><a href="#pack">Packages </a></li>
-                                    <li class="smooth-menu"><a href="#spo">Special Offers</a></li>
-                                    <li class="smooth-menu"><a href="#blog">blog</a></li>
-                                    <li class="smooth-menu"><a href="#subs">subscription</a></li>
-                                    <li>
-                                        <button class="book-btn">
-                                            book now
-                                        </button>
-                                    </li><!--/.project-btn-->
+                                    <li class="smooth-menu"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                    <partial name="_LoginPartial" />
                                 </ul>
-                            </div><!-- /.navbar-collapse -->
-                        </div><!-- /.main-menu-->
-                    </div><!-- /.col-->
-                </div><!-- /.row -->
-                <div class="home-border"></div><!-- /.home-border-->
-            </div><!-- /.container-->
-        </div><!-- /.header-area -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="home-border"></div>
+            </div>
+        </div>
 
-    </header><!-- /.top-area-->
-    <!-- main-menu End -->
-    <!--about-us start -->
+    </header>
+
     <section id="home" class="about-us">
         <div class="container">
             <div class="about-us-content">
@@ -102,80 +69,98 @@
                             <div class="about-us-txt">
                                 <h2>
                                     Explore the Beauty of the Beautiful World
-
                                 </h2>
-                                <div class="about-btn">
-                                    <button class="about-view">
-                                        explore now
-                                    </button>
-                                </div><!--/.about-btn-->
-                            </div><!--/.about-us-txt-->
-                        </div><!--/.single-about-us-->
-                    </div><!--/.col-->
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-0">
-                        <div class="single-about-us">
-
-                        </div><!--/.single-about-us-->
-                    </div><!--/.col-->
-                </div><!--/.row-->
-            </div><!--/.about-us-content-->
-        </div><!--/.container-->
-    </section><!--/.about-us-->
-    <!--about-us end -->
+                        <div class="single-about-us"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div class="container">
-        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @this.RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer-copyright">
         <div class="container">
-            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-content">
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <div class="single-footer-item">
+                            <div class="footer-logo">
+                                <a asp-controller="Home" asp-action="Index">
+                                    book<span>IN</span>g
+                                </a>
+                                <p>
+                                    the best booking agency
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="single-footer-item">
+                            <h2>links</h2>
+                            <div class="single-footer-txt">
+                                <p><a href="#">home</a></p>
+                                <partial name="_FooterPartial" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="single-footer-item">
+                            <h2>popular destinations</h2>
+                            <div class="single-footer-txt">
+                                @for (int i = 0; i < 6; i++)
+                                {
+                                    <p><a href="#">china</a></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="single-footer-item text-center">
+                            <h2 class="text-left">contacts</h2>
+                            <div class="single-footer-txt text-left">
+                                <p>+8 (000) 8888 8888</p>
+                                <p class="foot-email"><a asp-controller="ContactUs" asp-action="Index">agencybooking9@gmail.com</a></p>
+                                <p>Street A/Number</p>
+                                <p>Town, Country</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="foot-icons ">
+                <p>&copy; @DateTime.UtcNow.Year All Right Reserved | This template is made by <a href="https://www.themesine.com/">ThemeSINE</a></p>
+            </div>
         </div>
     </footer>
+    <partial name="_CookieConsentPartial" />
 
-    <script src="assets/js/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!--modernizr.min.js-->
+    <script src="~/assets/js/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-
-
-    <!--bootstrap.min.js-->
-    <script src="assets/js/bootstrap.min.js"></script>
-
-    <!-- bootsnav js -->
-    <script src="assets/js/bootsnav.js"></script>
-
-    <!-- jquery.filterizr.min.js -->
-    <script src="assets/js/jquery.filterizr.min.js"></script>
-
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/bootsnav.js"></script>
+    <script src="~/assets/js/jquery.filterizr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="~/assets/js/jquery-ui.min.js"></script>
+    <script src="~/assets/js/jquery.counterup.min.js"></script>
+    <script src="~/assets/js/waypoints.min.js"></script>
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/jquery.sticky.js"></script>
+    <script src="~/assets/js/datepicker.js"></script>
 
-    <!--jquery-ui.min.js-->
-    <script src="assets/js/jquery-ui.min.js"></script>
-
-    <!-- counter js -->
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-
-    <!--owl.carousel.js-->
-    <script src="assets/js/owl.carousel.min.js"></script>
-
-    <!-- jquery.sticky.js -->
-    <script src="assets/js/jquery.sticky.js"></script>
-
-    <!--datepicker.js-->
-    <script src="assets/js/datepicker.js"></script>
-
-    <!--Custom JS-->
-    @*<script src="assets/js/custom.js"></script>
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>*@
     @await this.RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

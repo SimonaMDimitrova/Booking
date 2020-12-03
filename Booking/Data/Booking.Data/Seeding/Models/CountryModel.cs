@@ -4,7 +4,7 @@
 
     using Newtonsoft.Json;
 
-    internal class CountryCurrencyDto
+    internal class CountryModel
     {
         [JsonRequired]
         [MinLength(2)]

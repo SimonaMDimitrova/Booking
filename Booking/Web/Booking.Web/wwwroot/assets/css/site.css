@@ -7,3 +7,69 @@
     position: fixed;
     z-index: 999;
 }
+
+.cookies {
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    width: 100%;
+    margin: 0;
+    border-radius: unset;
+}
+
+.center {
+    margin-left: 13.5%;
+}
+
+.budget {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: 0 !important;
+    box-shadow: none;
+    border: 1px solid #d7d7d7;
+    border-radius: 0px;
+    margin-bottom: 20px;
+    color: #aaa;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+    height: 48px;
+    position: relative;
+}
+
+    .budget:focus {
+        box-shadow: none;
+        border: 1px solid #d7d7d7;
+    }
+
+.search-btn {
+    position: absolute;
+    height: 34px;
+    width: 34px;
+    right: -17px;
+    bottom: calc(50% - 20.5px);
+    border-radius: 100px;
+    border: none;
+    color: #00d8ff;
+    font-family: "fontAwesome";
+    font-size: 20px;
+    background: white;
+    padding: 0;
+    font-size: 40px;
+    line-height: 0px;
+}
+
+    .search-btn:hover {
+        color: #00d8d5;
+        box-shadow: 0 0 5px black;
+        transition: 1s ease;
+    }
+
+.search-icon {
+    text-align: center;
+    padding-bottom: 18.5px;
+}
+    .search-icon > i {
+        font-size: 50px;
+        color: #d7d7d7;
+    }

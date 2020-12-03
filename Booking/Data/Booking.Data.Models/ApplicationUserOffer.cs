@@ -4,11 +4,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
-    public class Reservation : BaseDeletableModel<string>
+    public class ApplicationUserOffer : BaseDeletableModel<string>
     {
-        public Reservation()
+        public ApplicationUserOffer()
         {
             this.Id = Guid.NewGuid().ToString();
         }

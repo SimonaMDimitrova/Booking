@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
-    public class PropertyType : BaseDeletableModel<int>
+    public class PropertyType : BaseModel<int>
     {
         public PropertyType()
         {

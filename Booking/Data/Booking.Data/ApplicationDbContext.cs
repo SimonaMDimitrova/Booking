@@ -48,8 +48,6 @@
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
 
-        public DbSet<Reservation> Reservations { get; set; }
-
         public DbSet<Room> Rooms { get; set; }
 
         public DbSet<RoomBedType> RoomBedTypes { get; set; }
@@ -61,6 +59,8 @@
         public DbSet<PropertyFacility> PropertyFacilities { get; set; }
 
         public DbSet<OfferFacility> OfferFacilities { get; set; }
+
+        public DbSet<ApplicationUserOffer> ApplicationUserOffers { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

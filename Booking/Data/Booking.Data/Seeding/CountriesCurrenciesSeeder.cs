@@ -25,7 +25,7 @@
             using (var reader = new StreamReader("../../Data/Booking.Data/Seeding/Datasets/country-by-currency-code.json"))
             {
                 var json = reader.ReadToEnd();
-                var countriesCurrenciesDto = JsonConvert.DeserializeObject<CountryCurrencyDto[]>(json);
+                var countriesCurrenciesDto = JsonConvert.DeserializeObject<CountryModel[]>(json);
                 var countries = new List<Country>();
                 var currencies = new List<Currency>();
 

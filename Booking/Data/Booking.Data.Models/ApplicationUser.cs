@@ -17,8 +17,8 @@ namespace Booking.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
-            this.Offers = new HashSet<Offer>();
-            this.Reservations = new HashSet<Reservation>();
+            this.Properties = new HashSet<Property>();
+            this.ApplicationUserOffers = new HashSet<ApplicationUserOffer>();
         }
 
         // Audit info
@@ -37,8 +37,8 @@ namespace Booking.Data.Models
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-        public virtual ICollection<Offer> Offers { get; set; }
+        public virtual ICollection<Property> Properties { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        public virtual ICollection<ApplicationUserOffer> ApplicationUserOffers { get; set; }
     }
 }
