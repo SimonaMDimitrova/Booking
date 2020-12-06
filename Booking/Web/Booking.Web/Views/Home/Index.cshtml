@@ -1,82 +1,81 @@
 ﻿@using Booking.Common
+@model Booking.Web.ViewModels.Home.IndexInputModel
 @{
     this.ViewData["Title"] = "Home";
+    var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
 }
 
 <section class="travel-box">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para" style="position: relative;">
-                    <input type="submit" class="search-btn" value="&#xf138" />
+                <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div class="single-tab-select-box">
-                                <h2>destination</h2>
-                                <div class="travel-select-icon">
-                                    <select class="form-control ">
-                                        <option value="default">choose your destination country</option>
-                                        <option value="turkey">turkey</option>
-                                        <option value="russia">russia</option>
-                                        <option value="egept">egypt</option>
-                                    </select>
-                                </div>
-                                <div class="travel-select-icon">
-                                    <select class="form-control ">
-                                        <option value="default">choose your destination location</option>
-                                        <option value="istambul">istambul</option>
-                                        <option value="mosko">mosko</option>
-                                        <option value="cairo">cairo</option>
-                                    </select>
+                        <form method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <div class="single-tab-select-box">
+                                    <h2>destination</h2>
+                                    <div class="travel-select-icon">
+                                        <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
+                                            <option value="0">Choose a country ...</option>
+                                        </select>
+                                    </div>
+                                    <div class="travel-select-icon">
+                                        <select id="townsId" class="form-control">
+                                            <option value="0">Choose a town ...</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4">
-                            <div class="single-tab-select-box">
-                                <div class="search-icon">
-                                    <i class="fas fa-hotel"></i>
-                                </div>
-                                <center><h2 class="search-header">check in</h2></center>
-                                <div class="travel-check-icon">
-                                    <input type="date" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4">
-                            <div class="single-tab-select-box">
-                                <div class="search-icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <center><h2 class="search-header">check out</h2></center>
-                                <div class="travel-check-icon">
-                                    <input type="date" class="form-control" />
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <div class="single-tab-select-box">
+                                    <div class="search-icon">
+                                        <i class="fas fa-hotel"></i>
+                                    </div>
+                                    <center><h2 class="search-header">check in</h2></center>
+                                    <div class="travel-check-icon">
+                                        <input type="date" class="form-control" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2 col-md-1 col-sm-4">
-                            <div class="single-tab-select-box">
-                                <div class="search-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <center><h2 class="search-header">members</h2></center>
-                                <div class="travel-select-icon">
-                                    <select class="form-control ">
-                                        <option value="default">1 Member</option>
-                                        @for (int i = 2; i <= 30; i++)
-                                        {
-                                            <option value="@i">@i Members</option>
-                                        }
-                                    </select>
+                            <div class="col-lg-2 col-md-3 col-sm-4">
+                                <div class="single-tab-select-box">
+                                    <div class="search-icon">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <center><h2 class="search-header">check out</h2></center>
+                                    <div class="travel-check-icon">
+                                        <input type="date" class="form-control" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-2 col-md-1 col-sm-4">
-                            <div class="single-tab-select-box">
-                                <h2>budget - BGN</h2>
-                                <input type="text" name="minBudget" class="form-control budget" placeholder="Min price ">
-                                <input type="text" name="maxBudget" class="form-control budget" placeholder="Max price ">
+                            <div class="col-lg-2 col-md-1 col-sm-4">
+                                <div class="single-tab-select-box">
+                                    <div class="search-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <center><h2 class="search-header">members</h2></center>
+                                    <div class="travel-select-icon">
+                                        <select class="form-control ">
+                                            <option value="default">1 Member</option>
+                                            @for (int i = 2; i <= 30; i++)
+                                            {
+                                                <option value="@i">@i Members</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-lg-2 col-md-1 col-sm-4">
+                                <div class="single-tab-select-box">
+                                    <h2 id="currencyId">budget</h2>
+                                    <input type="text" name="minBudget" class="form-control budget" placeholder="Min price ">
+                                    <input type="text" name="maxBudget" class="form-control budget" placeholder="Max price ">
+                                </div>
+                            </div>
+                            <input type="submit" class="search-btn" value="&#xf138" />
+                        </form>
                     </div>
                 </div>
             </div>
@@ -84,44 +83,44 @@
     </div>
 </section>
 
-<section id="gallery">
-    <div class="container">
-        <div class="gallery-details">
-            <div class="gallary-header text-center">
-                <h2>
-                    top hotels
-                </h2>
-                <p>
-                    Where do you want to go? Which place do you want to visit?
-                </p>
-            </div><!--/.gallery-header-->
-            <div class="gallery-box">
-                <div class="gallery-content">
-                    <div class="filtr-container">
-                        <div class="row">
+<vc:top-countries />
 
-                            @for (int i = 0; i < 6; i++)
-                            {
-                                <div class="col-md-6">
-                                    <div class="filtr-item">
-                                        <img src="assets/images/gallary/g1.jpg" alt="portfolio image" />
-                                        <div class="item-title">
-                                            <a href="#">
-                                                china
-                                            </a>
-                                            <p><span>20 offers</span><span>15 bookings</span></p>
-                                        </div><!-- /.item-title -->
-                                    </div><!-- /.filtr-item -->
-                                </div><!-- /.col -->
-                            }
+@section Scripts {
+    <script>
+        let countries = document.getElementById("countriesId");
+        countries.addEventListener("click", getTowns);
 
-                        </div><!-- /.row -->
+        function getTowns() {
+            let xhr = new XMLHttpRequest();
+            var selectedCountryId = countries.value;
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let townsDropdown = document.getElementById('townsId');
+                    while (townsDropdown.length > 1) {
+                        townsDropdown.remove(1);
+                    }
 
-                    </div><!-- /.filtr-container-->
-                </div><!-- /.gallery-content -->
-            </div><!--/.galley-box-->
-        </div><!--/.gallery-details-->
-    </div><!--/.container-->
-
-</section><!--/.gallery-->
-<!--gallery end-->
+                    townsDropdown[0].text = 'Choose a town ...'
+                    var towns = JSON.parse(this.responseText);
+                    for (let i = 0; i < towns.length; i++) {
+                        let town = towns[i];
+                        let townsDropdown = document.getElementById('townsId');
+                        let option = document.createElement("option");
+                        option.text = town.value;
+                        option.value = town.key;
+                        townsDropdown.add(option);
+                    }
+                } else if (this.status == 500) {
+                    if (countries.value == 0) {
+                        let townsDropdown = document.getElementById('townsId');
+                        while (townsDropdown.length > 1) {
+                            townsDropdown.remove(1);
+                        }
+                    }
+                }
+            };
+            xhr.open("GET", `/Home/GetTowns/${selectedCountryId}`);
+            xhr.send();
+        }
+    </script>
+}

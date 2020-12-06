@@ -1,10 +1,13 @@
 ﻿namespace Booking.Services.Data
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
 
-    public class ICountriesService
+    using Booking.Services.Data.Models;
+
+    public interface ICountriesService
     {
+        IEnumerable<CountryOfferAndBookingsCountDto> GetTheSixTopCountries();
+
+        IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs();
     }
 }

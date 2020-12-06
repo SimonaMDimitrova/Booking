@@ -8,6 +8,7 @@
     using Booking.Data.Models;
     using Booking.Data.Repositories;
     using Booking.Data.Seeding;
+    using Booking.Services.Data;
     using Booking.Services.Mapping;
     using Booking.Services.Messaging;
     using Booking.Web.ViewModels;
@@ -62,6 +63,8 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<ITownsService, TownsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
