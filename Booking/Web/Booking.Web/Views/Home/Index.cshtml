@@ -1,5 +1,5 @@
 ﻿@using Booking.Common
-@model Booking.Web.ViewModels.Home.IndexInputModel
+@model Booking.Web.ViewModels.Home.SearchInputModel
 @{
     this.ViewData["Title"] = "Home";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para">
                     <div class="row">
-                        <form method="post">
+                        <form asp-controller="Search" asp-action="Index" method="get">
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <div class="single-tab-select-box">
@@ -20,11 +20,13 @@
                                         <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
                                             <option value="0">Choose a country ...</option>
                                         </select>
+                                        <span asp-validation-for="CountryId" class="text-danger"></span>
                                     </div>
                                     <div class="travel-select-icon">
-                                        <select id="townsId" class="form-control">
-                                            <option value="0">Choose a town ...</option>
+                                        <select disabled id="townsId" asp-for="TownId" class="form-control">
+                                            <option value="0">Choose a country first ...</option>
                                         </select>
+                                        <span asp-validation-for="TownId" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +37,8 @@
                                     </div>
                                     <center><h2 class="search-header">check in</h2></center>
                                     <div class="travel-check-icon">
-                                        <input type="date" class="form-control" />
+                                        <input asp-for="CheckIn" type="date" class="form-control" />
+                                        <span asp-validation-for="CheckIn"></span>
                                     </div>
                                 </div>
                             </div>
@@ -86,41 +89,5 @@
 <vc:top-countries />
 
 @section Scripts {
-    <script>
-        let countries = document.getElementById("countriesId");
-        countries.addEventListener("click", getTowns);
-
-        function getTowns() {
-            let xhr = new XMLHttpRequest();
-            var selectedCountryId = countries.value;
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let townsDropdown = document.getElementById('townsId');
-                    while (townsDropdown.length > 1) {
-                        townsDropdown.remove(1);
-                    }
-
-                    townsDropdown[0].text = 'Choose a town ...'
-                    var towns = JSON.parse(this.responseText);
-                    for (let i = 0; i < towns.length; i++) {
-                        let town = towns[i];
-                        let townsDropdown = document.getElementById('townsId');
-                        let option = document.createElement("option");
-                        option.text = town.value;
-                        option.value = town.key;
-                        townsDropdown.add(option);
-                    }
-                } else if (this.status == 500) {
-                    if (countries.value == 0) {
-                        let townsDropdown = document.getElementById('townsId');
-                        while (townsDropdown.length > 1) {
-                            townsDropdown.remove(1);
-                        }
-                    }
-                }
-            };
-            xhr.open("GET", `/Home/GetTowns/${selectedCountryId}`);
-            xhr.send();
-        }
-    </script>
+    <script src="~/assets/js/ajax-countries-towns.js"></script>
 }

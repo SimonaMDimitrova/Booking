@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class IndexInputModel
+    public class SearchInputModel
     {
         public IEnumerable<KeyValuePair<string, string>> Countries { get; set; }
 

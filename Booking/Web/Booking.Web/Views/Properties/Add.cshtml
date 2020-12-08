@@ -1,0 +1,73 @@
+﻿@model Booking.Web.ViewModels.Properties.AddPropertyInputModel
+@{
+    this.ViewData["Title"] = "Add a hotel";
+    var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
+    var propertyCategories = this.Model.PropertyCategories.Select(x => new SelectListItem(x.Value, x.Key));
+}
+
+<div class="row padding">
+    <h2 class="h2 text-center">Add a property</h2>
+    <div class="col-md-3"></div>
+    <form method="post" class="col-md-6 m-md-auto">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div>
+            <h3>Property information</h3>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stars"></label>
+                <select asp-for="Stars" class="form-control">
+                    <option>Hotel rating ...</option>
+                    <option value="0">None</option>
+                    <option value="1">1 Star</option>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <option value="@i">@i Stars</option>
+                    }
+                </select>
+                <span asp-validation-for="Stars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId"></label>
+                <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
+                    <option value="0">Choose a country ...</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TownId"></label>
+                <select id="townsId" asp-for="TownId" class="form-control">
+                    <option value="0">Choose a country first ...</option>
+                </select>
+                <span asp-validation-for="TownId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PropertyCategoryId"></label>
+                <select asp-for="PropertyCategoryId" class="form-control" asp-items="propertyCategories">
+                    <option value="0">Choose a property category ...</option>
+                </select>
+                <span asp-validation-for="PropertyCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Floors"></label>
+                <input asp-for="Floors" class="form-control" />
+                <span asp-validation-for="Floors" class="text-danger"></span>
+            </div>
+        </div>
+        <input type="submit" class="book-btn margin text-center" value="Create" />
+    </form>
+    <div class="col-md-3"></div>
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/ajax-countries-towns.js"></script>
+}

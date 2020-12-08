@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Booking.Data.Models\Booking.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Booking.Web.ViewModels\Booking.Web.ViewModels.csproj" />
     <ProjectReference Include="..\Booking.Services.Mapping\Booking.Services.Mapping.csproj" />
   </ItemGroup>
 
