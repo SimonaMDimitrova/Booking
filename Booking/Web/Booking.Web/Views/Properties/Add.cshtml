@@ -60,6 +60,7 @@
                 <input asp-for="Floors" class="form-control" />
                 <span asp-validation-for="Floors" class="text-danger"></span>
             </div>
+            <hr />
             <input type="submit" class="book-btn text-center" value="Create" />
         </div>
         <div class="col-md-6">
@@ -74,12 +75,12 @@
             <h4 class="h4-padding">General Facilities</h4>
             <hr />
             <div class="form-group row">
-                @foreach (var facility in Model.PropertyFacilities)
+                @foreach (var facility in Model.Facilities)
                 {
                     <div class="col-md-6">
                         <input id="facility_@facility.Id"
                                type="checkbox"
-                               name="PropertyFacilitiesIds"
+                               name="FacilitiesIds"
                                value="@facility.Id" />
                         <label for="facility_@facility.Id">@facility.Name</label>
                     </div>
@@ -100,6 +101,7 @@
                     </div>
                 }
             </div>
+            <hr />
         </div>
     </form>
 </div>

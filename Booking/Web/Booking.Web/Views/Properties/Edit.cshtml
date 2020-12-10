@@ -1,5 +1,106 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Booking.Web.ViewModels.PropertiesVM.EditPropertyInputModel
 @{
+    this.ViewData["Title"] = "Edit property";
 }
+
+<div class="row padding">
+    <h2 class="h2 text-center">Edit "@Model.Name"</h2>
+    <form method="post" class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <hr />
+            <h4 class="h4-padding">Property information</h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stars"></label>
+                <select asp-for="Stars" class="form-control">
+                    <option value="0">None</option>
+                    <option value="1">1 Star</option>
+                    @for (int i = 2; i <= 5; i++)
+                    {
+                        <option value="@i">@i Stars</option>
+                    }
+                </select>
+                <span asp-validation-for="Stars" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Floors"></label>
+                <input asp-for="Floors" class="form-control" />
+                <span asp-validation-for="Floors" class="text-danger"></span>
+            </div>
+            <hr />
+            <h4 class="h4-padding">Description</h4>
+            <hr />
+            <div class="form-group">
+                <textarea class="form-control" asp-for="Description" cols="10" rows="8"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <hr />
+            <h4 class="h4-padding">General Facilities</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var facility in Model.Facilities)
+                {
+                    if (facility.IsChecked == true)
+                    {
+                        <div class="col-md-6">
+                            <input id="facility_@facility.Id"
+                                   type="checkbox"
+                                   checked
+                                   name="FacilitiesIds"
+                                   value="@facility.Id" />
+                            <label for="facility_@facility.Id">@facility.Name</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6">
+                            <input id="facility_@facility.Id"
+                                   type="checkbox"
+                                   name="FacilitiesIds"
+                                   value="@facility.Id" />
+                            <label for="facility_@facility.Id">@facility.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+            <hr />
+            <h4 class="h4-padding">What do you allow? (Property rules)</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var rule in Model.Rules)
+                {
+                    if (rule.IsAllowed == true)
+                    {
+                        <div class="col-md-6">
+                            <input id="rule_@rule.Id"
+                                   type="checkbox"
+                                   checked
+                                   name="RulesIds"
+                                   value="@rule.Id" />
+                            <label for="rule_@rule.Id">@rule.Name</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6">
+                            <input id="rule_@rule.Id"
+                                   type="checkbox"
+                                   name="RulesIds"
+                                   value="@rule.Id" />
+                            <label for="rule_@rule.Id">@rule.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+            <hr />
+            <input type="submit" class="book-btn text-center" value="Edit" />
+        </div>
+    </form>
+</div>

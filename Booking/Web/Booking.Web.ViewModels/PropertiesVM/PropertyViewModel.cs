@@ -2,6 +2,8 @@
 {
     public class PropertyViewModel
     {
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public byte Stars { get; set; }

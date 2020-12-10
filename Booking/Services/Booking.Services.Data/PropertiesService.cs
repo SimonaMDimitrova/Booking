@@ -13,13 +13,16 @@
     {
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
+        private readonly IDeletableEntityRepository<Offer> offersRepository;
 
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
-            IRepository<Rule> rulesRepository)
+            IRepository<Rule> rulesRepository,
+            IDeletableEntityRepository<Offer> offersRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
+            this.offersRepository = offersRepository;
         }
 
         public bool CheckIsPropertyNameAvailable(string name)
@@ -74,7 +77,7 @@
                 }
             }
 
-            var facilitiesIds = input.PropertyFacilitiesIds;
+            var facilitiesIds = input.FacilitiesIds;
             if (facilitiesIds != null)
             {
                 foreach (var facilityId in facilitiesIds)
@@ -93,6 +96,55 @@
             await this.propertiesRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(string propertyId)
+        {
+            var property = this.propertiesRepository
+                .AllAsNoTracking()
+                .FirstOrDefault(p => p.Id == propertyId);
+            var offers = property.Offers;
+
+            if (offers != null)
+            {
+                foreach (var offer in offers)
+                {
+                    this.offersRepository.Delete(offer);
+                }
+            }
+
+            this.propertiesRepository.Delete(property);
+            await this.propertiesRepository.SaveChangesAsync();
+        }
+
+        public async Task EditProperty(EditPropertyInputModel input)
+        {
+            var property = this.propertiesRepository
+                .All()
+                .FirstOrDefault(p => input.Id == p.Id);
+            property.Name = input.Name;
+            property.Floors = input.Floors;
+            property.Stars = input.Stars;
+            property.Description = input.Description;
+
+            var propertyRules = property.PropertyRules;
+            var rulesIds = input.RulesIds;
+            if (rulesIds != null)
+            {
+                foreach (var propertyRule in propertyRules)
+                {
+                    propertyRule.IsAllowed = rulesIds.Contains(propertyRule.Id) ? true : false;
+                }
+            }
+            else
+            {
+                foreach (var propertyRule in propertyRules)
+                {
+                    propertyRule.IsAllowed = false;
+                }
+            }
+
+            await this.propertiesRepository.SaveChangesAsync();
+        }
+
         public PropertyInListModel GetAllPropertiesByUserId(string userId)
         {
             var properties = new PropertyInListModel
@@ -107,10 +159,29 @@
                         Country = p.Town.Country.Name,
                         Town = p.Town.Name,
                         PropertyCategory = p.PropertyCategory.Name,
+                        Id = p.Id,
                     }),
             };
 
             return properties;
+        }
+
+        public EditPropertyInputModel GetPropertyById(string propertyId, string userId)
+        {
+            var property = this.propertiesRepository
+                .AllAsNoTracking()
+                .Where(p => p.Id == propertyId && p.ApplicationUserId == userId)
+                .Select(p => new EditPropertyInputModel
+                {
+                    Name = p.Name,
+                    Description = p.Description,
+                    Stars = p.Stars,
+                    Floors = p.Floors,
+                    Id = p.Id,
+                })
+                .FirstOrDefault();
+
+            return property;
         }
 
         public string GetPropertyIdByName(string propertyName)

@@ -14,5 +14,11 @@
         string GetPropertyIdByName(string propertyName);
 
         PropertyInListModel GetAllPropertiesByUserId(string userId);
+
+        EditPropertyInputModel GetPropertyById(string propertyId, string userId);
+
+        Task EditProperty(EditPropertyInputModel input);
+
+        Task DeleteAsync(string propertyId);
     }
 }

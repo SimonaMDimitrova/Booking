@@ -26,6 +26,16 @@
                 <div>@property.PropertyCategory</div>
                 <div>@property.Town, @property.Country</div>
             </div>
+            <ul>
+                <li><a class="btn btn-primary" asp-action="ById">View</a></li>
+                <li><a class="btn btn-primary" asp-action="Add" asp-controller="Offers">Add an offer</a></li>
+                <li><a class="btn btn-primary" asp-route-id="@property.Id" asp-action="Edit">Edit</a></li>
+                <li>
+                    <form method="post" asp-action="Delete" asp-route-id="@property.Id">
+                        <input type="submit" class="btn btn-primary" value="Delete" />    
+                    </form>
+                </li>
+            </ul>
         </div>
     }
 </div>

@@ -53,7 +53,7 @@
             var viewModel = new AddPropertyInputModel();
             viewModel.Countries = this.countriesService.GetAllByKeyValuePairs();
             viewModel.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-            viewModel.PropertyFacilities = this.facilitiesService.GetPropertyFacilities();
+            viewModel.Facilities = this.facilitiesService.GetAllFacilities();
             viewModel.Rules = this.rulesService.GetAllRules();
 
             return this.View(viewModel);
@@ -72,7 +72,7 @@
             {
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.PropertyFacilities = this.facilitiesService.GetPropertyFacilities();
+                input.Facilities = this.facilitiesService.GetAllFacilities();
                 input.Rules = this.rulesService.GetAllRules();
 
                 return this.View(input);
@@ -82,6 +82,54 @@
             await this.propertiesService.CreateAsync(input, user.Id);
 
             return this.Redirect(nameof(this.All));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            var viewModel = this.propertiesService.GetPropertyById(id, user.Id);
+            viewModel.Facilities = this.facilitiesService.GetAllFacilitiesByPropertyId(id);
+            viewModel.Rules = this.rulesService.GetAllRulesByPropertyId(id);
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EditPropertyInputModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                input.Rules = this.rulesService.GetAllRulesByPropertyId(input.Id);
+                input.Facilities = this.facilitiesService.GetAllFacilitiesByPropertyId(input.Id);
+
+                return this.View(input);
+            }
+
+            if (input.Id == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.propertiesService.EditProperty(input);
+
+            return this.RedirectToAction(nameof(this.All));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await this.propertiesService.DeleteAsync(id);
+
+            return this.RedirectToAction(nameof(this.All));
         }
     }
 }
