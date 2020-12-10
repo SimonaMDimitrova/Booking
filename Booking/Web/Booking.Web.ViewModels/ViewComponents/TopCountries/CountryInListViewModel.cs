@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public class TopCountriesListViewModel
+    public class CountryInListViewModel
     {
-        public IEnumerable<TopCountriesViewModel> Countries { get; set; }
+        public IEnumerable<CountryViewModel> Countries { get; set; }
     }
 }

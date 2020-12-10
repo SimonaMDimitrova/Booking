@@ -15,16 +15,19 @@
                 return;
             }
 
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Hotel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Guesthouse", PropertyTypeId = 2, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Hostel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Condo hotel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Capsule Hotel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Country House", PropertyTypeId = 2, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Farm stay", PropertyTypeId = 2, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Love Hotel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Motel", PropertyTypeId = 1, });
-            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Lodge", PropertyTypeId = 2, });
+            var apartmentId = dbContext.PropertyTypes.FirstOrDefault(x => x.Name == "Apartment").Id;
+            var homeId = dbContext.PropertyTypes.FirstOrDefault(x => x.Name == "Home").Id;
+
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Hotel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Guesthouse", PropertyTypeId = homeId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Hostel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Condo hotel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Capsule Hotel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Country House", PropertyTypeId = homeId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Farm stay", PropertyTypeId = homeId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Love Hotel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Motel", PropertyTypeId = apartmentId, });
+            await dbContext.PropertyCategories.AddAsync(new PropertyCategory { Name = "Lodge", PropertyTypeId = homeId, });
         }
     }
 }

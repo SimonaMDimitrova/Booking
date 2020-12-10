@@ -74,11 +74,12 @@
     }
 
 .padding {
-    padding: 5em 0 5em 0;
+    padding: 3em 0 6em 0;
 }
 
 .h2 {
-    padding-bottom: 20px;
+    position: relative;
+    top: 10px;
 }
 
 .intro {
@@ -91,4 +92,13 @@
 
 .margin {
     margin-top: 10px;
+}
+
+.h4-padding {
+    padding-left: 0.7em;
+}
+
+.custom-checkbox {
+    padding-right: 5px;
+    display: inline-block;
 }

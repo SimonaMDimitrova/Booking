@@ -1,17 +1,16 @@
-﻿@model Booking.Web.ViewModels.Properties.AddPropertyInputModel
+﻿@model Booking.Web.ViewModels.PropertiesVM.AddPropertyInputModel
 @{
-    this.ViewData["Title"] = "Add a hotel";
+    this.ViewData["Title"] = "Create a hotel";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
     var propertyCategories = this.Model.PropertyCategories.Select(x => new SelectListItem(x.Value, x.Key));
 }
 
 <div class="row padding">
-    <h2 class="h2 text-center">Add a property</h2>
-    <div class="col-md-3"></div>
-    <form method="post" class="col-md-6 m-md-auto">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div>
-            <h3>Property information</h3>
+    <h2 class="h2 text-center">Create a property</h2>
+    <form method="post" class="row">
+        <div class="col-md-6">
+            <hr />
+            <h4 class="h4-padding">Property information</h4>
             <hr />
             <div class="form-group">
                 <label asp-for="Name"></label>
@@ -21,10 +20,9 @@
             <div class="form-group">
                 <label asp-for="Stars"></label>
                 <select asp-for="Stars" class="form-control">
-                    <option>Hotel rating ...</option>
                     <option value="0">None</option>
                     <option value="1">1 Star</option>
-                    @for (int i = 1; i <= 5; i++)
+                    @for (int i = 2; i <= 5; i++)
                     {
                         <option value="@i">@i Stars</option>
                     }
@@ -62,10 +60,48 @@
                 <input asp-for="Floors" class="form-control" />
                 <span asp-validation-for="Floors" class="text-danger"></span>
             </div>
+            <input type="submit" class="book-btn text-center" value="Create" />
         </div>
-        <input type="submit" class="book-btn margin text-center" value="Create" />
+        <div class="col-md-6">
+            <hr />
+            <h4 class="h4-padding">Description</h4>
+            <hr />
+            <div class="form-group">
+                <textarea class="form-control" asp-for="Description" cols="10" rows="8"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <hr />
+            <h4 class="h4-padding">General Facilities</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var facility in Model.PropertyFacilities)
+                {
+                    <div class="col-md-6">
+                        <input id="facility_@facility.Id"
+                               type="checkbox"
+                               name="PropertyFacilitiesIds"
+                               value="@facility.Id" />
+                        <label for="facility_@facility.Id">@facility.Name</label>
+                    </div>
+                }
+            </div>
+            <hr />
+            <h4 class="h4-padding">What do you allow? (Property rules)</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var rule in Model.Rules)
+                {
+                    <div class="col-md-6">
+                        <input id="rule_@rule.Id"
+                               type="checkbox"
+                               name="RulesIds"
+                               value="@rule.Id" />
+                        <label for="rule_@rule.Id">@rule.Name</label>
+                    </div>
+                }
+            </div>
+        </div>
     </form>
-    <div class="col-md-3"></div>
 </div>
 
 @section Scripts {

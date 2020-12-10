@@ -30,6 +30,9 @@
 
         public byte Stars { get; set; }
 
+        [MaxLength(500)]
+        public string Description { get; set; }
+
         [Required]
         [ForeignKey(nameof(Town))]
         public int TownId { get; set; }

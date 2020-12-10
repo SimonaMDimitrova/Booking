@@ -18,7 +18,7 @@
         public IViewComponentResult Invoke()
         {
             var countries = this.countriesService.GetTheSixTopCountries().Select(c => c.Name).ToList();
-            var viewModel = new TopCountriesByNameList
+            var viewModel = new CountryByNameInListViewModel
             {
                 Names = countries,
             };

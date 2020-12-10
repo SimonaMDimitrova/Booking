@@ -1,8 +1,31 @@
-﻿@{
+﻿@model Booking.Web.ViewModels.PropertiesVM.PropertyInListModel
+@{
     this.ViewData["Title"] = "My properties";
 }
 
 <div class="padding">
     <h2 class="h2 text-center">List of my properties</h2>
-    <p class="text-center intro">You are an owner? <a asp-action="Add">Register your property now!</a></p>
+
+    @if (Model.Properties.Count() == 0)
+    {
+        <p class="text-center intro">You are an owner? <a asp-action="Add">Register your property now!</a></p>
+    }
+
+    @foreach (var property in Model.Properties)
+    {
+        <div class="media col-md-4">
+            <img class="mr-4" src="https://fontawesome.com/images/open-graph.png" alt="@property.Name">
+            <div class="media-body">
+                <h5 class="mt-0">@property.Name</h5>
+                <div>
+                    @for (int i = 0; i < property.Stars; i++)
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                </div>
+                <div>@property.PropertyCategory</div>
+                <div>@property.Town, @property.Country</div>
+            </div>
+        </div>
+    }
 </div>

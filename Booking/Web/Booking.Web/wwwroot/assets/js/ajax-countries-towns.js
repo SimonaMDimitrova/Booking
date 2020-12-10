@@ -1,7 +1,7 @@
 ﻿let countries = document.getElementById("countriesId");
 countries.value = 0;
 
-countries.addEventListener("click", getTowns);
+countries.addEventListener("change", getTowns);
 
 function getTowns() {
     let xhr = new XMLHttpRequest();

@@ -68,6 +68,8 @@
             services.AddTransient<ICurrenciesService, CurrencyService>();
             services.AddTransient<IPropertyCategoriesService, PropertyCategoriesService>();
             services.AddTransient<IPropertiesService, PropertiesService>();
+            services.AddTransient<IFacilitiesService, FacilitiesService>();
+            services.AddTransient<IRulesService, RulesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

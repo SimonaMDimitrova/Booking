@@ -15,26 +15,31 @@
                 return;
             }
 
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Air conditioning", FacilityCategoryId = 1 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Heating", FacilityCategoryId = 1 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Free WiFi", FacilityCategoryId = 1 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Free on-site parking", FacilityCategoryId = 1 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Electric vehicle charging station", FacilityCategoryId = 1 });
+            var generalId = dbContext.FacilityCategories.FirstOrDefault(x => x.Name == "General").Id;
+            var cookingAndCleaningId = dbContext.FacilityCategories.FirstOrDefault(x => x.Name == "Cooking and cleaning").Id;
+            var entertainmentId = dbContext.FacilityCategories.FirstOrDefault(x => x.Name == "Entertainment").Id;
+            var outsideAndViewId = dbContext.FacilityCategories.FirstOrDefault(x => x.Name == "Outside and view ").Id;
 
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Kitchen", FacilityCategoryId = 2 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Kitchenette", FacilityCategoryId = 2 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Washing machine", FacilityCategoryId = 2 });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Air conditioning", FacilityCategoryId = dbContext.FacilityCategories.FirstOrDefault(x => x.Name == "General").Id });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Heating", FacilityCategoryId = generalId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Free WiFi", FacilityCategoryId = generalId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Free on-site parking", FacilityCategoryId = generalId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Electric vehicle charging station", FacilityCategoryId = generalId });
 
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Flat-screen TV", FacilityCategoryId = 3 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Swimming pool", FacilityCategoryId = 3 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Hot tub", FacilityCategoryId = 3 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Minibar", FacilityCategoryId = 3 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Sauna", FacilityCategoryId = 3 });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Kitchen", FacilityCategoryId = cookingAndCleaningId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Kitchenette", FacilityCategoryId = cookingAndCleaningId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Washing machine", FacilityCategoryId = cookingAndCleaningId });
 
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Balcony", FacilityCategoryId = 4 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Garden view", FacilityCategoryId = 4 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "Terrace", FacilityCategoryId = 4 });
-            await dbContext.Facilities.AddAsync(new Facility { Name = "View", FacilityCategoryId = 4 });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Flat-screen TV", FacilityCategoryId = entertainmentId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Swimming pool", FacilityCategoryId = entertainmentId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Hot tub", FacilityCategoryId = entertainmentId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Minibar", FacilityCategoryId = entertainmentId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Sauna", FacilityCategoryId = entertainmentId });
+
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Balcony", FacilityCategoryId = outsideAndViewId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Garden view", FacilityCategoryId = outsideAndViewId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "Terrace", FacilityCategoryId = outsideAndViewId });
+            await dbContext.Facilities.AddAsync(new Facility { Name = "View", FacilityCategoryId = outsideAndViewId });
         }
     }
 }

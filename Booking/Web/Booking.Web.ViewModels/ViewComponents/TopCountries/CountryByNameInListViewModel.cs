@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class TopCountriesByNameList
+    public class CountryByNameInListViewModel
     {
         public IEnumerable<string> Names { get; set; }
     }

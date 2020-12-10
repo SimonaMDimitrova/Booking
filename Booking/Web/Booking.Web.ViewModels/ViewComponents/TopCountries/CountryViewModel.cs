@@ -1,6 +1,6 @@
 ﻿namespace Booking.Web.ViewModels.ViewComponents.TopCountries
 {
-    public class TopCountriesViewModel
+    public class CountryViewModel
     {
         public string Name { get; set; }
 

@@ -18,14 +18,14 @@
         public IViewComponentResult Invoke()
         {
             var countriesDto = this.countriesService.GetTheSixTopCountries()
-                .Select(c => new TopCountriesViewModel
+                .Select(c => new CountryViewModel
                 {
                     Name = c.Name,
                     OffersCount = c.OffersCount,
                     BookingsCount = c.BookingsCount,
                 })
                 .ToList();
-            var viewModel = new TopCountriesListViewModel
+            var viewModel = new CountryInListViewModel
             {
                 Countries = countriesDto,
             };
