@@ -105,6 +105,11 @@
         [Authorize]
         public async Task<IActionResult> Edit(EditPropertyInputModel input)
         {
+            if (this.propertiesService.CheckIfNewPropertyNameAvailable(input.Name, input.Id))
+            {
+                this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 input.Rules = this.rulesService.GetAllRulesByPropertyId(input.Id);

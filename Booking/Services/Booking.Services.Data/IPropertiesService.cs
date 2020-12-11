@@ -11,6 +11,8 @@
 
         bool CheckIsPropertyNameAvailable(string name);
 
+        bool CheckIfNewPropertyNameAvailable(string name, string propertyId);
+
         string GetPropertyIdByName(string propertyName);
 
         PropertyInListModel GetAllPropertiesByUserId(string userId);

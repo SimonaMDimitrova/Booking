@@ -11,11 +11,11 @@
     public class FacilitiesService : IFacilitiesService
     {
         private readonly IRepository<Facility> facilitiesRepository;
-        private readonly IDeletableEntityRepository<PropertyFacility> propertyFaciltiesRepository;
+        private readonly IRepository<PropertyFacility> propertyFaciltiesRepository;
 
         public FacilitiesService(
             IRepository<Facility> facilitiesRepository,
-            IDeletableEntityRepository<PropertyFacility> propertyFaciltiesRepository)
+            IRepository<PropertyFacility> propertyFaciltiesRepository)
         {
             this.facilitiesRepository = facilitiesRepository;
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;

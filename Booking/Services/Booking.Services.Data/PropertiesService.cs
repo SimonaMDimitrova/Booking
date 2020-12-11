@@ -14,21 +14,31 @@
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
         private readonly IDeletableEntityRepository<Offer> offersRepository;
+        private readonly IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository;
 
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
             IRepository<Rule> rulesRepository,
-            IDeletableEntityRepository<Offer> offersRepository)
+            IDeletableEntityRepository<Offer> offersRepository,
+            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
             this.offersRepository = offersRepository;
+            this.propertyFacilitiesRepository = propertyFacilitiesRepository;
+        }
+
+        public bool CheckIfNewPropertyNameAvailable(string name, string propertyId)
+        {
+            return this.propertiesRepository
+                .All()
+                .Any(p => p.Name == name && p.Id != propertyId);
         }
 
         public bool CheckIsPropertyNameAvailable(string name)
         {
             return this.propertiesRepository
-                .AllAsNoTracking()
+                .All()
                 .Any(p => p.Name == name);
         }
 
@@ -125,13 +135,17 @@
             property.Stars = input.Stars;
             property.Description = input.Description;
 
-            var propertyRules = property.PropertyRules;
+            var propertyRules = this.propertiesRepository
+                .AllWithDeleted()
+                .Where(p => p.Id == input.Id)
+                .Select(p => p.PropertyRules)
+                .FirstOrDefault();
             var rulesIds = input.RulesIds;
             if (rulesIds != null)
             {
                 foreach (var propertyRule in propertyRules)
                 {
-                    propertyRule.IsAllowed = rulesIds.Contains(propertyRule.Id) ? true : false;
+                    propertyRule.IsAllowed = rulesIds.Contains(propertyRule.RuleId) ? true : false;
                 }
             }
             else
@@ -142,6 +156,63 @@
                 }
             }
 
+            var propertyFacilities = this.propertiesRepository
+                .All()
+                .Where(p => p.Id == input.Id)
+                .Select(p => p.PropertyFacilities)
+                .FirstOrDefault();
+            var facilitiesIds = input.FacilitiesIds;
+            if (facilitiesIds != null)
+            {
+                if (propertyFacilities != null)
+                {
+                    foreach (var facilityId in facilitiesIds)
+                    {
+                        var isFacilityAlreadyAdded = propertyFacilities.Any(f => f.FacilityId == facilityId);
+                        var isFacilityAlreadyAddedDeleted = propertyFacilities.Any(f => f.FacilityId == facilityId && f.IsDeleted == true);
+                        if (isFacilityAlreadyAdded == false)
+                        {
+                            var propertyFacility = new PropertyFacility
+                            {
+                                Property = property,
+                                FacilityId = facilityId,
+                            };
+
+                            await this.propertyFacilitiesRepository.AddAsync(propertyFacility);
+                        }
+
+                        if (isFacilityAlreadyAddedDeleted == true)
+                        {
+                            var propertyFacility = this.propertyFacilitiesRepository.AllWithDeleted().FirstOrDefault(f => f.FacilityId == facilityId);
+                            this.propertyFacilitiesRepository.Undelete(propertyFacility);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var facilityId in facilitiesIds)
+                    {
+                        var propertyFacility = new PropertyFacility
+                        {
+                            Property = property,
+                            FacilityId = facilityId,
+                        };
+                        await this.propertyFacilitiesRepository.AddAsync(propertyFacility);
+                    }
+                }
+            }
+            else
+            {
+                if (propertyFacilities != null)
+                {
+                    foreach (var propertyFacility in propertyFacilities)
+                    {
+                        this.propertyFacilitiesRepository.Delete(propertyFacility);
+                    }
+                }
+            }
+
+            await this.propertyFacilitiesRepository.SaveChangesAsync();
             await this.propertiesRepository.SaveChangesAsync();
         }
 
