@@ -10,5 +10,7 @@
     public interface IOffersService
     {
         Task AddOfferToProperty(string propertyId, AddOfferInputModel input);
+
+        Task DeleteAsync(string id);
     }
 }

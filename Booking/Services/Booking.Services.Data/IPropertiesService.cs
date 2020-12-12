@@ -23,5 +23,7 @@
         Task DeleteAsync(string propertyId);
 
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
+
+        string GetPropertyIdByOfferId(string id);
     }
 }

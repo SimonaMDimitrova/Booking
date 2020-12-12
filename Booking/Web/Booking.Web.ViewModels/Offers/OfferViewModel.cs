@@ -6,6 +6,8 @@
 
     public class OfferViewModel
     {
+        public string Id { get; set; }
+
         public decimal Price { get; set; }
 
         public string ValidFrom { get; set; }

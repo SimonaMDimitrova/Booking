@@ -14,15 +14,18 @@
         private readonly IFacilitiesService facilitiesService;
         private readonly IBedTypesService bedTypesService;
         private readonly IOffersService offersService;
+        private readonly IPropertiesService propertiesService;
 
         public OffersController(
             IFacilitiesService facilitiesService,
             IBedTypesService bedTypesService,
-            IOffersService offersService)
+            IOffersService offersService,
+            IPropertiesService propertiesService)
         {
             this.facilitiesService = facilitiesService;
             this.bedTypesService = bedTypesService;
             this.offersService = offersService;
+            this.propertiesService = propertiesService;
         }
 
         [Authorize]
@@ -73,6 +76,16 @@
             await this.offersService.AddOfferToProperty(id, input);
 
             return this.RedirectToAction("ById", "Properties", new { id = id });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            await this.offersService.DeleteAsync(id);
+
+            return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
     }
 }

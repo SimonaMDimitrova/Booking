@@ -75,5 +75,14 @@
             await this.offersRepository.AddAsync(offer);
             await this.offersRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(string id)
+        {
+            var offer = this.offersRepository
+                .All()
+                .FirstOrDefault(o => o.Id == id);
+            this.offersRepository.Delete(offer);
+            await this.offersRepository.SaveChangesAsync();
+        }
     }
 }

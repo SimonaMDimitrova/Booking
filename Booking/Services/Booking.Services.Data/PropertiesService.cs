@@ -266,6 +266,7 @@
                     Offers = p.Offers
                         .Select(o => new OfferViewModel
                         {
+                            Id = o.Id,
                             Price = o.PricePerPerson,
                             ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
                             ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
@@ -312,6 +313,14 @@
                     p.Name,
                 })
                 .FirstOrDefault(p => p.Name == propertyName)
+                .Id;
+        }
+
+        public string GetPropertyIdByOfferId(string id)
+        {
+            return this.propertiesRepository
+                .All()
+                .FirstOrDefault(p => p.Offers.Any(o => o.Id == id))
                 .Id;
         }
     }

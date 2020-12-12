@@ -51,6 +51,10 @@ else
             <p>@room</p>
         }
 
+        <a class="btn btn-primary" asp-action="Edit" asp-controller="Offers" asp-route-id="@offer.Id">Edit</a>
+        <form method="post">
+            <button class="btn btn-danger" asp-action="Delete" asp-controller="Offers" asp-route-id="@offer.Id">Delete</button>
+        </form>
         <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
     }
 }
