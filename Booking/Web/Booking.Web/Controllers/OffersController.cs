@@ -15,17 +15,20 @@
         private readonly IBedTypesService bedTypesService;
         private readonly IOffersService offersService;
         private readonly IPropertiesService propertiesService;
+        private readonly ICurrenciesService currenciesService;
 
         public OffersController(
             IFacilitiesService facilitiesService,
             IBedTypesService bedTypesService,
             IOffersService offersService,
-            IPropertiesService propertiesService)
+            IPropertiesService propertiesService,
+            ICurrenciesService currenciesService)
         {
             this.facilitiesService = facilitiesService;
             this.bedTypesService = bedTypesService;
             this.offersService = offersService;
             this.propertiesService = propertiesService;
+            this.currenciesService = currenciesService;
         }
 
         [Authorize]
@@ -39,6 +42,7 @@
             var viewModel = new AddOfferInputModel();
             viewModel.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
             viewModel.BedTypes = this.bedTypesService.GetAllBedTypes();
+            viewModel.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
 
             return this.View(viewModel);
         }
@@ -54,21 +58,13 @@
                 this.ModelState.AddModelError(nameof(input.BedTypesCounts), "Enter correct sleeping places. At least one is required.");
             }
 
-            if (input.ValidFrom != null && input.ValidTo != null)
-            {
-                var validFrom = (DateTime)input.ValidFrom;
-                var validTo = (DateTime)input.ValidTo;
-
-                if (!(validFrom.Date.AddDays(1) < validTo))
-                {
-                    this.ModelState.AddModelError(nameof(input.ValidTo), "The date must be at least 2 days after valid from date.");
-                }
-            }
+            this.ValidateCheckToDate(input);
 
             if (!this.ModelState.IsValid)
             {
                 input.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
                 input.BedTypes = this.bedTypesService.GetAllBedTypes();
+                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
 
                 return this.View(input);
             }
@@ -86,6 +82,52 @@
             await this.offersService.DeleteAsync(id);
 
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
+        }
+
+        public IActionResult Edit(string id)
+        {
+            var viewModel = this.offersService.GetById(id);
+            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            viewModel.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditOfferViewModel input)
+        {
+            this.ValidateCheckToDate(input);
+            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            if (!this.ModelState.IsValid)
+            {
+                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);
+
+                return this.View(input);
+            }
+
+            await this.offersService.UpdateAsync(id, input);
+
+            return this.RedirectToAction("ById", "Properties", new { id = propertyId });
+        }
+
+        private void ValidateCheckToDate(OfferBaseInputModel input)
+        {
+            if (input.ValidFrom != null && input.ValidTo != null)
+            {
+                var validFrom = (DateTime)input.ValidFrom;
+                var validTo = (DateTime)input.ValidTo;
+
+                if (!(validFrom.Date.AddDays(1) < validTo)
+                    || validTo.Date.AddDays(1) < DateTime.UtcNow)
+                {
+                    this.ModelState.AddModelError(nameof(input.ValidTo), "The date must be at least 2 days after valid from date.");
+                }
+            }
+
+            if (input.ValidFrom == null)
+            {
+                this.ModelState.AddModelError(nameof(input.ValidTo), "Fill valid from field first.");
+            }
         }
     }
 }

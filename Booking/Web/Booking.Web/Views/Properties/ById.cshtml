@@ -34,7 +34,7 @@ else
 {
     foreach (var offer in Model.Offers)
     {
-        <p>@(offer.Price * offer.Guests)</p>
+        <p>@(offer.Price * offer.Guests) @Model.CurrencyCode</p>
         <p>@offer.ValidFrom</p>
         <p>@offer.ValidTo</p>
         <p>@offer.Guests</p>

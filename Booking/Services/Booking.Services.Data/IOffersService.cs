@@ -12,5 +12,9 @@
         Task AddOfferToProperty(string propertyId, AddOfferInputModel input);
 
         Task DeleteAsync(string id);
+
+        Task UpdateAsync(string offerId, EditOfferViewModel input);
+
+        EditOfferViewModel GetById(string id);
     }
 }

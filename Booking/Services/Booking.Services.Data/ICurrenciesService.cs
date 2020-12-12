@@ -7,5 +7,7 @@
     public interface ICurrenciesService
     {
         string GetCurrencyCodeByCountryId(int id);
+
+        string GetCurrencyByPropertyId(string id);
     }
 }

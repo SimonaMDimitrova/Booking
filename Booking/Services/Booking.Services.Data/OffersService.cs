@@ -28,7 +28,7 @@
                 ValidTo = (DateTime)input.ValidTo,
                 ValidFrom = (DateTime)input.ValidFrom,
                 PropertyId = propertyId,
-                PricePerPerson = input.Price,
+                PricePerPerson = input.PricePerPerson,
             };
 
             var index = 0;
@@ -82,6 +82,30 @@
                 .All()
                 .FirstOrDefault(o => o.Id == id);
             this.offersRepository.Delete(offer);
+            await this.offersRepository.SaveChangesAsync();
+        }
+
+        public EditOfferViewModel GetById(string id)
+        {
+            return this.offersRepository
+                .All()
+                .Where(o => o.Id == id)
+                .Select(o => new EditOfferViewModel
+                {
+                    PricePerPerson = o.PricePerPerson,
+                    ValidTo = o.ValidTo,
+                    ValidFrom = o.ValidFrom,
+                })
+                .FirstOrDefault();
+        }
+
+        public async Task UpdateAsync(string offerId, EditOfferViewModel input)
+        {
+            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == offerId);
+            offer.PricePerPerson = input.PricePerPerson;
+            offer.ValidFrom = (DateTime)input.ValidFrom;
+            offer.ValidTo = (DateTime)input.ValidTo;
+
             await this.offersRepository.SaveChangesAsync();
         }
     }

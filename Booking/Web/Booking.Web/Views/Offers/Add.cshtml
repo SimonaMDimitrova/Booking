@@ -21,9 +21,9 @@
                 <span asp-validation-for="ValidTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="PricePerPerson">Price per person - @Model.CurrencyCode</label>
+                <input asp-for="PricePerPerson" class="form-control" />
+                <span asp-validation-for="PricePerPerson" class="text-danger"></span>
             </div>
             <hr />
             <h4 class="h4-padding">Sleeping places</h4>
