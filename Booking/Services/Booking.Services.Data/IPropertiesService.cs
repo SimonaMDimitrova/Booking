@@ -1,6 +1,5 @@
 ﻿namespace Booking.Services.Data
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Booking.Web.ViewModels.PropertiesVM;
@@ -22,5 +21,7 @@
         Task EditProperty(EditPropertyInputModel input);
 
         Task DeleteAsync(string propertyId);
+
+        PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
     }
 }

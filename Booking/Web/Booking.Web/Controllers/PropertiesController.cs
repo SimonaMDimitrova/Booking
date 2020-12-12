@@ -53,7 +53,7 @@
             var viewModel = new AddPropertyInputModel();
             viewModel.Countries = this.countriesService.GetAllByKeyValuePairs();
             viewModel.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-            viewModel.Facilities = this.facilitiesService.GetAllFacilities();
+            viewModel.Facilities = this.facilitiesService.GetAllGeneralFacilities();
             viewModel.Rules = this.rulesService.GetAllRules();
 
             return this.View(viewModel);
@@ -72,7 +72,7 @@
             {
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.Facilities = this.facilitiesService.GetAllFacilities();
+                input.Facilities = this.facilitiesService.GetAllGeneralFacilities();
                 input.Rules = this.rulesService.GetAllRules();
 
                 return this.View(input);
@@ -135,6 +135,19 @@
             await this.propertiesService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.All));
+        }
+
+        public async Task<IActionResult> ById(string id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            var viewModel = this.propertiesService.GetPropertyAndOffersById(id, user.Id);
+
+            return this.View(viewModel);
         }
     }
 }

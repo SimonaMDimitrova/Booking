@@ -3,11 +3,14 @@
     using System.Collections.Generic;
 
     using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.OffersFacilities;
     using Booking.Web.ViewModels.PropertyFacilities;
 
     public interface IFacilitiesService
     {
-        IEnumerable<FacilityIdNameViewModel> GetAllFacilities();
+        IEnumerable<FacilityIdNameViewModel> GetAllGeneralFacilities();
+
+        IEnumerable<OfferFacilityInputModel> GetAllFacilitiesExceptGeneral();
 
         IEnumerable<PropertyFacilityViewModel> GetAllFacilitiesByPropertyId(string id);
     }

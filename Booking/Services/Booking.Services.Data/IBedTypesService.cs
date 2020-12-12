@@ -5,10 +5,8 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    using Booking.Web.ViewModels.Offers;
-
-    public interface IOffersService
+    public interface IBedTypesService
     {
-        Task AddOfferToProperty(string propertyId, AddOfferInputModel input);
+        IEnumerable<KeyValuePair<int, string>> GetAllBedTypes();
     }
 }

@@ -6,6 +6,7 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.OffersFacilities;
     using Booking.Web.ViewModels.PropertyFacilities;
 
     public class FacilitiesService : IFacilitiesService
@@ -21,7 +22,7 @@
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;
         }
 
-        public IEnumerable<FacilityIdNameViewModel> GetAllFacilities()
+        public IEnumerable<FacilityIdNameViewModel> GetAllGeneralFacilities()
         {
             return this.facilitiesRepository
                 .AllAsNoTracking()
@@ -37,7 +38,7 @@
         public IEnumerable<PropertyFacilityViewModel> GetAllFacilitiesByPropertyId(string id)
         {
             var facilitiesInListViewModel = new List<PropertyFacilityViewModel>();
-            var facilities = this.GetAllFacilities();
+            var facilities = this.GetAllGeneralFacilities();
             foreach (var facility in facilities)
             {
                 var isChecked = this.propertyFaciltiesRepository
@@ -54,6 +55,21 @@
             }
 
             return facilitiesInListViewModel;
+        }
+
+        public IEnumerable<OfferFacilityInputModel> GetAllFacilitiesExceptGeneral()
+        {
+            return this.facilitiesRepository
+                .All()
+                .Where(f => f.FacilityCategory.Name != "General")
+                .Select(f => new OfferFacilityInputModel
+                {
+                    Name = f.Name,
+                    Id = f.Id,
+                    Category = f.FacilityCategory.Name,
+                })
+                .OrderBy(f => f.Name)
+                .ToList();
         }
     }
 }

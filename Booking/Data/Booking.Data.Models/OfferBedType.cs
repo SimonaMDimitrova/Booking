@@ -5,13 +5,13 @@
 
     using global::Booking.Data.Common.Models;
 
-    public class RoomBedType : BaseDeletableModel<int>
+    public class OfferBedType : BaseDeletableModel<int>
     {
         [Required]
-        [ForeignKey(nameof(Room))]
-        public int RoomId { get; set; }
+        [ForeignKey(nameof(Offer))]
+        public string OfferId { get; set; }
 
-        public virtual Room Room { get; set; }
+        public virtual Offer Offer { get; set; }
 
         [Required]
         [ForeignKey(nameof(BedType))]

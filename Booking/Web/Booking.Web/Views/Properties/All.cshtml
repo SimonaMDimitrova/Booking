@@ -27,8 +27,7 @@
                 <div>@property.Town, @property.Country</div>
             </div>
             <ul>
-                <li><a class="btn btn-primary" asp-action="ById">View</a></li>
-                <li><a class="btn btn-primary" asp-action="Add" asp-controller="Offers">Add an offer</a></li>
+                <li><a class="btn btn-primary" asp-action="ById" asp-route-id="@property.Id">View</a></li>
                 <li><a class="btn btn-primary" asp-route-id="@property.Id" asp-action="Edit">Edit</a></li>
                 <li>
                     <form method="post" asp-action="Delete" id="deleteForm" asp-route-id="@property.Id">

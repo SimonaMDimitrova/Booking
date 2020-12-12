@@ -48,9 +48,7 @@
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
 
-        public DbSet<Room> Rooms { get; set; }
-
-        public DbSet<RoomBedType> RoomBedTypes { get; set; }
+        public DbSet<OfferBedType> OfferBedTypes { get; set; }
 
         public DbSet<Rule> Rules { get; set; }
 

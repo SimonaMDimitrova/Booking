@@ -3,7 +3,7 @@
     using Booking.Services.Data;
     using Microsoft.AspNetCore.Mvc;
 
-    public class PropertiesBaseController : BaseController
+    public abstract class PropertiesBaseController : BaseController
     {
         private readonly ITownsService townsService;
         private readonly ICurrenciesService currenciesService;

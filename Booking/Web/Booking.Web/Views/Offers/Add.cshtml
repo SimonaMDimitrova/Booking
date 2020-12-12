@@ -1,0 +1,106 @@
+﻿@model Booking.Web.ViewModels.Offers.AddOfferInputModel
+@{
+    this.ViewData["Title"] = "Add an offer";
+}
+
+<div class="row padding">
+    <h2 class="h2 text-center">Add an offer</h2>
+    <form method="post" class="row">
+        <div class="col-md-6">
+            <hr />
+            <h4 class="h4-padding">Offer information</h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="ValidFrom"></label>
+                <input type="date" asp-for="ValidFrom" class="form-control" />
+                <span asp-validation-for="ValidFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidTo"></label>
+                <input type="date" asp-for="ValidTo" class="form-control" />
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <hr />
+            <h4 class="h4-padding">Sleeping places</h4>
+            <hr />
+            <div class="form-group hr-padding">
+                @foreach (var bedType in Model.BedTypes)
+                {
+                    <div class="col-md-3">
+                        <label for="bedType_@bedType.Key">@bedType.Value</label>
+                        <input id="bedType_@bedType.Key"
+                               class="form-control"
+                               type="number"
+                               name="BedTypesCounts"
+                               value="0" />
+                    </div>
+                }
+                <span asp-validation-for="BedTypesCounts" class="text-danger"></span>
+            </div>
+            <hr />
+        </div>
+        <div class="col-md-6">
+            <hr />
+            <h4 class="h4-padding">Outside and view</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var facility in Model.OfferFacilities)
+                {
+                    @if (facility.Category == "Outside and view")
+                    {
+                        <div class="col-md-6">
+                            <input id="facility_@facility.Id"
+                                   type="checkbox"
+                                   name="OfferFacilitiesIds"
+                                   value="@facility.Id" />
+                            <label for="facility_@facility.Id">@facility.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+            <hr />
+            <h4 class="h4-padding">Entertainment</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var facility in Model.OfferFacilities)
+                {
+                    @if (facility.Category == "Entertainment")
+                    {
+                        <div class="col-md-6">
+                            <input id="facility_@facility.Id"
+                                   type="checkbox"
+                                   name="OfferFacilitiesIds"
+                                   value="@facility.Id" />
+                            <label for="facility_@facility.Id">@facility.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+            <hr /><h4 class="h4-padding">Cooking and cleaning</h4>
+            <hr />
+            <div class="form-group row">
+                @foreach (var facility in Model.OfferFacilities)
+                {
+                    @if (facility.Category == "Cooking and cleaning")
+                    {
+                        <div class="col-md-6">
+                            <input id="facility_@facility.Id"
+                                   type="checkbox"
+                                   name="OfferFacilitiesIds"
+                                   value="@facility.Id" />
+                            <label for="facility_@facility.Id">@facility.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+            <hr />
+            <input type="hidden" asp-for="PropertyId" />
+        </div>
+        <input type="submit" value="Add an offer" class="book-btn text-center" />
+    </form>
+</div>

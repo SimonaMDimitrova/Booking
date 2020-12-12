@@ -14,15 +14,11 @@
             this.Id = Guid.NewGuid().ToString();
 
             this.OfferFacilities = new HashSet<OfferFacility>();
-            this.Rooms = new HashSet<Room>();
+            this.OfferBedTypes = new HashSet<OfferBedType>();
             this.ApplicationUserOffers = new HashSet<ApplicationUserOffer>();
         }
 
-        public decimal Price { get; set; }
-
-        public bool IsCreditCardAllowed { get; set; }
-
-        public byte CancellationDays { get; set; }
+        public decimal PricePerPerson { get; set; }
 
         public DateTime ValidFrom { get; set; }
 
@@ -38,7 +34,7 @@
 
         public virtual ICollection<OfferFacility> OfferFacilities { get; set; }
 
-        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<OfferBedType> OfferBedTypes { get; set; }
 
         // TODO: Photos entity
     }

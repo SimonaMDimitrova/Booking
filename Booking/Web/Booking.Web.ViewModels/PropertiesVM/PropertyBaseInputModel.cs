@@ -6,7 +6,7 @@
     using Booking.Web.ViewModels.Facilities;
     using Booking.Web.ViewModels.Rules;
 
-    public class PropertyBaseInputModel
+    public abstract class PropertyBaseInputModel
     {
         [Required(ErrorMessage = "Enter name.")]
         [MinLength(3, ErrorMessage = "Name must be between 3 and 150 characters long.")]

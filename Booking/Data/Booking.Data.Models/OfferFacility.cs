@@ -11,7 +11,7 @@
         [ForeignKey(nameof(Property))]
         public string OfferId { get; set; }
 
-        public virtual Offer Property { get; set; }
+        public virtual Offer Offer { get; set; }
 
         [Required]
         [ForeignKey(nameof(Facility))]

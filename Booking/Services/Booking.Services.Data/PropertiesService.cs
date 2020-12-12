@@ -7,6 +7,8 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
+    using Booking.Web.ViewModels.Offers;
+    using Booking.Web.ViewModels.OffersFacilities;
     using Booking.Web.ViewModels.PropertiesVM;
 
     public class PropertiesService : IPropertiesService
@@ -15,17 +17,20 @@
         private readonly IRepository<Rule> rulesRepository;
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository;
+        private readonly IRepository<BedType> bedTypesRepository;
 
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
             IRepository<Rule> rulesRepository,
             IDeletableEntityRepository<Offer> offersRepository,
-            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository)
+            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository,
+            IRepository<BedType> bedTypesRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
             this.offersRepository = offersRepository;
             this.propertyFacilitiesRepository = propertyFacilitiesRepository;
+            this.bedTypesRepository = bedTypesRepository;
         }
 
         public bool CheckIfNewPropertyNameAvailable(string name, string propertyId)
@@ -235,6 +240,48 @@
             };
 
             return properties;
+        }
+
+        public PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId)
+        {
+            return this.propertiesRepository
+                .All()
+                .Where(p => p.Id == propertyId && p.ApplicationUserId == userId)
+                .Select(p => new PropertyByIdViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Address = p.Address,
+                    Country = p.Town.Country.Name,
+                    Town = p.Town.Name,
+                    Description = p.Description,
+                    Floors = p.Floors,
+                    Stars = p.Stars,
+                    PropertyCategory = p.PropertyCategory.Name,
+                    PropertyType = p.PropertyCategory.PropertyType.Name,
+                    CurrencyCode = p.Town.Country.Currency.CurrencyCode,
+                    Facilities = p.PropertyFacilities
+                        .Select(f => f.Facility.Name)
+                        .ToList(),
+                    Offers = p.Offers
+                        .Select(o => new OfferViewModel
+                        {
+                            Price = o.PricePerPerson,
+                            ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
+                            ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
+                            OfferFacilities = o.OfferFacilities
+                                .Select(f => new OfferFacilityViewModel
+                                {
+                                    Name = f.Facility.Name,
+                                    Category = f.Facility.FacilityCategory.Name,
+                                })
+                                .ToList(),
+                            Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
+                            Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                        })
+                        .ToList(),
+                })
+                .FirstOrDefault();
         }
 
         public EditPropertyInputModel GetPropertyById(string propertyId, string userId)

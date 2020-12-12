@@ -9,7 +9,7 @@
     {
         public BedType()
         {
-            this.RoomBedTypes = new HashSet<RoomBedType>();
+            this.OfferBedTypes = new HashSet<OfferBedType>();
         }
 
         [Required]
@@ -18,6 +18,6 @@
 
         public byte Capacity { get; set; }
 
-        public virtual ICollection<RoomBedType> RoomBedTypes { get; set; }
+        public virtual ICollection<OfferBedType> OfferBedTypes { get; set; }
     }
 }

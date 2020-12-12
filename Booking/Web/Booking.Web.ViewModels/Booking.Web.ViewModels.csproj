@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Booking.Data.Models\Booking.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\Booking.Services.Mapping\Booking.Services.Mapping.csproj" />
+    <ProjectReference Include="..\Booking.Web.Infrastructure\Booking.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

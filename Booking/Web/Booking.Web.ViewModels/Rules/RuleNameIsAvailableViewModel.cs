@@ -1,9 +1,9 @@
 ﻿namespace Booking.Web.ViewModels.Rules
 {
-    public abstract class RuleBaseViewModel
+    public class RuleNameIsAvailableViewModel
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }
