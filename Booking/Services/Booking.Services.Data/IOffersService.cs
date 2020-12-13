@@ -16,5 +16,7 @@
         Task UpdateAsync(string offerId, EditOfferViewModel input);
 
         EditOfferViewModel GetById(string id);
+
+        Task AddToUserBookingList(string offerId, string userId);
     }
 }

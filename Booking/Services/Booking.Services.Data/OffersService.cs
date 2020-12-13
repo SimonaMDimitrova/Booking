@@ -76,6 +76,19 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
+        public async Task AddToUserBookingList(string offerId, string userId)
+        {
+            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == offerId);
+            var applicationUserOffer = new ApplicationUserOffer
+            {
+                ApplicationUserId = userId,
+                OfferId = offerId,
+            };
+
+            offer.ApplicationUserOffers.Add(applicationUserOffer);
+            await this.offersRepository.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(string id)
         {
             var offer = this.offersRepository
