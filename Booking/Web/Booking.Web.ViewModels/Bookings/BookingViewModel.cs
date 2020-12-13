@@ -6,6 +6,8 @@
 
     public class BookingViewModel
     {
+        public string Id { get; set; }
+
         public string PropertyName { get; set; }
 
         public decimal Price { get; set; }

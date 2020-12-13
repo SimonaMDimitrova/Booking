@@ -3,6 +3,11 @@
     this.ViewData["Title"] = "All bookings";
 }
 
+@if (Model.Bookings == null)
+{
+    <p>No bookings were recently added.</p>
+}
+
 @foreach (var booking in Model.Bookings)
 {
     <p>@booking.PropertyName</p>
@@ -11,4 +16,7 @@
     <p>@booking.Address</p>
     <p>@booking.Price @booking.CurrencyCode</p>
     <p>@booking.Members</p>
+    <form method="post" asp-action="Delete" asp-route-id="@booking.Id">
+        <input type="submit" class="btn btn-danger" value="Delete" />
+    </form>
 }

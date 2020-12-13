@@ -40,5 +40,14 @@
             await this.offersService.AddToUserBookingList(input, user.Id);
             return this.RedirectToAction(nameof(this.All));
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            await this.offersService.DeleteBookingAsync(id, user.Id);
+            return this.RedirectToAction(nameof(this.All));
+        }
     }
 }

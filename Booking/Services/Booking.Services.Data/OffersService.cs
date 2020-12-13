@@ -106,6 +106,17 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteBookingAsync(string bookingId, string userId)
+        {
+            var booking = this.applicationUserOfferRepository
+                .All()
+                .Where(a => a.ApplicationUserId == userId && a.Id == bookingId)
+                .FirstOrDefault();
+
+            this.applicationUserOfferRepository.Delete(booking);
+            await this.applicationUserOfferRepository.SaveChangesAsync();
+        }
+
         public IEnumerable<BookingViewModel> GetBookingsByUserId(string userId)
         {
             var bookings = this.applicationUserOfferRepository
@@ -113,6 +124,7 @@
                 .Where(a => a.ApplicationUserId == userId)
                 .Select(a => new BookingViewModel
                 {
+                    Id = a.Id,
                     Address = a.Offer.Property.Address,
                     Country = a.Offer.Property.Town.Country.Name,
                     Town = a.Offer.Property.Town.Name,

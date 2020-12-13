@@ -21,5 +21,7 @@
         Task AddToUserBookingList(BookingInputModel input, string userId);
 
         IEnumerable<BookingViewModel> GetBookingsByUserId(string userId);
+
+        Task DeleteBookingAsync(string bookingId, string userId);
     }
 }
