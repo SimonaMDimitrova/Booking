@@ -2,9 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
-    public class SearchInputModel
+    public class SearchIndexInputModel
     {
         public IEnumerable<KeyValuePair<string, string>> Countries { get; set; }
 
@@ -12,9 +11,9 @@
 
         public string TownId { get; set; }
 
-        public DateTime CheckIn { get; set; }
+        public DateTime? CheckIn { get; set; }
 
-        public DateTime CheckOut { get; set; }
+        public DateTime? CheckOut { get; set; }
 
         public int Members { get; set; }
 

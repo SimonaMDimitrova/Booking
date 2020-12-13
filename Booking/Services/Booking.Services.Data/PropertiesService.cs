@@ -1,15 +1,16 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
+    using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.OffersFacilities;
     using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.ViewModels.SearchProperties;
 
     public class PropertiesService : IPropertiesService
     {
@@ -17,20 +18,17 @@
         private readonly IRepository<Rule> rulesRepository;
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository;
-        private readonly IRepository<BedType> bedTypesRepository;
 
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
             IRepository<Rule> rulesRepository,
             IDeletableEntityRepository<Offer> offersRepository,
-            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository,
-            IRepository<BedType> bedTypesRepository)
+            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
             this.offersRepository = offersRepository;
             this.propertyFacilitiesRepository = propertyFacilitiesRepository;
-            this.bedTypesRepository = bedTypesRepository;
         }
 
         public bool CheckIfNewPropertyNameAvailable(string name, string propertyId)
@@ -45,6 +43,83 @@
             return this.propertiesRepository
                 .All()
                 .Any(p => p.Name == name);
+        }
+
+        public SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input)
+        {
+            var isCountryIdValid = int.TryParse(input.CountryId, out int countryId);
+            var townIdParsed = int.TryParse(input.TownId, out int townId);
+
+            if (input.CheckIn == null
+                || input.CheckOut == null
+                || !isCountryIdValid
+                || !townIdParsed
+                || countryId <= 0
+                || townId <= 0
+                || input.Members <= 0
+                || input.MinBudget < 0
+                || input.MinBudget >= input.MaxBudget)
+            {
+                return null;
+            }
+
+            var properties = this.propertiesRepository
+                .All()
+                .Where(
+                    p => p.TownId == townId
+                    && p.Town.CountryId == countryId)
+                .Select(p => new SearchIndexViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Address = p.Address,
+                    Country = p.Town.Country.Name,
+                    Town = p.Town.Name,
+                    Description = p.Description,
+                    Floors = p.Floors,
+                    Stars = p.Stars,
+                    PropertyCategory = p.PropertyCategory.Name,
+                    PropertyType = p.PropertyCategory.PropertyType.Name,
+                    CurrencyCode = p.Town.Country.Currency.CurrencyCode,
+                    Facilities = p.PropertyFacilities
+                        .Select(f => f.Facility.Name)
+                        .ToList(),
+                    Offers = p.Offers
+                    .Where(
+                        o => o.ValidFrom >= input.CheckIn
+                            && o.ValidTo <= input.CheckOut)
+                        .Select(o => new OfferViewModel
+                        {
+                            Id = o.Id,
+                            Price = o.PricePerPerson,
+                            ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
+                            ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
+                            OfferFacilities = o.OfferFacilities
+                                .Select(f => new OfferFacilityViewModel
+                                {
+                                    Name = f.Facility.Name,
+                                    Category = f.Facility.FacilityCategory.Name,
+                                })
+                                .ToList(),
+                            Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
+                            Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                        })
+                        .Where(
+                            o => o.Guests == input.Members
+                            && (o.Price >= input.MinBudget || o.Price <= input.MaxBudget))
+                        .ToList(),
+                })
+                .ToList();
+
+            if (properties == null)
+            {
+                return null;
+            }
+
+            var propertiesViewModel = new SearchIndexInListViewModel();
+            propertiesViewModel.Properties = properties;
+
+            return propertiesViewModel;
         }
 
         public async Task CreateAsync(AddPropertyInputModel input, string userId)

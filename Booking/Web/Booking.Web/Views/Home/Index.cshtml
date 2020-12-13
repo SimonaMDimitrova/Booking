@@ -1,5 +1,5 @@
 ﻿@using Booking.Common
-@model Booking.Web.ViewModels.Home.SearchInputModel
+@model Booking.Web.ViewModels.Home.SearchIndexInputModel
 @{
     this.ViewData["Title"] = "Home";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
@@ -11,8 +11,7 @@
             <div class="col-md-12">
                 <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para">
                     <div class="row">
-                        <form asp-controller="Search" asp-action="Index" method="get">
-                            <div asp-validation-summary="All" class="text-danger"></div>
+                        <form asp-controller="SearchProperties" asp-action="Index" method="get">
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <div class="single-tab-select-box">
                                     <h2>destination</h2>
@@ -20,13 +19,11 @@
                                         <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
                                             <option value="0">Choose a country ...</option>
                                         </select>
-                                        <span asp-validation-for="CountryId" class="text-danger"></span>
                                     </div>
                                     <div class="travel-select-icon">
                                         <select id="townsId" asp-for="TownId" class="form-control">
                                             <option value="0">Choose a country first ...</option>
                                         </select>
-                                        <span asp-validation-for="TownId" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +35,6 @@
                                     <center><h2 class="search-header">check in</h2></center>
                                     <div class="travel-check-icon">
                                         <input asp-for="CheckIn" type="date" class="form-control" />
-                                        <span asp-validation-for="CheckIn"></span>
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +45,7 @@
                                     </div>
                                     <center><h2 class="search-header">check out</h2></center>
                                     <div class="travel-check-icon">
-                                        <input type="date" class="form-control" />
+                                        <input asp-for="CheckOut" type="date" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -60,8 +56,8 @@
                                     </div>
                                     <center><h2 class="search-header">members</h2></center>
                                     <div class="travel-select-icon">
-                                        <select class="form-control ">
-                                            <option value="default">1 Member</option>
+                                        <select asp-for="Members" class="form-control ">
+                                            <option value="1">1 Member</option>
                                             @for (int i = 2; i <= 30; i++)
                                             {
                                                 <option value="@i">@i Members</option>
@@ -73,8 +69,8 @@
                             <div class="col-lg-2 col-md-1 col-sm-4">
                                 <div class="single-tab-select-box">
                                     <h2 id="currencyId">budget</h2>
-                                    <input type="text" name="minBudget" class="form-control budget" placeholder="Min price ">
-                                    <input type="text" name="maxBudget" class="form-control budget" placeholder="Max price ">
+                                    <input asp-for="MinBudget" class="form-control budget" placeholder="Min price ">
+                                    <input asp-for="MaxBudget" class="form-control budget" placeholder="Max price ">
                                 </div>
                             </div>
                             <input type="submit" class="search-btn" value="&#xf138" />

@@ -1,8 +1,9 @@
 ﻿namespace Booking.Services.Data
 {
     using System.Threading.Tasks;
-
+    using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.ViewModels.SearchProperties;
 
     public interface IPropertiesService
     {
@@ -25,5 +26,7 @@
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
 
         string GetPropertyIdByOfferId(string id);
+
+        SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input);
     }
 }

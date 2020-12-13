@@ -21,12 +21,12 @@
         {
             var countries = this.countriesService.GetAllByKeyValuePairs();
 
-            var viewModel = new SearchInputModel
+            var input = new SearchIndexInputModel
             {
                 Countries = countries,
             };
 
-            return this.View(viewModel);
+            return this.View(input);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
