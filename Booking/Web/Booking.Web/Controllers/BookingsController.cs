@@ -4,6 +4,7 @@
 
     using Booking.Data.Models;
     using Booking.Services.Data;
+    using Booking.Web.ViewModels.Bookings;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -22,17 +23,21 @@
         }
 
         [Authorize]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return this.View();
+            var viewModel = new BookingInListViewModel();
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            viewModel.Bookings = this.offersService.GetBookingsByUserId(user.Id);
+            return this.View(viewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Book(string id)
+        public async Task<IActionResult> Book(BookingInputModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.offersService.AddToUserBookingList(id, user.Id);
+            await this.offersService.AddToUserBookingList(input, user.Id);
             return this.RedirectToAction(nameof(this.All));
         }
     }

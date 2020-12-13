@@ -1,1 +1,14 @@
-﻿
+﻿@model Booking.Web.ViewModels.Bookings.BookingInListViewModel
+@{
+    this.ViewData["Title"] = "All bookings";
+}
+
+@foreach (var booking in Model.Bookings)
+{
+    <p>@booking.PropertyName</p>
+    <p>@booking.Country</p>
+    <p>@booking.Town</p>
+    <p>@booking.Address</p>
+    <p>@booking.Price @booking.CurrencyCode</p>
+    <p>@booking.Members</p>
+}

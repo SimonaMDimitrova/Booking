@@ -13,6 +13,10 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
+        public DateTime CheckIn { get; set; }
+
+        public DateTime CheckOut { get; set; }
+
         [Required]
         [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }

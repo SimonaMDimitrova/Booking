@@ -8,17 +8,23 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
+    using Booking.Web.ViewModels.Bookings;
     using Booking.Web.ViewModels.Offers;
 
     public class OffersService : IOffersService
     {
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IRepository<BedType> bedTypesRepository;
+        private readonly IDeletableEntityRepository<ApplicationUserOffer> applicationUserOfferRepository;
 
-        public OffersService(IDeletableEntityRepository<Offer> offersRepository, IRepository<BedType> bedTypesRepository)
+        public OffersService(
+            IDeletableEntityRepository<Offer> offersRepository,
+            IRepository<BedType> bedTypesRepository,
+            IDeletableEntityRepository<ApplicationUserOffer> applicationUserOfferRepository)
         {
             this.offersRepository = offersRepository;
             this.bedTypesRepository = bedTypesRepository;
+            this.applicationUserOfferRepository = applicationUserOfferRepository;
         }
 
         public async Task AddOfferToProperty(string propertyId, AddOfferInputModel input)
@@ -76,13 +82,15 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
-        public async Task AddToUserBookingList(string offerId, string userId)
+        public async Task AddToUserBookingList(BookingInputModel input, string userId)
         {
-            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == offerId);
+            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == input.OfferId);
             var applicationUserOffer = new ApplicationUserOffer
             {
                 ApplicationUserId = userId,
-                OfferId = offerId,
+                OfferId = input.OfferId,
+                CheckIn = input.CheckIn,
+                CheckOut = input.CheckOut,
             };
 
             offer.ApplicationUserOffers.Add(applicationUserOffer);
@@ -96,6 +104,26 @@
                 .FirstOrDefault(o => o.Id == id);
             this.offersRepository.Delete(offer);
             await this.offersRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<BookingViewModel> GetBookingsByUserId(string userId)
+        {
+            var bookings = this.applicationUserOfferRepository
+                .All()
+                .Where(a => a.ApplicationUserId == userId)
+                .Select(a => new BookingViewModel
+                {
+                    Address = a.Offer.Property.Address,
+                    Country = a.Offer.Property.Town.Country.Name,
+                    Town = a.Offer.Property.Town.Name,
+                    CurrencyCode = a.Offer.Property.Town.Country.Currency.CurrencyCode,
+                    PropertyName = a.Offer.Property.Name,
+                    Members = a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                    Price = a.Offer.PricePerPerson * a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                })
+                .ToList();
+
+            return bookings;
         }
 
         public EditOfferViewModel GetById(string id)

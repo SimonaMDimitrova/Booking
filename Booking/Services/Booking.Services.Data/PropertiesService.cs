@@ -50,6 +50,7 @@
             var isCountryIdValid = int.TryParse(input.CountryId, out int countryId);
             var townIdParsed = int.TryParse(input.TownId, out int townId);
 
+            // TODO: check checkIn and Out
             if (input.CheckIn == null
                 || input.CheckOut == null
                 || !isCountryIdValid
@@ -77,6 +78,8 @@
                     Town = p.Town.Name,
                     Description = p.Description,
                     Floors = p.Floors,
+                    CheckIn = (DateTime)input.CheckIn,
+                    CheckOut = (DateTime)input.CheckOut,
                     Stars = p.Stars,
                     PropertyCategory = p.PropertyCategory.Name,
                     PropertyType = p.PropertyCategory.PropertyType.Name,

@@ -5,6 +5,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using Booking.Web.ViewModels.Bookings;
     using Booking.Web.ViewModels.Offers;
 
     public interface IOffersService
@@ -17,6 +18,8 @@
 
         EditOfferViewModel GetById(string id);
 
-        Task AddToUserBookingList(string offerId, string userId);
+        Task AddToUserBookingList(BookingInputModel input, string userId);
+
+        IEnumerable<BookingViewModel> GetBookingsByUserId(string userId);
     }
 }

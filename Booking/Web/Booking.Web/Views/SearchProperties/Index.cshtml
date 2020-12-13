@@ -59,7 +59,10 @@ else
                     <p>@room</p>
                 }
                 
-                <form asp-action="Book" asp-controller="Bookings" asp-route-id="@offer.Id">
+                <form asp-action="Book" asp-controller="Bookings">
+                    <input type="hidden" name="CheckIn" value="@property.CheckIn" />
+                    <input type="hidden" name="CheckOut" value="@property.CheckOut" />
+                    <input type="hidden" name="OfferId" value="@offer.Id" />
                     <input type="submit" class="btn btn-primary" value="Book!" />
                 </form>
                 <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
