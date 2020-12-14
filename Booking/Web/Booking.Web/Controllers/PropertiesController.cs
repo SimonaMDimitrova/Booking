@@ -1,5 +1,6 @@
 ﻿namespace Booking.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@
     using Booking.Web.ViewModels.Facilities;
     using Booking.Web.ViewModels.PropertiesVM;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +21,7 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IFacilitiesService facilitiesService;
         private readonly IRulesService rulesService;
+        private readonly IWebHostEnvironment environment;
 
         public PropertiesController(
             ICountriesService countriesService,
@@ -28,7 +31,8 @@
             IPropertiesService propertiesService,
             UserManager<ApplicationUser> userManager,
             IFacilitiesService facilitiesService,
-            IRulesService rulesService)
+            IRulesService rulesService,
+            IWebHostEnvironment environment)
             : base(townsService, currenciesService)
         {
             this.countriesService = countriesService;
@@ -37,6 +41,7 @@
             this.userManager = userManager;
             this.facilitiesService = facilitiesService;
             this.rulesService = rulesService;
+            this.environment = environment;
         }
 
         public async Task<IActionResult> All()
@@ -79,7 +84,22 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            await this.propertiesService.CreateAsync(input, user.Id);
+
+            try
+            {
+                await this.propertiesService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images/properties/");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError(nameof(input.Images), ex.Message);
+
+                input.Countries = this.countriesService.GetAllByKeyValuePairs();
+                input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
+                input.Facilities = this.facilitiesService.GetAllGeneralFacilities();
+                input.Rules = this.rulesService.GetAllRules();
+
+                return this.View(input);
+            }
 
             return this.Redirect(nameof(this.All));
         }

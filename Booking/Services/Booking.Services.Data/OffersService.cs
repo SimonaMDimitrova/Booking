@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -13,6 +14,7 @@
 
     public class OffersService : IOffersService
     {
+        private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IRepository<BedType> bedTypesRepository;
         private readonly IDeletableEntityRepository<ApplicationUserOffer> applicationUserOfferRepository;
@@ -27,7 +29,7 @@
             this.applicationUserOfferRepository = applicationUserOfferRepository;
         }
 
-        public async Task AddOfferToProperty(string propertyId, AddOfferInputModel input)
+        public async Task AddOfferToProperty(string propertyId, AddOfferInputModel input, string imagePath)
         {
             var offer = new Offer
             {
@@ -76,6 +78,26 @@
 
                     offer.OfferFacilities.Add(offerFacility);
                 }
+            }
+
+            Directory.CreateDirectory($"{imagePath}");
+            foreach (var image in input.Images)
+            {
+                var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                {
+                    throw new Exception($"Invalid image extension {extension}");
+                }
+
+                var offerImage = new OfferImage
+                {
+                    Extension = extension,
+                };
+                offer.OfferImages.Add(offerImage);
+
+                var physicalPath = $"{imagePath}{offerImage.Id}.{extension}";
+                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+                await image.CopyToAsync(fileStream);
             }
 
             await this.offersRepository.AddAsync(offer);

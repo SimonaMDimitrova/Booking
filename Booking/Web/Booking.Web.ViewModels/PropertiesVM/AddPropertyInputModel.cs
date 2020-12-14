@@ -6,6 +6,7 @@
 
     using Booking.Web.ViewModels.Facilities;
     using Booking.Web.ViewModels.Rules;
+    using Microsoft.AspNetCore.Http;
 
     public class AddPropertyInputModel : PropertyBaseInputModel
     {
@@ -36,5 +37,7 @@
         [Range(1, int.MaxValue, ErrorMessage = "Choose property category.")]
         [Display(Name = "Property category")]
         public int PropertyCategoryId { get; set; }
+
+        public IEnumerable<IFormFile> Images { get; set; }
     }
 }

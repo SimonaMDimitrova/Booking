@@ -6,6 +6,7 @@
 
     using Booking.Web.Infrastructure.ValidationAttributes;
     using Booking.Web.ViewModels.OffersFacilities;
+    using Microsoft.AspNetCore.Http;
 
     public class AddOfferInputModel : OfferBaseInputModel
     {
@@ -18,5 +19,7 @@
         public IEnumerable<KeyValuePair<int, string>> BedTypes { get; set; }
 
         public IEnumerable<int> BedTypesCounts { get; set; }
+
+        public IEnumerable<IFormFile> Images { get; set; }
     }
 }

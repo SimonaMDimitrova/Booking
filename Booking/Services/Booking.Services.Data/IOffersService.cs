@@ -10,7 +10,7 @@
 
     public interface IOffersService
     {
-        Task AddOfferToProperty(string propertyId, AddOfferInputModel input);
+        Task AddOfferToProperty(string propertyId, AddOfferInputModel input, string imagePath);
 
         Task DeleteAsync(string id);
 

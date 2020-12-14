@@ -4,14 +4,16 @@ using Booking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201214090135_AddImageEntityWithDbSetAdded")]
+    partial class AddImageEntityWithDbSetAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,6 +311,34 @@ namespace Booking.Data.Migrations
                     b.ToTable("FacilityCategories");
                 });
 
+            modelBuilder.Entity("Booking.Data.Models.Image", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId1");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("Booking.Data.Models.Offer", b =>
                 {
                     b.Property<string>("Id")
@@ -420,31 +450,6 @@ namespace Booking.Data.Migrations
                     b.HasIndex("OfferId");
 
                     b.ToTable("OfferFacilities");
-                });
-
-            modelBuilder.Entity("Booking.Data.Models.OfferImage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Extension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OfferId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
-
-                    b.ToTable("OfferImages");
                 });
 
             modelBuilder.Entity("Booking.Data.Models.Property", b =>
@@ -570,31 +575,6 @@ namespace Booking.Data.Migrations
                     b.HasIndex("PropertyId");
 
                     b.ToTable("PropertyFacilities");
-                });
-
-            modelBuilder.Entity("Booking.Data.Models.PropertyImage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Extension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PropertyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("PropertyImages");
                 });
 
             modelBuilder.Entity("Booking.Data.Models.PropertyRule", b =>
@@ -856,6 +836,15 @@ namespace Booking.Data.Migrations
                     b.Navigation("FacilityCategory");
                 });
 
+            modelBuilder.Entity("Booking.Data.Models.Image", b =>
+                {
+                    b.HasOne("Booking.Data.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId1");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Booking.Data.Models.Offer", b =>
                 {
                     b.HasOne("Booking.Data.Models.Property", "Property")
@@ -901,15 +890,6 @@ namespace Booking.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Facility");
-
-                    b.Navigation("Offer");
-                });
-
-            modelBuilder.Entity("Booking.Data.Models.OfferImage", b =>
-                {
-                    b.HasOne("Booking.Data.Models.Offer", "Offer")
-                        .WithMany("OfferImages")
-                        .HasForeignKey("OfferId");
 
                     b.Navigation("Offer");
                 });
@@ -967,15 +947,6 @@ namespace Booking.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Facility");
-
-                    b.Navigation("Property");
-                });
-
-            modelBuilder.Entity("Booking.Data.Models.PropertyImage", b =>
-                {
-                    b.HasOne("Booking.Data.Models.Property", "Property")
-                        .WithMany("PropertyImages")
-                        .HasForeignKey("PropertyId");
 
                     b.Navigation("Property");
                 });
@@ -1108,8 +1079,6 @@ namespace Booking.Data.Migrations
                     b.Navigation("OfferBedTypes");
 
                     b.Navigation("OfferFacilities");
-
-                    b.Navigation("OfferImages");
                 });
 
             modelBuilder.Entity("Booking.Data.Models.Property", b =>
@@ -1117,8 +1086,6 @@ namespace Booking.Data.Migrations
                     b.Navigation("Offers");
 
                     b.Navigation("PropertyFacilities");
-
-                    b.Navigation("PropertyImages");
 
                     b.Navigation("PropertyRules");
                 });

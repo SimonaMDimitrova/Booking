@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class PropertyInListModel
+    public class PropertyInListViewModel
     {
         public IEnumerable<PropertyViewModel> Properties { get; set; }
     }

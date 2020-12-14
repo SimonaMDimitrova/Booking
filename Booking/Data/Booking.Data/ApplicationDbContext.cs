@@ -60,6 +60,10 @@
 
         public DbSet<ApplicationUserOffer> ApplicationUserOffers { get; set; }
 
+        public DbSet<PropertyImage> PropertyImages { get; set; }
+
+        public DbSet<OfferImage> OfferImages { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

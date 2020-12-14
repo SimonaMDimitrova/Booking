@@ -7,6 +7,7 @@
     using Booking.Services.Data;
     using Booking.Web.ViewModels.Offers;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
     public class OffersController : BaseController
@@ -16,19 +17,22 @@
         private readonly IOffersService offersService;
         private readonly IPropertiesService propertiesService;
         private readonly ICurrenciesService currenciesService;
+        private readonly IWebHostEnvironment environment;
 
         public OffersController(
             IFacilitiesService facilitiesService,
             IBedTypesService bedTypesService,
             IOffersService offersService,
             IPropertiesService propertiesService,
-            ICurrenciesService currenciesService)
+            ICurrenciesService currenciesService,
+            IWebHostEnvironment environment)
         {
             this.facilitiesService = facilitiesService;
             this.bedTypesService = bedTypesService;
             this.offersService = offersService;
             this.propertiesService = propertiesService;
             this.currenciesService = currenciesService;
+            this.environment = environment;
         }
 
         [Authorize]
@@ -69,7 +73,20 @@
                 return this.View(input);
             }
 
-            await this.offersService.AddOfferToProperty(id, input);
+            try
+            {
+                await this.offersService.AddOfferToProperty(id, input, $"{this.environment.WebRootPath}/images/offers/");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError(nameof(input.Images), ex.Message);
+
+                input.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
+                input.BedTypes = this.bedTypesService.GetAllBedTypes();
+                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
+
+                return this.View(input);
+            }
 
             return this.RedirectToAction("ById", "Properties", new { id = id });
         }

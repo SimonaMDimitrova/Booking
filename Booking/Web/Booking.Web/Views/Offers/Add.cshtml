@@ -5,7 +5,7 @@
 
 <div class="row padding">
     <h2 class="h2 text-center">Add an offer</h2>
-    <form method="post" class="row">
+    <form method="post" class="row" enctype="multipart/form-data">
         <div class="col-md-6">
             <hr />
             <h4 class="h4-padding">Offer information</h4>
@@ -43,6 +43,13 @@
                 <span asp-validation-for="BedTypesCounts" class="text-danger"></span>
             </div>
             <hr />
+            <div class="form-group">
+                <label asp-for="Images"></label>
+                <input asp-for="Images" class="form-control" />
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+            <hr />
+            <input type="submit" value="Add an offer" class="book-btn text-center" />
         </div>
         <div class="col-md-6">
             <hr />
@@ -101,6 +108,5 @@
             <hr />
             <input type="hidden" asp-for="PropertyId" />
         </div>
-        <input type="submit" value="Add an offer" class="book-btn text-center" />
     </form>
 </div>

@@ -51,6 +51,11 @@ else
             <p>@room</p>
         }
 
+        foreach (var image in offer.Images)
+        {
+            <img src="@image" alt="@Model.Name">
+        }
+
         <a class="btn btn-primary" asp-action="Edit" asp-controller="Offers" asp-route-id="@offer.Id">Edit</a>
         <form method="post">
             <button class="btn btn-danger" asp-action="Delete" asp-controller="Offers" asp-route-id="@offer.Id">Delete</button>

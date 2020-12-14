@@ -19,5 +19,7 @@
         public ICollection<string> Rooms { get; set; }
 
         public byte Guests { get; set; }
+
+        public IEnumerable<string> Images { get; set; }
     }
 }

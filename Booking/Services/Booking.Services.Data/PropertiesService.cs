@@ -1,6 +1,7 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@
 
     public class PropertiesService : IPropertiesService
     {
+        private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
         private readonly IDeletableEntityRepository<Offer> offersRepository;
@@ -125,7 +127,7 @@
             return propertiesViewModel;
         }
 
-        public async Task CreateAsync(AddPropertyInputModel input, string userId)
+        public async Task CreateAsync(AddPropertyInputModel input, string userId, string imagePath)
         {
             var property = new Property
             {
@@ -183,6 +185,26 @@
 
                     property.PropertyFacilities.Add(propertyFacility);
                 }
+            }
+
+            Directory.CreateDirectory($"{imagePath}");
+            foreach (var image in input.Images)
+            {
+                var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                {
+                    throw new Exception($"Invalid image extension {extension}");
+                }
+
+                var propertyImage = new PropertyImage
+                {
+                    Extension = extension,
+                };
+                property.PropertyImages.Add(propertyImage);
+
+                var physicalPath = $"{imagePath}{propertyImage.Id}.{extension}";
+                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+                await image.CopyToAsync(fileStream);
             }
 
             await this.propertiesRepository.AddAsync(property);
@@ -299,9 +321,9 @@
             await this.propertiesRepository.SaveChangesAsync();
         }
 
-        public PropertyInListModel GetAllPropertiesByUserId(string userId)
+        public PropertyInListViewModel GetAllPropertiesByUserId(string userId)
         {
-            var properties = new PropertyInListModel
+            var properties = new PropertyInListViewModel
             {
                 Properties = this.propertiesRepository
                     .AllAsNoTracking()
@@ -314,6 +336,7 @@
                         Town = p.Town.Name,
                         PropertyCategory = p.PropertyCategory.Name,
                         Id = p.Id,
+                        Image = "/images/properties/" + p.PropertyImages.FirstOrDefault().Id + "." + p.PropertyImages.FirstOrDefault().Extension,
                     }),
             };
 
@@ -357,6 +380,7 @@
                                 .ToList(),
                             Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
                             Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                            Images = o.OfferImages.Select(oi => "/images/offers/" + oi.Id + "." + oi.Extension).ToList(),
                         })
                         .ToList(),
                 })

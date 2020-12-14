@@ -16,6 +16,7 @@
             this.OfferFacilities = new HashSet<OfferFacility>();
             this.OfferBedTypes = new HashSet<OfferBedType>();
             this.ApplicationUserOffers = new HashSet<ApplicationUserOffer>();
+            this.OfferImages = new HashSet<OfferImage>();
         }
 
         public decimal PricePerPerson { get; set; }
@@ -36,6 +37,6 @@
 
         public virtual ICollection<OfferBedType> OfferBedTypes { get; set; }
 
-        // TODO: Photos entity
+        public virtual ICollection<OfferImage> OfferImages { get; set; }
     }
 }

@@ -16,6 +16,7 @@
             this.PropertyRules = new HashSet<PropertyRule>();
             this.Offers = new HashSet<Offer>();
             this.PropertyFacilities = new HashSet<PropertyFacility>();
+            this.PropertyImages = new HashSet<PropertyImage>();
         }
 
         [Required]
@@ -56,5 +57,7 @@
         public virtual ICollection<Offer> Offers { get; set; }
 
         public virtual ICollection<PropertyFacility> PropertyFacilities { get; set; }
+
+        public virtual ICollection<PropertyImage> PropertyImages { get; set; }
     }
 }
