@@ -2,11 +2,13 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Services.Data.Models;
+    using Booking.Web.ViewModels.ViewComponents.Countries;
 
     public interface ICountriesService
     {
-        IEnumerable<CountryOfferAndBookingsCountDto> GetTheSixTopCountries();
+        IEnumerable<CountryInListViewModel> GetTheSixMostVisited();
+
+        IEnumerable<string> GetTheSixMostVisitedNames();
 
         IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs();
     }

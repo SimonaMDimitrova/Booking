@@ -3,24 +3,24 @@
     using System.Linq;
 
     using Booking.Services.Data;
-    using Booking.Web.ViewModels.ViewComponents.TopCountries;
+    using Booking.Web.ViewModels.ViewComponents.Countries;
     using Microsoft.AspNetCore.Mvc;
 
-    public class TopCountriesFooterViewComponent : ViewComponent
+    public class CountriesNamesViewComponent : ViewComponent
     {
         private readonly ICountriesService countriesService;
 
-        public TopCountriesFooterViewComponent(ICountriesService countriesService)
+        public CountriesNamesViewComponent(ICountriesService countriesService)
         {
             this.countriesService = countriesService;
         }
 
         public IViewComponentResult Invoke()
         {
-            var countries = this.countriesService.GetTheSixTopCountries().Select(c => c.Name).ToList();
-            var viewModel = new CountryByNameInListViewModel
+            var countries = this.countriesService.GetTheSixMostVisitedNames();
+            var viewModel = new CountriesNamesViewModel
             {
-                Names = countries,
+                Countries = countries,
             };
 
             return this.View(viewModel);

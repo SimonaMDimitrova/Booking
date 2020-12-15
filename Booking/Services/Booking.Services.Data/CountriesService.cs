@@ -5,15 +5,22 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Services.Data.Models;
+    using Booking.Web.ViewModels.ViewComponents.Countries;
 
     public class CountriesService : ICountriesService
     {
         private readonly IRepository<Country> countriesRepository;
+        private readonly IDeletableEntityRepository<Property> propertiesRepository;
+        private readonly IRepository<PropertyImage> propertyImagesRepository;
 
-        public CountriesService(IRepository<Country> countriesRepository)
+        public CountriesService(
+            IRepository<Country> countriesRepository,
+            IDeletableEntityRepository<Property> propertiesRepository,
+            IRepository<PropertyImage> propertyImagesRepository)
         {
             this.countriesRepository = countriesRepository;
+            this.propertiesRepository = propertiesRepository;
+            this.propertyImagesRepository = propertyImagesRepository;
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs()
@@ -31,23 +38,57 @@
             return countries;
         }
 
-        public IEnumerable<CountryOfferAndBookingsCountDto> GetTheSixTopCountries()
+        public IEnumerable<CountryInListViewModel> GetTheSixMostVisited()
         {
-            var countries = this.countriesRepository
+            var countriesDb = this.countriesRepository
                 .All()
-                .ToList()
-                .Select(c => new CountryOfferAndBookingsCountDto
-                {
-                    Name = c.Name,
-                    OffersCount = c.Towns.Sum(t => t.Properties.Sum(p => p.Offers.Count)),
-                    BookingsCount = c.Towns.Sum(t => t.Properties.Sum(p => p.ApplicationUser.ApplicationUserOffers.Count)),
-                })
-                .OrderBy(c => c.OffersCount)
-                .ThenBy(c => c.BookingsCount)
-                .Take(6)
-                .ToList();
+                .AsQueryable();
+            var countries = new List<CountryInListViewModel>();
 
-            return countries;
+            foreach (var countryDb in countriesDb)
+            {
+                var propertiesCount = this.propertiesRepository
+                    .All()
+                    .Where(p => p.Town.Country.Name == countryDb.Name && p.Offers.Count > 0)
+                    .ToList()
+                    .Count;
+                if (propertiesCount == 0)
+                {
+                    continue;
+                }
+
+                var imageDb = this.propertyImagesRepository
+                    .All()
+                    .Where(p => p.Property.Town.Country.Name == countryDb.Name)
+                    .FirstOrDefault();
+
+                var image =
+                    imageDb == null ?
+                    "assets/images/home/default.png"
+                    : $"images/properties/{imageDb.Id}.{imageDb.Extension}";
+
+                var country = new CountryInListViewModel
+                {
+                    Name = countryDb.Name,
+                    PropertiesCount = propertiesCount,
+                    Image = image,
+                };
+
+                countries.Add(country);
+            }
+
+            var countriesCount = countries.Count();
+
+            return countries
+                .OrderByDescending(c => c.PropertiesCount)
+                .Take(countriesCount == 6 ? 6 : countriesCount);
+        }
+
+        public IEnumerable<string> GetTheSixMostVisitedNames()
+        {
+            return this.GetTheSixMostVisited()
+                .Select(c => c.Name)
+                .ToList();
         }
     }
 }

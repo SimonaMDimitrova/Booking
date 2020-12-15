@@ -6,9 +6,9 @@
 
 @if (this.SignInManager.IsSignedIn(this.User))
 {
-    <li class="smooth-menu"><a asp-controller="Bookings" asp-action="All">My bookings</a></li>
-    <li class="smooth-menu"><a asp-controller="Properties" asp-action="All">My properties</a></li>
-    <li class="smooth-menu"><a asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
+    <li class="smooth-menu"><a asp-area="" asp-controller="Bookings" asp-action="All">My bookings</a></li>
+    <li class="smooth-menu"><a asp-area="" asp-controller="Properties" asp-action="All">My properties</a></li>
+    <li class="smooth-menu"><a asp-area="" asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
     <li class="smooth-menu">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @(this.User.Identity.Name)!</a>
     </li>
@@ -26,7 +26,7 @@
 }
 else
 {
-    <li class="smooth-menu"><a asp-controller="ContactUs" asp-action="Index">Contacts</a></li>
+    <li class="smooth-menu"><a asp-area="" asp-controller="ContactUs" asp-action="Index">Contacts</a></li>
     <li class="smooth-menu">
         <a asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>

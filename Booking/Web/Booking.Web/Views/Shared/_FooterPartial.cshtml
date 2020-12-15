@@ -6,6 +6,6 @@
 
 @if (this.SignInManager.IsSignedIn(this.User))
 {
-    <p><a href="#">My bookings</a></p>
-    <p><a href="#">My hotels</a></p>
+    <p><a asp-controller="Bookings" asp-action="All">My bookings</a></p>
+    <p><a asp-controller="Properties" asp-action="All">My properties</a></p>
 }

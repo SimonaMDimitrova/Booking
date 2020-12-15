@@ -1,7 +1,7 @@
 ﻿namespace Booking.Web
 {
     using System.Reflection;
-
+    using System.Threading.Tasks;
     using Booking.Data;
     using Booking.Data.Common;
     using Booking.Data.Common.Repositories;
@@ -97,6 +97,15 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Home/NotFoundError";
+                    await next();
+                }
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -110,7 +119,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        /*endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");*/
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
                     });

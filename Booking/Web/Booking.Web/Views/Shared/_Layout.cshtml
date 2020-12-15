@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="logo">
-                            <a asp-controller="Home" asp-action="Index">
+                            <a asp-area="" asp-controller="Home" asp-action="Index">
                                 book<span>IN</span>g
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="collapse navbar-collapse">
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class="smooth-menu"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                    <li class="smooth-menu"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                                     <partial name="_LoginPartial" />
                                 </ul>
                             </div>
@@ -80,7 +80,7 @@
         </div>
     </section>
 
-    <div class="container">
+    <div class="container paading">
         <main role="main" class="pb-3">
             @this.RenderBody()
         </main>
@@ -118,7 +118,7 @@
                         <div class="single-footer-item">
                             <h2>popular countries</h2>
                             <div class="single-footer-txt">
-                                <vc:top-countries-footer />
+                                <vc:countries-names />
                             </div>
                         </div>
                     </div>

@@ -1,15 +1,17 @@
 ﻿namespace Booking.Web.Controllers
 {
+    using System.Diagnostics;
     using System.Threading.Tasks;
 
     using Booking.Data.Models;
     using Booking.Services.Data;
+    using Booking.Web.ViewModels;
     using Booking.Web.ViewModels.Bookings;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    public class BookingsController : Controller
+    public class BookingsController : BaseController
     {
         private readonly IOffersService offersService;
         private readonly UserManager<ApplicationUser> userManager;
