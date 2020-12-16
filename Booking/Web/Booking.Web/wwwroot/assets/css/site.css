@@ -1,4 +1,11 @@
-﻿.about-us {
+﻿.logout {
+    background: none;
+    border: none;
+    position: relative;
+    bottom: 1.8px;
+}
+
+.about-us {
     z-index: -1;
 }
 
@@ -153,4 +160,104 @@
 .filtr-container .filtr-item img {
     height: unset;
     width: 100%;
+}
+
+.padding-headings {
+    padding-bottom: 20px;
+    margin-top: 0;
+}
+
+.cat-property {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.country-town {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.star {
+    color: #febb02;
+}
+
+.hotel-name {
+    font-size: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    font-weight: 500;
+}
+
+.button {
+    margin-right: -10px;
+    background-color: #00d8ff;
+    border-color: #00c9ed;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    color: #fff;
+}
+
+    .button:hover {
+        margin-right: -10px;
+        background-color: #00d8d5;
+        padding: 6px 12px;
+        border-color: #00c5c2;
+        line-height: 1.42857143;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    .button:focus {
+        margin-right: -10px;
+        background-color: #00d8d5;
+        padding: 6px 12px;
+        border-color: #00c5c2;
+        line-height: 1.42857143;
+        font-size: 14px;
+        color: #fff;
+    }
+
+.btn-danger {
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+
+main {
+    padding: 5em 0;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.gallery-details {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.travel-box {
+    position: relative;
+    bottom: 69px;
+}
+
+.gallery-section {
+    position: relative;
+    bottom: 20px;
+}
+
+.gallary-header p {
+    margin-top: 0;
+}
+
+.gallary-header {
+    position: relative;
+    top: 3em;
 }

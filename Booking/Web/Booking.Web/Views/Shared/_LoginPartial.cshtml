@@ -20,7 +20,7 @@
     }
     <li class="smooth-menu">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
-            <button type="submit" class="book-btn">Logout</button>
+            <button type="submit" class="logout"><a class="nav-link text-dark">Logout</a></button>
         </form>
     </li>
 }

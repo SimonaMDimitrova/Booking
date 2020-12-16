@@ -6,76 +6,74 @@
 }
 
 <section class="travel-box">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para">
-                    <div class="row">
-                        <form asp-controller="SearchProperties" asp-action="Index" method="get">
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <div class="single-tab-select-box">
-                                    <h2>destination</h2>
-                                    <div class="travel-select-icon">
-                                        <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
-                                            <option value="0">Choose a country ...</option>
-                                        </select>
-                                    </div>
-                                    <div class="travel-select-icon">
-                                        <select id="townsId" asp-for="TownId" class="form-control">
-                                            <option value="0">Choose a country first ...</option>
-                                        </select>
-                                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="desc-tabs" class="single-travel-boxes desc-tabs tab-para">
+                <div class="row">
+                    <form asp-controller="SearchProperties" asp-action="Index" method="get">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="single-tab-select-box">
+                                <h2>destination</h2>
+                                <div class="travel-select-icon">
+                                    <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
+                                        <option value="0">Choose a country ...</option>
+                                    </select>
+                                </div>
+                                <div class="travel-select-icon">
+                                    <select id="townsId" asp-for="TownId" class="form-control">
+                                        <option value="0">Choose a country first ...</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3 col-sm-4">
-                                <div class="single-tab-select-box">
-                                    <div class="search-icon">
-                                        <i class="fas fa-hotel"></i>
-                                    </div>
-                                    <center><h2 class="search-header">check in</h2></center>
-                                    <div class="travel-check-icon">
-                                        <input asp-for="CheckIn" type="date" class="form-control" />
-                                    </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4">
+                            <div class="single-tab-select-box">
+                                <div class="search-icon">
+                                    <i class="fas fa-hotel"></i>
+                                </div>
+                                <center><h2 class="search-header">check in</h2></center>
+                                <div class="travel-check-icon">
+                                    <input asp-for="CheckIn" type="date" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-3 col-sm-4">
-                                <div class="single-tab-select-box">
-                                    <div class="search-icon">
-                                        <i class="fas fa-home"></i>
-                                    </div>
-                                    <center><h2 class="search-header">check out</h2></center>
-                                    <div class="travel-check-icon">
-                                        <input asp-for="CheckOut" type="date" class="form-control" />
-                                    </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4">
+                            <div class="single-tab-select-box">
+                                <div class="search-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <center><h2 class="search-header">check out</h2></center>
+                                <div class="travel-check-icon">
+                                    <input asp-for="CheckOut" type="date" class="form-control" />
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-1 col-sm-4">
-                                <div class="single-tab-select-box">
-                                    <div class="search-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                    <center><h2 class="search-header">members</h2></center>
-                                    <div class="travel-select-icon">
-                                        <select asp-for="Members" class="form-control ">
-                                            <option value="1">1 Member</option>
-                                            @for (int i = 2; i <= 30; i++)
-                                            {
-                                                <option value="@i">@i Members</option>
-                                            }
-                                        </select>
-                                    </div>
+                        </div>
+                        <div class="col-lg-2 col-md-1 col-sm-4">
+                            <div class="single-tab-select-box">
+                                <div class="search-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <center><h2 class="search-header">members</h2></center>
+                                <div class="travel-select-icon">
+                                    <select asp-for="Members" class="form-control ">
+                                        <option value="1">1 Member</option>
+                                        @for (int i = 2; i <= 30; i++)
+                                        {
+                                            <option value="@i">@i Members</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-1 col-sm-4">
-                                <div class="single-tab-select-box">
-                                    <h2 id="currencyId">budget</h2>
-                                    <input asp-for="MinBudget" class="form-control budget" placeholder="Min price ">
-                                    <input asp-for="MaxBudget" class="form-control budget" placeholder="Max price ">
-                                </div>
+                        </div>
+                        <div class="col-lg-2 col-md-1 col-sm-4">
+                            <div class="single-tab-select-box">
+                                <h2 id="currencyId">budget</h2>
+                                <input asp-for="MinBudget" class="form-control budget" placeholder="Min price ">
+                                <input asp-for="MaxBudget" class="form-control budget" placeholder="Max price ">
                             </div>
-                            <input type="submit" class="search-btn" value="&#xf138" />
-                        </form>
-                    </div>
+                        </div>
+                        <input type="submit" class="search-btn" value="&#xf138" />
+                    </form>
                 </div>
             </div>
         </div>

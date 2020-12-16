@@ -2,6 +2,7 @@
 {
     using System.Reflection;
     using System.Threading.Tasks;
+
     using Booking.Data;
     using Booking.Data.Common;
     using Booking.Data.Common.Repositories;
@@ -97,6 +98,7 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.Use(async (context, next) =>
             {
                 await next();

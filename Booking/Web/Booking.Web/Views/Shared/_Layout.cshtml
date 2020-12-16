@@ -80,7 +80,7 @@
         </div>
     </section>
 
-    <div class="container paading">
+    <div class="container">
         <main role="main" class="pb-3">
             @this.RenderBody()
         </main>
@@ -108,7 +108,7 @@
                         <div class="single-footer-item">
                             <h2>links</h2>
                             <div class="single-footer-txt">
-                                <p><a href="#">home</a></p>
+                                <p><a asp-controller="Home" asp-action="Index">home</a></p>
                                 <partial name="_FooterPartial" />
                             </div>
                         </div>

@@ -2,45 +2,43 @@
 
 @if (Model.Countries.Count() != 0)
 {
-    <section id="gallery">
-        <div class="container">
-            <div class="gallery-details">
-                <div class="gallary-header text-center">
-                    <h2>
-                        top countries
-                    </h2>
-                    <p>
-                        Where do you want to go? Which place do you want to visit?
-                    </p>
-                </div>
-                <div class="gallery-box">
-                    <div class="gallery-content">
-                        <div class="filtr-container">
-                            <div class="row">
-                                @foreach (var country in Model.Countries)
-                                {
-                                    <div class="col-md-6">
-                                        <div class="filtr-item">
-                                            <img src="@country.Image" alt="@country.Name" />
-                                            <div class="item-title">
-                                                <a href="#">
-                                                    @country.Name
-                                                </a>
-                                                <p>
-                                                    @if (country.PropertiesCount == 1)
-                                                    {
-                                                        <span>@country.PropertiesCount property</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>@country.PropertiesCount properties</span>
-                                                    }
-                                                </p>
-                                            </div>
+    <section id="gallery" class="gallery-section">
+        <div class="gallery-details">
+            <div class="gallary-header text-center">
+                <h2>
+                    top countries
+                </h2>
+                <p>
+                    Where do you want to go? Which place do you want to visit?
+                </p>
+            </div>
+            <div class="gallery-box">
+                <div class="gallery-content">
+                    <div class="filtr-container">
+                        <div class="row">
+                            @foreach (var country in Model.Countries)
+                            {
+                                <div class="col-md-6">
+                                    <div class="filtr-item">
+                                        <img src="@country.Image" alt="@country.Name" />
+                                        <div class="item-title">
+                                            <a href="#">
+                                                @country.Name
+                                            </a>
+                                            <p>
+                                                @if (country.PropertiesCount == 1)
+                                                {
+                                                    <span>@country.PropertiesCount property</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@country.PropertiesCount properties</span>
+                                                }
+                                            </p>
                                         </div>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

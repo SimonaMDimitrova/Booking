@@ -1,8 +1,5 @@
-﻿namespace Booking.Web.Controllers
+﻿namespace Booking.Web.Areas.Owner.Controllers
 {
-    using System.Diagnostics;
-
-    using Booking.Web.ViewModels;
     using Microsoft.AspNetCore.Mvc;
 
     public abstract class BaseController : Controller
