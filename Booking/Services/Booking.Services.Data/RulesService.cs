@@ -21,11 +21,11 @@
             this.propertyRulesRepository = propertyRulesRepository;
         }
 
-        public IEnumerable<RuleIdNameViewModel> GetAllRules()
+        public IEnumerable<RuleInputModel> GetAllRules()
         {
             return this.rulesRepository
                 .AllAsNoTracking()
-                .Select(r => new RuleIdNameViewModel
+                .Select(r => new RuleInputModel
                 {
                     Id = r.Id,
                     Name = r.Name,

@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.PropertiesVM
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels
 {
     using System.Collections.Generic;
 
@@ -12,5 +12,9 @@
         public IEnumerable<PropertyRuleViewModel> Rules { get; set; }
 
         public IEnumerable<PropertyFacilityViewModel> Facilities { get; set; }
+
+        public IEnumerable<string> AllImages { get; set; }
+
+        public IEnumerable<string> ImagesToBeRemoved { get; set; }
     }
 }

@@ -163,8 +163,10 @@
 }
 
 .padding-headings {
-    padding-bottom: 20px;
     margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 
 .cat-property {
@@ -227,7 +229,7 @@
 }
 
 main {
-    padding: 5em 0;
+    padding: 3em 0;
 }
 
 .btn-primary:hover {
@@ -260,4 +262,40 @@ main {
 .gallary-header {
     position: relative;
     top: 3em;
+}
+
+textarea.description {
+    height: 17.8em;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-backdrop {
+    display: none;
+}
+
+.btn-margin {
+    margin-right: 0.01em;
+}
+    .btn-margin:hover {
+        margin-right: 0.01em;
+    }
+    .btn-margin:focus {
+        margin-right: 0.01em;
+    }
+
+a.add {
+    font-size: 14px;
+    margin-bottom: 0.2em;
+}
+
+.underline {
+    padding-left: 0.3em;
+}
+
+.margins-temp {
+    margin-bottom: -0.5em;
+    margin-top: 0.3em;
 }

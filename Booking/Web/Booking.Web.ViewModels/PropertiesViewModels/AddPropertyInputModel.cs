@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.PropertiesVM
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
 
     using Booking.Web.ViewModels.Facilities;
     using Booking.Web.ViewModels.Rules;
-    using Microsoft.AspNetCore.Http;
 
     public class AddPropertyInputModel : PropertyBaseInputModel
     {
@@ -14,9 +13,9 @@
 
         public IEnumerable<KeyValuePair<string, string>> Countries { get; set; }
 
-        public IEnumerable<RuleIdNameViewModel> Rules { get; set; }
+        public IEnumerable<RuleInputModel> Rules { get; set; }
 
-        public IEnumerable<FacilityIdNameViewModel> Facilities { get; set; }
+        public IEnumerable<FacilityIdNameInputModel> Facilities { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Choose a country.")]
@@ -37,7 +36,5 @@
         [Range(1, int.MaxValue, ErrorMessage = "Choose property category.")]
         [Display(Name = "Property category")]
         public int PropertyCategoryId { get; set; }
-
-        public IEnumerable<IFormFile> Images { get; set; }
     }
 }

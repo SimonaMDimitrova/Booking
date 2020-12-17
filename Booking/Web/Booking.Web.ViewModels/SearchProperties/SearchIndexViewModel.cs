@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.ViewModels.PropertiesViewModels;
 
     public class SearchIndexViewModel : PropertyByIdViewModel
     {

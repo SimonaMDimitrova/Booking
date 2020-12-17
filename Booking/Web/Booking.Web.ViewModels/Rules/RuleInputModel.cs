@@ -1,6 +1,6 @@
-﻿namespace Booking.Web.ViewModels.Facilities
+﻿namespace Booking.Web.ViewModels.Rules
 {
-    public class FacilityBaseViewModel
+    public class RuleInputModel
     {
         public int Id { get; set; }
 

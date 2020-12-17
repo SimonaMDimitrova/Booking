@@ -3,30 +3,30 @@
     using System.Threading.Tasks;
 
     using Booking.Web.ViewModels.Home;
-    using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.ViewModels.PropertiesViewModels;
     using Booking.Web.ViewModels.SearchProperties;
 
     public interface IPropertiesService
     {
         Task CreateAsync(AddPropertyInputModel input, string userId, string imagePath);
 
-        bool CheckIsPropertyNameAvailable(string name);
+        bool CheckIfNameIsAvailable(string name);
 
-        bool CheckIfNewPropertyNameAvailable(string name, string propertyId);
+        bool CheckIfEditInputNameIsAvailable(string name, string propertyId);
 
-        string GetPropertyIdByName(string propertyName);
+        string GetIdByName(string propertyName);
 
-        PropertyInListViewModel GetAllPropertiesByUserId(string userId);
+        PropertiesListViewModel GetAllByUserId(string userId);
 
-        EditPropertyInputModel GetPropertyById(string propertyId, string userId);
+        EditPropertyInputModel GetById(string propertyId, string userId);
 
-        Task EditProperty(EditPropertyInputModel input);
+        Task EditAsync(EditPropertyInputModel input, string userId);
 
-        Task DeleteAsync(string propertyId);
+        Task DeleteAsync(string propertyId, string userId);
 
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
 
-        string GetPropertyIdByOfferId(string id);
+        string GetIdByOfferId(string id);
 
         SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input);
     }

@@ -7,7 +7,7 @@
 
     public interface IRulesService
     {
-        IEnumerable<RuleIdNameViewModel> GetAllRules();
+        IEnumerable<RuleInputModel> GetAllRules();
 
         IEnumerable<PropertyRuleViewModel> GetAllRulesByPropertyId(string id);
     }

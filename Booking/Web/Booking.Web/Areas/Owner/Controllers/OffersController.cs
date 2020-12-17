@@ -1,15 +1,19 @@
-﻿namespace Booking.Web.Controllers
+﻿namespace Booking.Web.Areas.Owner.Controllers
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Services.Data;
+    using Booking.Web.Controllers;
     using Booking.Web.ViewModels.Offers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Roles = GlobalConstants.OwnerRoleName)]
+    [Area("Owner")]
     public class OffersController : BaseController
     {
         private readonly IFacilitiesService facilitiesService;
@@ -35,7 +39,6 @@
             this.environment = environment;
         }
 
-        [Authorize]
         public IActionResult Add(string id)
         {
             if (id == null)
@@ -52,7 +55,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add(string id, AddOfferInputModel input)
         {
             if (input.BedTypesCounts.Count() != 4
@@ -92,10 +94,9 @@
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            var propertyId = this.propertiesService.GetIdByOfferId(id);
             await this.offersService.DeleteAsync(id);
 
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
@@ -104,7 +105,7 @@
         public IActionResult Edit(string id)
         {
             var viewModel = this.offersService.GetById(id);
-            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            var propertyId = this.propertiesService.GetIdByOfferId(id);
             viewModel.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);
 
             return this.View(viewModel);
@@ -114,7 +115,7 @@
         public async Task<IActionResult> Edit(string id, EditOfferViewModel input)
         {
             this.ValidateCheckToDate(input);
-            var propertyId = this.propertiesService.GetPropertyIdByOfferId(id);
+            var propertyId = this.propertiesService.GetIdByOfferId(id);
             if (!this.ModelState.IsValid)
             {
                 input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);

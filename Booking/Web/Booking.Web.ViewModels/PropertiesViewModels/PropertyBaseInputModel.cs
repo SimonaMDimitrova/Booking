@@ -1,10 +1,9 @@
-﻿namespace Booking.Web.ViewModels.PropertiesVM
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Booking.Web.ViewModels.Facilities;
-    using Booking.Web.ViewModels.Rules;
+    using Microsoft.AspNetCore.Http;
 
     public abstract class PropertyBaseInputModel
     {
@@ -16,12 +15,15 @@
         [MaxLength(500, ErrorMessage = "Description can't be more than 500 characters long.")]
         public string Description { get; set; }
 
-        public byte Stars { get; set; }
+        [Display(Name = "Property rating")]
+        public byte PropertyRating { get; set; }
 
         public byte Floors { get; set; }
 
         public IEnumerable<int> FacilitiesIds { get; set; }
 
         public IEnumerable<int> RulesIds { get; set; }
+
+        public IEnumerable<IFormFile> Images { get; set; }
     }
 }

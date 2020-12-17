@@ -42,9 +42,4 @@
     <ProjectReference Include="..\Booking.Web.Infrastructure\Booking.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Booking.Web.ViewModels\Booking.Web.ViewModels.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Owner\Models\" />
-    <Folder Include="Areas\Owner\Views\" />
-  </ItemGroup>
 </Project>

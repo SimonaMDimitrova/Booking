@@ -22,12 +22,12 @@
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;
         }
 
-        public IEnumerable<FacilityIdNameViewModel> GetAllGeneralFacilities()
+        public IEnumerable<FacilityIdNameInputModel> GetAllGeneralFacilities()
         {
             return this.facilitiesRepository
                 .AllAsNoTracking()
                 .Where(f => f.FacilityCategory.Name == "General")
-                .Select(f => new FacilityIdNameViewModel
+                .Select(f => new FacilityIdNameInputModel
                 {
                     Name = f.Name,
                     Id = f.Id,

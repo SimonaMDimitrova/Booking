@@ -1,6 +1,7 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,11 +11,13 @@
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.OffersFacilities;
-    using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.ViewModels.PropertiesViewModels;
     using Booking.Web.ViewModels.SearchProperties;
 
     public class PropertiesService : IPropertiesService
     {
+        private const string EditError = "Access denied. You don't have permission to edit another user's properties";
+
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
@@ -33,14 +36,14 @@
             this.propertyFacilitiesRepository = propertyFacilitiesRepository;
         }
 
-        public bool CheckIfNewPropertyNameAvailable(string name, string propertyId)
+        public bool CheckIfEditInputNameIsAvailable(string name, string propertyId)
         {
             return this.propertiesRepository
                 .All()
                 .Any(p => p.Name == name && p.Id != propertyId);
         }
 
-        public bool CheckIsPropertyNameAvailable(string name)
+        public bool CheckIfNameIsAvailable(string name)
         {
             return this.propertiesRepository
                 .All()
@@ -135,41 +138,24 @@
                 Address = input.Address,
                 PropertyCategoryId = input.PropertyCategoryId,
                 Floors = input.Floors,
-                Stars = input.Stars,
+                Stars = input.PropertyRating,
                 TownId = input.TownId,
                 ApplicationUserId = userId,
                 Description = input.Description,
             };
 
             var rules = this.rulesRepository.AllAsNoTracking();
-            var rulesIds = input.RulesIds;
-            if (rulesIds != null)
+            var rulesIds = input.RulesIds != null ? input.RulesIds : new List<int>();
+            foreach (var rule in rules)
             {
-                foreach (var rule in rules)
+                var propertyRule = new PropertyRule
                 {
-                    var propertyRule = new PropertyRule
-                    {
-                        Property = property,
-                        RuleId = rule.Id,
-                        IsAllowed = rulesIds.Contains(rule.Id),
-                    };
+                    Property = property,
+                    RuleId = rule.Id,
+                    IsAllowed = rulesIds.Contains(rule.Id),
+                };
 
-                    property.PropertyRules.Add(propertyRule);
-                }
-            }
-            else
-            {
-                foreach (var rule in rules)
-                {
-                    var propertyRule = new PropertyRule
-                    {
-                        Property = property,
-                        RuleId = rule.Id,
-                        IsAllowed = false,
-                    };
-
-                    property.PropertyRules.Add(propertyRule);
-                }
+                property.PropertyRules.Add(propertyRule);
             }
 
             var facilitiesIds = input.FacilitiesIds;
@@ -211,12 +197,20 @@
             await this.propertiesRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string propertyId)
+        public async Task DeleteAsync(string propertyId, string userId)
         {
             var property = this.propertiesRepository
-                .AllAsNoTracking()
-                .FirstOrDefault(p => p.Id == propertyId);
-            var offers = property.Offers;
+                .All()
+                .FirstOrDefault(p => p.Id == propertyId && p.ApplicationUserId == userId);
+            if (property == null)
+            {
+                throw new Exception("Cannot delete someone else property!");
+            }
+
+            var offers = this.offersRepository
+                .All()
+                .Where(o => o.PropertyId == propertyId)
+                .ToList();
 
             if (offers != null)
             {
@@ -228,16 +222,22 @@
 
             this.propertiesRepository.Delete(property);
             await this.propertiesRepository.SaveChangesAsync();
+            await this.offersRepository.SaveChangesAsync();
         }
 
-        public async Task EditProperty(EditPropertyInputModel input)
+        public async Task EditAsync(EditPropertyInputModel input, string userId)
         {
             var property = this.propertiesRepository
                 .All()
-                .FirstOrDefault(p => input.Id == p.Id);
+                .FirstOrDefault(p => input.Id == p.Id && userId == p.ApplicationUserId);
+            if (property == null)
+            {
+                throw new Exception(EditError);
+            }
+
             property.Name = input.Name;
             property.Floors = input.Floors;
-            property.Stars = input.Stars;
+            property.Stars = input.PropertyRating;
             property.Description = input.Description;
 
             var propertyRules = this.propertiesRepository
@@ -245,75 +245,50 @@
                 .Where(p => p.Id == input.Id)
                 .Select(p => p.PropertyRules)
                 .FirstOrDefault();
-            var rulesIds = input.RulesIds;
-            if (rulesIds != null)
+            var rulesIds = input.RulesIds != null ? input.RulesIds : new List<int>();
+            foreach (var propertyRule in propertyRules)
             {
-                foreach (var propertyRule in propertyRules)
-                {
-                    propertyRule.IsAllowed = rulesIds.Contains(propertyRule.RuleId) ? true : false;
-                }
-            }
-            else
-            {
-                foreach (var propertyRule in propertyRules)
-                {
-                    propertyRule.IsAllowed = false;
-                }
+                propertyRule.IsAllowed = rulesIds.Contains(propertyRule.RuleId) ? true : false;
             }
 
-            var propertyFacilities = this.propertiesRepository
-                .All()
-                .Where(p => p.Id == input.Id)
-                .Select(p => p.PropertyFacilities)
-                .FirstOrDefault();
-            var facilitiesIds = input.FacilitiesIds;
-            if (facilitiesIds != null)
+            var propertyFacilities = this.propertyFacilitiesRepository
+                .AllWithDeleted()
+                .Where(f => f.PropertyId == input.Id)
+                .ToList();
+            var facilitiesIds = input.FacilitiesIds != null ? input.FacilitiesIds : new List<int>();
+            foreach (var facilityId in facilitiesIds)
             {
-                if (propertyFacilities != null)
+                var isNeededToBeAdded = !propertyFacilities.Any(f => f.FacilityId == facilityId);
+                if (isNeededToBeAdded)
                 {
-                    foreach (var facilityId in facilitiesIds)
+                    var propertyFacility = new PropertyFacility
                     {
-                        var isFacilityAlreadyAdded = propertyFacilities.Any(f => f.FacilityId == facilityId);
-                        var isFacilityAlreadyAddedDeleted = propertyFacilities.Any(f => f.FacilityId == facilityId && f.IsDeleted == true);
-                        if (isFacilityAlreadyAdded == false)
-                        {
-                            var propertyFacility = new PropertyFacility
-                            {
-                                Property = property,
-                                FacilityId = facilityId,
-                            };
+                        PropertyId = input.Id,
+                        FacilityId = facilityId,
+                    };
 
-                            await this.propertyFacilitiesRepository.AddAsync(propertyFacility);
-                        }
+                    await this.propertyFacilitiesRepository.AddAsync(propertyFacility);
 
-                        if (isFacilityAlreadyAddedDeleted == true)
-                        {
-                            var propertyFacility = this.propertyFacilitiesRepository.AllWithDeleted().FirstOrDefault(f => f.FacilityId == facilityId);
-                            this.propertyFacilitiesRepository.Undelete(propertyFacility);
-                        }
-                    }
+                    continue;
                 }
                 else
                 {
-                    foreach (var facilityId in facilitiesIds)
+                    var propertyFacility = propertyFacilities.FirstOrDefault(f => f.FacilityId == facilityId);
+                    if (propertyFacility.IsDeleted == true)
                     {
-                        var propertyFacility = new PropertyFacility
-                        {
-                            Property = property,
-                            FacilityId = facilityId,
-                        };
-                        await this.propertyFacilitiesRepository.AddAsync(propertyFacility);
+                        this.propertyFacilitiesRepository.Undelete(propertyFacility);
+
+                        continue;
                     }
                 }
             }
-            else
+
+            foreach (var propertyFacility in propertyFacilities)
             {
-                if (propertyFacilities != null)
+                var isNeededToBeDeleted = !facilitiesIds.Contains(propertyFacility.FacilityId);
+                if (isNeededToBeDeleted)
                 {
-                    foreach (var propertyFacility in propertyFacilities)
-                    {
-                        this.propertyFacilitiesRepository.Delete(propertyFacility);
-                    }
+                    this.propertyFacilitiesRepository.Delete(propertyFacility);
                 }
             }
 
@@ -321,14 +296,15 @@
             await this.propertiesRepository.SaveChangesAsync();
         }
 
-        public PropertyInListViewModel GetAllPropertiesByUserId(string userId)
+        public PropertiesListViewModel GetAllByUserId(string userId)
         {
-            var properties = new PropertyInListViewModel
+            var properties = new PropertiesListViewModel
             {
                 Properties = this.propertiesRepository
-                    .AllAsNoTracking()
+                    .All()
                     .Where(p => p.ApplicationUserId == userId)
-                    .Select(p => new PropertyViewModel
+                    .OrderByDescending(p => p.CreatedOn)
+                    .Select(p => new PropertyInListViewModel
                     {
                         Name = p.Name,
                         Stars = p.Stars,
@@ -336,8 +312,11 @@
                         Town = p.Town.Name,
                         PropertyCategory = p.PropertyCategory.Name,
                         Id = p.Id,
-                        Image = "/images/properties/" + p.PropertyImages.FirstOrDefault().Id + "." + p.PropertyImages.FirstOrDefault().Extension,
-                    }),
+                        Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
+                            $"../../images/properties/{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
+                            : $"../../assets/images/defaults/default.png",
+                    })
+                    .ToList(),
             };
 
             return properties;
@@ -387,25 +366,30 @@
                 .FirstOrDefault();
         }
 
-        public EditPropertyInputModel GetPropertyById(string propertyId, string userId)
+        public EditPropertyInputModel GetById(string propertyId, string userId)
         {
             var property = this.propertiesRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(p => p.Id == propertyId && p.ApplicationUserId == userId)
                 .Select(p => new EditPropertyInputModel
                 {
                     Name = p.Name,
                     Description = p.Description,
-                    Stars = p.Stars,
+                    PropertyRating = p.Stars,
                     Floors = p.Floors,
                     Id = p.Id,
                 })
                 .FirstOrDefault();
 
+            if (property == null)
+            {
+                throw new Exception(EditError);
+            }
+
             return property;
         }
 
-        public string GetPropertyIdByName(string propertyName)
+        public string GetIdByName(string propertyName)
         {
             return this.propertiesRepository
                 .AllAsNoTracking()
@@ -418,7 +402,7 @@
                 .Id;
         }
 
-        public string GetPropertyIdByOfferId(string id)
+        public string GetIdByOfferId(string id)
         {
             return this.propertiesRepository
                 .All()

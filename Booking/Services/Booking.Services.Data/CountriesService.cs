@@ -64,7 +64,7 @@
 
                 var image =
                     imageDb == null ?
-                    "assets/images/home/default.png"
+                    "assets/images/defaults/default.png"
                     : $"images/properties/{imageDb.Id}.{imageDb.Extension}";
 
                 var country = new CountryInListViewModel

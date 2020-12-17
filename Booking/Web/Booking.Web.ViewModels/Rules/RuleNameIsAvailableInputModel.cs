@@ -1,6 +1,6 @@
 ﻿namespace Booking.Web.ViewModels.Rules
 {
-    public class RuleNameIsAvailableViewModel
+    public class RuleNameIsAvailableInputModel
     {
         public string Name { get; set; }
 

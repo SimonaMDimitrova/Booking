@@ -1,13 +1,13 @@
-﻿@model Booking.Web.ViewModels.PropertiesVM.AddPropertyInputModel
+﻿@model Booking.Web.ViewModels.PropertiesViewModels.AddPropertyInputModel
 @{
-    this.ViewData["Title"] = "Create a hotel";
+    this.ViewData["Title"] = "Create a property";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
     var propertyCategories = this.Model.PropertyCategories.Select(x => new SelectListItem(x.Value, x.Key));
 }
 
 <div class="row padding">
     <form method="post" class="row" enctype="multipart/form-data">
-        <h2 class="h2 text-center">Create a property</h2>
+        <h2 class="h2 text-center">@this.ViewData["Title"]</h2>
         <div class="col-md-6">
             <hr />
             <h4 class="h4-padding">Property information</h4>
@@ -18,8 +18,8 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Stars"></label>
-                <select asp-for="Stars" class="form-control">
+                <label asp-for="PropertyRating"></label>
+                <select asp-for="PropertyRating" class="form-control">
                     <option value="0">None</option>
                     <option value="1">1 Star</option>
                     @for (int i = 2; i <= 5; i++)
@@ -27,7 +27,7 @@
                         <option value="@i">@i Stars</option>
                     }
                 </select>
-                <span asp-validation-for="Stars" class="text-danger"></span>
+                <span asp-validation-for="PropertyRating" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CountryId"></label>
@@ -66,14 +66,13 @@
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
             <hr />
-            <input type="submit" class="book-btn text-center" value="Create" />
         </div>
         <div class="col-md-6">
             <hr />
             <h4 class="h4-padding">Description</h4>
             <hr />
             <div class="form-group">
-                <textarea class="form-control" asp-for="Description" cols="10" rows="8"></textarea>
+                <textarea class="form-control description" asp-for="Description" cols="10"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <hr />
@@ -107,6 +106,9 @@
                 }
             </div>
             <hr />
+        </div>
+        <div class="col-md-12">
+            <input type="submit" class="book-btn text-center" value="Create" />
         </div>
     </form>
 </div>

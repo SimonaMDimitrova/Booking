@@ -1,18 +1,20 @@
-﻿namespace Booking.Web.Controllers
+﻿namespace Booking.Web.Areas.Owner.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Data.Models;
     using Booking.Services.Data;
-    using Booking.Web.ViewModels.Facilities;
-    using Booking.Web.ViewModels.PropertiesVM;
+    using Booking.Web.Controllers;
+    using Booking.Web.ViewModels.PropertiesViewModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Roles = GlobalConstants.OwnerRoleName)]
+    [Area("Owner")]
     public class PropertiesController : PropertiesBaseController
     {
         private readonly ICountriesService countriesService;
@@ -47,12 +49,11 @@
         public async Task<IActionResult> All()
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            var viewModel = this.propertiesService.GetAllPropertiesByUserId(user.Id);
+            var viewModel = this.propertiesService.GetAllByUserId(user.Id);
 
             return this.View(viewModel);
         }
 
-        [Authorize]
         public IActionResult Add()
         {
             var viewModel = new AddPropertyInputModel();
@@ -65,10 +66,9 @@
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add(AddPropertyInputModel input)
         {
-            if (this.propertiesService.CheckIsPropertyNameAvailable(input.Name))
+            if (this.propertiesService.CheckIfNameIsAvailable(input.Name))
             {
                 this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
             }
@@ -84,7 +84,6 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-
             try
             {
                 await this.propertiesService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images/properties/");
@@ -101,10 +100,10 @@
                 return this.View(input);
             }
 
+            this.TempData["Message"] = "Property was successfully created.";
             return this.Redirect(nameof(this.All));
         }
 
-        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -113,8 +112,17 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
+            EditPropertyInputModel viewModel;
+            try
+            {
+                viewModel = this.propertiesService.GetById(id, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction(nameof(this.All));
+            }
 
-            var viewModel = this.propertiesService.GetPropertyById(id, user.Id);
             viewModel.Facilities = this.facilitiesService.GetAllFacilitiesByPropertyId(id);
             viewModel.Rules = this.rulesService.GetAllRulesByPropertyId(id);
 
@@ -122,10 +130,9 @@
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Edit(EditPropertyInputModel input)
         {
-            if (this.propertiesService.CheckIfNewPropertyNameAvailable(input.Name, input.Id))
+            if (this.propertiesService.CheckIfEditInputNameIsAvailable(input.Name, input.Id))
             {
                 this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
             }
@@ -143,17 +150,35 @@
                 return this.NotFound();
             }
 
-            await this.propertiesService.EditProperty(input);
+            var user = await this.userManager.GetUserAsync(this.User);
+            try
+            {
+                await this.propertiesService.EditAsync(input, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction(nameof(this.All));
+            }
 
+            this.TempData["Message"] = "Property was successfully edited.";
             return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            await this.propertiesService.DeleteAsync(id);
+            var user = await this.userManager.GetUserAsync(this.User);
+            try
+            {
+                await this.propertiesService.DeleteAsync(id, user.Id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(this.All));
+            }
 
+            this.TempData["Message"] = "Property was successfully deleted.";
             return this.RedirectToAction(nameof(this.All));
         }
 

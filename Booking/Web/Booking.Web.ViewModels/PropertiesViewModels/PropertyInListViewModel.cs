@@ -1,6 +1,6 @@
-﻿namespace Booking.Web.ViewModels.PropertiesVM
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels
 {
-    public class PropertyViewModel
+    public class PropertyInListViewModel
     {
         public string Id { get; set; }
 

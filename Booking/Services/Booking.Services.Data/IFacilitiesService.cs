@@ -8,7 +8,7 @@
 
     public interface IFacilitiesService
     {
-        IEnumerable<FacilityIdNameViewModel> GetAllGeneralFacilities();
+        IEnumerable<FacilityIdNameInputModel> GetAllGeneralFacilities();
 
         IEnumerable<OfferFacilityInputModel> GetAllFacilitiesExceptGeneral();
 
