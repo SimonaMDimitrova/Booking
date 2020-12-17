@@ -34,7 +34,7 @@ else
         </p>
 
         <h3>Offers</h3>
-        @if (property.Offers.Count == 0)
+        @if (property.Offers.Count() == 0)
         {
             <p><a asp-controller="Offers" asp-action="Add" asp-route-id="@property.Id">Add an offer</a></p>
         }

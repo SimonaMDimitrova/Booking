@@ -6,31 +6,34 @@
 
 @if (this.SignInManager.IsSignedIn(this.User))
 {
-    <li class="smooth-menu"><a asp-controller="Bookings" asp-action="All">My bookings</a></li>
-    <li class="smooth-menu"><a asp-area="Owner" asp-controller="Properties" asp-action="All">My properties</a></li>
-    <li class="smooth-menu"><a asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
+    <li class="smooth-menu"><a class="nav-link nav-element" asp-area="" asp-controller="Bookings" asp-action="All">My bookings</a></li>
+    if (this.User.IsInRole(GlobalConstants.OwnerRoleName))
+    {
+        <li class="smooth-menu"><a class="nav-link nav-element" asp-area="Owner" asp-controller="Properties" asp-action="All">My properties</a></li>
+    }
+    <li class="smooth-menu"><a class="nav-link nav-element" asp-area="" asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
     <li class="smooth-menu">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @(this.User.Identity.Name)!</a>
+        <a class="nav-link nav-element" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @(this.User.Identity.Name)!</a>
     </li>
     if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
         <li class="smooth-menu">
-            <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+            <a class="nav-link nav-element" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
         </li>
     }
     <li class="smooth-menu">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
-            <button type="submit" class="logout"><a class="nav-link text-dark">Logout</a></button>
+            <button type="submit" class="nav-element"><a class="nav-link">Logout</a></button>
         </form>
     </li>
 }
 else
 {
-    <li class="smooth-menu"><a asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
+    <li class="smooth-menu"><a class="nav-link nav-element" asp-area=""  asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
     <li class="smooth-menu">
-        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link nav-element" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li class="smooth-menu">
-        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link nav-element" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }

@@ -28,8 +28,10 @@
 
         public string PropertyCategory { get; set; }
 
-        public ICollection<OfferViewModel> Offers { get; set; }
+        public IEnumerable<OfferViewModel> Offers { get; set; }
 
         public string CurrencyCode { get; set; }
+
+        public IEnumerable<string> Images { get; set; }
     }
 }

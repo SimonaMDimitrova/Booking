@@ -8,6 +8,7 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
+    using Booking.Web.ViewModels.BedTypes;
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.OffersFacilities;
@@ -16,7 +17,7 @@
 
     public class PropertiesService : IPropertiesService
     {
-        private const string EditError = "Access denied. You don't have permission to edit another user's properties";
+        private const string EditError = "You don't have permission to edit this property or it doesn't exists.";
 
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
@@ -92,30 +93,30 @@
                     Facilities = p.PropertyFacilities
                         .Select(f => f.Facility.Name)
                         .ToList(),
-                    Offers = p.Offers
-                    .Where(
-                        o => o.ValidFrom >= input.CheckIn
-                            && o.ValidTo <= input.CheckOut)
-                        .Select(o => new OfferViewModel
-                        {
-                            Id = o.Id,
-                            Price = o.PricePerPerson,
-                            ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
-                            ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
-                            OfferFacilities = o.OfferFacilities
-                                .Select(f => new OfferFacilityViewModel
-                                {
-                                    Name = f.Facility.Name,
-                                    Category = f.Facility.FacilityCategory.Name,
-                                })
-                                .ToList(),
-                            Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
-                            Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                        })
-                        .Where(
-                            o => o.Guests == input.Members
-                            && (o.Price >= input.MinBudget || o.Price <= input.MaxBudget))
-                        .ToList(),
+                    //Offers = p.Offers
+                    //.Where(
+                    //    o => o.ValidFrom >= input.CheckIn
+                    //        && o.ValidTo <= input.CheckOut)
+                    //    .Select(o => new OfferViewModel
+                    //    {
+                    //        Id = o.Id,
+                    //        Price = o.PricePerPerson,
+                    //        ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
+                    //        ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
+                    //        OfferFacilities = o.OfferFacilities
+                    //            .Select(f => new OfferFacilityViewModel
+                    //            {
+                    //                Name = f.Facility.Name,
+                    //                Category = f.Facility.FacilityCategory.Name,
+                    //            })
+                    //            .ToList(),
+                    //        Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
+                    //        Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                    //    })
+                    //    .Where(
+                    //        o => o.Guests == input.Members
+                    //        && (o.Price >= input.MinBudget || o.Price <= input.MaxBudget))
+                    //    .ToList(),
                 })
                 .ToList();
 
@@ -324,7 +325,7 @@
 
         public PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId)
         {
-            return this.propertiesRepository
+            var property = this.propertiesRepository
                 .All()
                 .Where(p => p.Id == propertyId && p.ApplicationUserId == userId)
                 .Select(p => new PropertyByIdViewModel
@@ -343,6 +344,7 @@
                     Facilities = p.PropertyFacilities
                         .Select(f => f.Facility.Name)
                         .ToList(),
+                    Images = p.PropertyImages.Select(oi => "/images/properties/" + oi.Id + "." + oi.Extension).ToList(),
                     Offers = p.Offers
                         .Select(o => new OfferViewModel
                         {
@@ -357,13 +359,21 @@
                                     Category = f.Facility.FacilityCategory.Name,
                                 })
                                 .ToList(),
-                            Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
+                            Rooms = o.OfferBedTypes
+                                .Select(b => new BedTypeViewModel
+                                {
+                                    Type = b.BedType.Type,
+                                    Capacity = b.BedType.Capacity,
+                                })
+                                .ToList(),
                             Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
                             Images = o.OfferImages.Select(oi => "/images/offers/" + oi.Id + "." + oi.Extension).ToList(),
                         })
                         .ToList(),
                 })
                 .FirstOrDefault();
+
+            return property;
         }
 
         public EditPropertyInputModel GetById(string propertyId, string userId)

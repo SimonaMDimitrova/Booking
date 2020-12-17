@@ -9,6 +9,7 @@
     using Booking.Data.Models;
     using Booking.Data.Repositories;
     using Booking.Data.Seeding;
+    using Booking.Services;
     using Booking.Services.Data;
     using Booking.Services.Mapping;
     using Booking.Services.Messaging;
@@ -73,6 +74,7 @@
             services.AddTransient<IRulesService, RulesService>();
             services.AddTransient<IOffersService, OffersService>();
             services.AddTransient<IBedTypesService, BedTypesService>();
+            services.AddTransient<IDictionariesService, DictionariesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,7 +123,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("areas", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();
                     });

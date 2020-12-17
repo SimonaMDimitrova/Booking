@@ -1,8 +1,8 @@
 ﻿namespace Booking.Web.ViewModels.Offers
 {
-    using System.Collections.Generic;
-
+    using Booking.Web.ViewModels.BedTypes;
     using Booking.Web.ViewModels.OffersFacilities;
+    using System.Collections.Generic;
 
     public class OfferViewModel
     {
@@ -14,9 +14,9 @@
 
         public string ValidTo { get; set; }
 
-        public ICollection<OfferFacilityViewModel> OfferFacilities { get; set; }
+        public IEnumerable<OfferFacilityViewModel> OfferFacilities { get; set; }
 
-        public ICollection<string> Rooms { get; set; }
+        public IEnumerable<BedTypeViewModel> Rooms { get; set; }
 
         public byte Guests { get; set; }
 

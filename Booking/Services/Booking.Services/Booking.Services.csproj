@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\Booking.Web.ViewModels\Booking.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -48,8 +48,9 @@
 
         public async Task<IActionResult> All()
         {
+            PropertiesListViewModel viewModel;
             var user = await this.userManager.GetUserAsync(this.User);
-            var viewModel = this.propertiesService.GetAllByUserId(user.Id);
+            viewModel = this.propertiesService.GetAllByUserId(user.Id);
 
             return this.View(viewModel);
         }
@@ -108,7 +109,8 @@
         {
             if (id == null)
             {
-                return this.NotFound();
+                this.TempData["Error"] = "The property is invalid.";
+                return this.RedirectToAction(nameof(this.All));
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -147,7 +149,8 @@
 
             if (input.Id == null)
             {
-                return this.NotFound();
+                this.TempData["Error"] = "The property is invalid.";
+                return this.RedirectToAction(nameof(this.All));
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
@@ -184,13 +187,14 @@
 
         public async Task<IActionResult> ById(string id)
         {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
             var user = await this.userManager.GetUserAsync(this.User);
             var viewModel = this.propertiesService.GetPropertyAndOffersById(id, user.Id);
+
+            if (id == null || viewModel == null)
+            {
+                this.TempData["Error"] = "The property was not found.";
+                return this.RedirectToAction(nameof(this.All));
+            }
 
             return this.View(viewModel);
         }
