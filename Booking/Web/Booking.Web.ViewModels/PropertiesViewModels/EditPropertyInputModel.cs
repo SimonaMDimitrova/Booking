@@ -11,7 +11,7 @@
 
         public IEnumerable<PropertyRuleViewModel> Rules { get; set; }
 
-        public IEnumerable<PropertyFacilityViewModel> Facilities { get; set; }
+        public IEnumerable<PropertyFacilityInputModel> Facilities { get; set; }
 
         public IEnumerable<string> AllImages { get; set; }
 

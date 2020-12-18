@@ -15,7 +15,7 @@
             this.bedTypesRepository = bedTypesRepository;
         }
 
-        public IEnumerable<KeyValuePair<int, string>> GetAllBedTypes()
+        public IEnumerable<KeyValuePair<int, string>> GetAll()
         {
             return this.bedTypesRepository
                 .All()

@@ -18,7 +18,7 @@
             this.propertyRepository = propertyRepository;
         }
 
-        public string GetCurrencyByPropertyId(string id)
+        public string GetByPropertyId(string id)
         {
             return this.propertyRepository
                 .All()
@@ -27,7 +27,7 @@
                 .FirstOrDefault();
         }
 
-        public string GetCurrencyCodeByCountryId(int id)
+        public string GetByCountryId(int id)
         {
             return this.countriesRepository
                 .All()

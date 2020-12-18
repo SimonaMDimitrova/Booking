@@ -2,10 +2,8 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Services.Data.Models;
-
     public interface ITownsService
     {
-        IEnumerable<KeyValuePair<string, string>> GetTownsByCountryId(int id);
+        IEnumerable<KeyValuePair<string, string>> GetAllByCountryId(int id);
     }
 }

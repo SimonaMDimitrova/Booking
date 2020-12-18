@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Booking.Data.Common.Repositories;
@@ -29,7 +28,7 @@
             this.applicationUserOfferRepository = applicationUserOfferRepository;
         }
 
-        public async Task AddOfferToProperty(string propertyId, AddOfferInputModel input, string imagePath)
+        public async Task AddToProperty(string propertyId, AddOfferInputModel input, string imagePath)
         {
             var offer = new Offer
             {

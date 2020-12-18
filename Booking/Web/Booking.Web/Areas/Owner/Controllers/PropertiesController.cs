@@ -60,8 +60,8 @@
             var viewModel = new AddPropertyInputModel();
             viewModel.Countries = this.countriesService.GetAllByKeyValuePairs();
             viewModel.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-            viewModel.Facilities = this.facilitiesService.GetAllGeneralFacilities();
-            viewModel.Rules = this.rulesService.GetAllRules();
+            viewModel.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+            viewModel.Rules = this.rulesService.GetAll();
 
             return this.View(viewModel);
         }
@@ -78,8 +78,8 @@
             {
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.Facilities = this.facilitiesService.GetAllGeneralFacilities();
-                input.Rules = this.rulesService.GetAllRules();
+                input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+                input.Rules = this.rulesService.GetAll();
 
                 return this.View(input);
             }
@@ -95,8 +95,8 @@
 
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.Facilities = this.facilitiesService.GetAllGeneralFacilities();
-                input.Rules = this.rulesService.GetAllRules();
+                input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+                input.Rules = this.rulesService.GetAll();
 
                 return this.View(input);
             }
@@ -125,8 +125,8 @@
                 return this.RedirectToAction(nameof(this.All));
             }
 
-            viewModel.Facilities = this.facilitiesService.GetAllFacilitiesByPropertyId(id);
-            viewModel.Rules = this.rulesService.GetAllRulesByPropertyId(id);
+            viewModel.Facilities = this.facilitiesService.GetAllByPropertyId(id);
+            viewModel.Rules = this.rulesService.GetAllByPropertyId(id);
 
             return this.View(viewModel);
         }
@@ -141,8 +141,8 @@
 
             if (!this.ModelState.IsValid)
             {
-                input.Rules = this.rulesService.GetAllRulesByPropertyId(input.Id);
-                input.Facilities = this.facilitiesService.GetAllFacilitiesByPropertyId(input.Id);
+                input.Rules = this.rulesService.GetAllByPropertyId(input.Id);
+                input.Facilities = this.facilitiesService.GetAllByPropertyId(input.Id);
 
                 return this.View(input);
             }

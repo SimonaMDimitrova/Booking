@@ -8,10 +8,10 @@
 
     public interface IFacilitiesService
     {
-        IEnumerable<FacilityIdNameInputModel> GetAllGeneralFacilities();
+        IEnumerable<FacilityIdNameInputModel> GetAllInGeneralCategory();
 
-        IEnumerable<OfferFacilityInputModel> GetAllFacilitiesExceptGeneral();
+        IEnumerable<OfferFacilityInputModel> GetAllExeptInDeneralCategory();
 
-        IEnumerable<PropertyFacilityViewModel> GetAllFacilitiesByPropertyId(string id);
+        IEnumerable<PropertyFacilityInputModel> GetAllByPropertyId(string id);
     }
 }

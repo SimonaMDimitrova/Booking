@@ -4,7 +4,33 @@
     this.ViewData["Title"] = this.Model.Name;
 }
 
+<a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
 <h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-12 byid">
+        @if (this.TempData.ContainsKey("Message"))
+        {
+            <div class="alert alert-success margins-temp">@this.TempData["Message"]</div>
+        }
+        <div>
+            @for (int i = 0; i < Model.Stars; i++)
+            {
+                <i class="fas fa-star star"></i>
+            }
+            @for (int i = 0; i < 5 - Model.Stars; i++)
+            {
+                <i class="far fa-star star"></i>
+            }
+        </div>
+        <div>
+            <span class="property-badge">@Model.PropertyCategory</span>
+            <span class="property-badge">@Model.Floors floors</span>
+            <span class="property-badge">@Model.PropertyType</span>
+        </div>
+        <div class="country-town margin-bottom">@Model.Address, @Model.Town, @Model.Country</div>
+    </div>
+</div>
+
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         @{
@@ -52,67 +78,128 @@
         </a>
     </div>
 </div>
-<hr />
-<h3 class="text-center">Property information</h3>
-<hr />
-<p>@Model.Name</p>
-<p>@Model.Description</p>
-<p>@Model.Stars</p>
-<p>@Model.Floors</p>
-<p>@Model.Country</p>
-<p>@Model.Town</p>
-<p>@Model.Address</p>
-<p>@Model.PropertyCategory</p>
-<p>@Model.PropertyType</p>
-<p>@Model.CurrencyCode</p>
 
-<h3>Property facilities</h3>
-<p>
-    <ul>
-        @foreach (var facility in Model.Facilities)
+
+<div class="row">
+    <div class="col-md-6">
+        <hr />
+        <h3 class="text-center">Description</h3>
+        <hr />
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
-            <li>@facility</li>
+            <div>@Model.Description</div>
         }
-    </ul>
-</p>
-
-<h3>Offers</h3>
-@if (Model.Offers.Count() == 0)
-{
-    <p><a asp-controller="Offers" asp-action="Add" asp-route-id="@Model.Id"><i class="fas fa-plus-circle"></i> Add an offer</a></p>
-}
-else
-{
-    foreach (var offer in Model.Offers)
-    {
-        <p>@(offer.Price * offer.Guests) @Model.CurrencyCode</p>
-        <p>@offer.ValidFrom</p>
-        <p>@offer.ValidTo</p>
-        <p>@offer.Guests</p>
-
-        <p>------------------------------------</p>
-
-        var facilities = dictionariesService.CreateFacilitiesDictionary(offer.OfferFacilities);
-        foreach (var facility in facilities)
+        else
         {
-            <p style="color: red;">@facility.Key</p>
-            foreach (var facilityName in facility.Value)
+            <div>There is no additional information.</div>
+        }
+    </div>
+    <div class="col-md-6">
+        <hr />
+        <h3 class="text-center">Property facilities</h3>
+        <hr />
+        <ul>
+            @foreach (var facility in Model.Facilities)
             {
-                <p>@facilityName</p>
+                <li><i class="fas fa-check"></i> @facility</li>
             }
-        }
+        </ul>
+    </div>
+</div>
+<hr />
 
-        var rooms = dictionariesService.CreateBedTypeDictionary(offer.Rooms);
-        foreach (var room in rooms)
-        {
-            <p>@room.Key</p>
-            <p>@room.Value</p>
-        }
-
-        <a class="btn btn-primary" asp-action="Edit" asp-controller="Offers" asp-route-id="@offer.Id">Edit</a>
-        <form method="post">
-            <button class="btn btn-danger" asp-action="Delete" asp-controller="Offers" asp-route-id="@offer.Id">Delete</button>
-        </form>
-        <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
+<hr />
+<h3 class="text-center">Offers</h3>
+<hr />
+<div class="row">
+    @if (Model.Offers.Count() == 0)
+    {
+        <div>No offers found.</div>
+        <p><a asp-controller="Offers" asp-action="Add" asp-route-id="@Model.Id"><i class="fas fa-plus-circle"></i> Add an offer</a></p>
     }
-}
+    else
+    {
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead class="thead-gray">
+                    <tr>
+                        <th>Valid from - Valid to</th>
+                        <th>Guests and prices</th>
+                        <th>Bed types</th>
+                        <th>Facilities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var offer in Model.Offers)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@offer.ValidFrom</strong> - <strong>@offer.ValidTo</strong>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <a class="btn button" asp-action="Edit" asp-controller="Offers" asp-route-id="@offer.Id">Edit</a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <form method="post">
+                                            <button class="btn btn-danger" asp-action="Delete" asp-controller="Offers" asp-route-id="@offer.Id">Delete</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <strong>Guests:</strong> @offer.Guests<br />
+                                <strong>Single price per day:</strong> @offer.Price @Model.CurrencyCode <br />
+                                <strong>Price per day to all guests:</strong> @(offer.Price * offer.Guests) @Model.CurrencyCode
+                            </td>
+                            <td>
+                                @{var rooms = dictionariesService.CreateBedTypeDictionary(offer.Rooms)
+                                          .OrderByDescending(r => r.Value);
+                                    foreach (var room in rooms)
+                                    {
+                                        <div>
+                                            <strong>@(room.Value / offer.Rooms.FirstOrDefault(r => r.Type == room.Key).Capacity) x</strong> @room.Key
+                                        </div>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{var facilities = dictionariesService.CreateFacilitiesDictionary(offer.OfferFacilities);
+                                    foreach (var facility in facilities)
+                                    {
+                                        <div class="padding-facilities">@facility.Key</div>
+                                        foreach (var facilityName in facility.Value)
+                                        {
+                                            <div><i class="fas fa-check"></i> @facilityName</div>
+                                        }
+                                    }
+
+                                    if (!facilities.Any())
+                                    {
+                                        <div>None.</div>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <a asp-controller="Offers" asp-action="Add" asp-route-id="@Model.Id" class="add"><i class="fas fa-plus-circle"></i> Add new offer</a>
+        </div>
+    }
+</div>
+<hr />
+<a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
+
+<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>Do you want to delete @Model.Name?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn button btn-margin" onclick="document.getElementById('deleteForm').submit()">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

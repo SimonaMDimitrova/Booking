@@ -16,12 +16,12 @@
 
         public IActionResult GetTowns(string id)
         {
-            return this.Json(this.townsService.GetTownsByCountryId(int.Parse(id)));
+            return this.Json(this.townsService.GetAllByCountryId(int.Parse(id)));
         }
 
         public IActionResult GetCurrencyCode(string id)
         {
-            return this.Json(this.currenciesService.GetCurrencyCodeByCountryId(int.Parse(id)));
+            return this.Json(this.currenciesService.GetByCountryId(int.Parse(id)));
         }
     }
 }

@@ -15,7 +15,7 @@
             this.townsRepository = townsRepository;
         }
 
-        public IEnumerable<KeyValuePair<string, string>> GetTownsByCountryId(int id)
+        public IEnumerable<KeyValuePair<string, string>> GetAllByCountryId(int id)
         {
             return this.townsRepository
                 .All()

@@ -7,6 +7,6 @@
 
     public interface IBedTypesService
     {
-        IEnumerable<KeyValuePair<int, string>> GetAllBedTypes();
+        IEnumerable<KeyValuePair<int, string>> GetAll();
     }
 }

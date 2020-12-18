@@ -1,8 +1,6 @@
 ﻿namespace Booking.Web.ViewModels.PropertyFacilities
 {
-    using Booking.Web.ViewModels.Facilities;
-
-    public class PropertyFacilityViewModel
+    public class PropertyFacilityInputModel
     {
         public int Id { get; set; }
 

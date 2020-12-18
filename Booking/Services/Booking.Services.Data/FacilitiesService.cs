@@ -22,7 +22,7 @@
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;
         }
 
-        public IEnumerable<FacilityIdNameInputModel> GetAllGeneralFacilities()
+        public IEnumerable<FacilityIdNameInputModel> GetAllInGeneralCategory()
         {
             return this.facilitiesRepository
                 .AllAsNoTracking()
@@ -35,16 +35,16 @@
                 .ToList();
         }
 
-        public IEnumerable<PropertyFacilityViewModel> GetAllFacilitiesByPropertyId(string id)
+        public IEnumerable<PropertyFacilityInputModel> GetAllByPropertyId(string id)
         {
-            var facilitiesInListViewModel = new List<PropertyFacilityViewModel>();
-            var facilities = this.GetAllGeneralFacilities();
+            var facilitiesInListViewModel = new List<PropertyFacilityInputModel>();
+            var facilities = this.GetAllInGeneralCategory();
             foreach (var facility in facilities)
             {
                 var isChecked = this.propertyFaciltiesRepository
-                    .AllAsNoTracking()
+                    .All()
                     .Any(p => p.PropertyId == id && p.Facility.Name == facility.Name);
-                var facilityViewModel = new PropertyFacilityViewModel
+                var facilityViewModel = new PropertyFacilityInputModel
                 {
                     Name = facility.Name,
                     Id = facility.Id,
@@ -57,7 +57,7 @@
             return facilitiesInListViewModel;
         }
 
-        public IEnumerable<OfferFacilityInputModel> GetAllFacilitiesExceptGeneral()
+        public IEnumerable<OfferFacilityInputModel> GetAllExeptInDeneralCategory()
         {
             return this.facilitiesRepository
                 .All()

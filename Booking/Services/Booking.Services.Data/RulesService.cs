@@ -21,10 +21,10 @@
             this.propertyRulesRepository = propertyRulesRepository;
         }
 
-        public IEnumerable<RuleInputModel> GetAllRules()
+        public IEnumerable<RuleInputModel> GetAll()
         {
             return this.rulesRepository
-                .AllAsNoTracking()
+                .All()
                 .Select(r => new RuleInputModel
                 {
                     Id = r.Id,
@@ -33,10 +33,10 @@
                 .ToList();
         }
 
-        public IEnumerable<PropertyRuleViewModel> GetAllRulesByPropertyId(string id)
+        public IEnumerable<PropertyRuleViewModel> GetAllByPropertyId(string id)
         {
             return this.propertyRulesRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(r => r.PropertyId == id)
                 .Select(r => new PropertyRuleViewModel
                 {

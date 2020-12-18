@@ -1,4 +1,46 @@
-﻿img.size {
+﻿strong {
+    font-weight: 600;
+}
+
+.padding-facilities {
+    font-weight: 600;
+    border-bottom: 2px solid #00d8ff;
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+
+    .padding-facilities:first-child {
+        padding-top: 0;
+    }
+
+.thead-gray {
+    color: #fff;
+    background-color: #4d4e54;
+}
+
+    thead.thead-gray tr th {
+        font-weight: 600;
+        border-bottom: 2px solid #00d8ff;
+    }
+
+.byid div {
+    margin-bottom: 5px;
+}
+
+.margin-bottom {
+    padding-bottom: 12px;
+}
+
+.property-badge {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #4d4e54;
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+
+img.size {
     height: 700px;
     width: 100%;
 }
@@ -11,33 +53,6 @@
 .arrow-carousel {
     font-size: 20px;
     padding: 15px 5px 5px 5px;
-}
-
-a {
-    color: #565a5c;
-    transition: 0.5s ease-in-out;
-    -webkit-transition: 0.5s ease-in-out;
-    -moz-transition: 0.5s ease-in-out;
-    -o-transition: 0.5s ease-in-out;
-}
-
-    a:hover {
-        color: #00d8ff;
-    }
-    a:visited {
-        color: #565a5c;
-    }
-
-    a:active {
-        color: #565a5c;
-    }
-
-    a:focus {
-        color: #00d8ff;
-    }
-
-.logo a, .logo a:hover, .logo a:focus {
-    color: #fff;
 }
 
 .nav-element {
@@ -232,7 +247,7 @@ a {
     font-weight: 500;
 }
 
-.button {
+.button, a.button {
     margin-right: -10px;
     background-color: #00d8ff;
     border-color: #00c9ed;
@@ -240,27 +255,27 @@ a {
     -moz-transition: 0.5s ease-in-out;
     -o-transition: 0.5s ease-in-out;
     transition: 0.5s ease-in-out;
-    color: #fff;
+    color: #fff !important;
 }
 
-    .button:hover {
+    .button, a.button:hover {
         margin-right: -10px;
         background-color: #00d8d5;
         padding: 6px 12px;
         border-color: #00c5c2;
         line-height: 1.42857143;
         font-size: 14px;
-        color: #fff;
+        color: #fff !important;
     }
 
-    .button:focus {
+    .button, a.button:focus {
         margin-right: -10px;
         background-color: #00d8d5;
         padding: 6px 12px;
         border-color: #00c5c2;
         line-height: 1.42857143;
         font-size: 14px;
-        color: #fff;
+        color: #fff !important;
     }
 
 .btn-danger {
@@ -529,4 +544,32 @@ a.add {
     padding-bottom: 20px;
     color: #fff;
     text-align: center
+}
+
+a {
+    color: #565a5c;
+    transition: 0.5s ease-in-out;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+}
+
+    a:hover {
+        color: #00d8ff !important;
+    }
+
+    a:visited {
+        color: #565a5c;
+    }
+
+    a:active {
+        color: #565a5c;
+    }
+
+    a:focus {
+        color: #00d8ff;
+    }
+
+.logo a, .logo a:hover, .logo a:focus {
+    color: #fff !important;
 }

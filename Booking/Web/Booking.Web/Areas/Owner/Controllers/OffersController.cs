@@ -47,9 +47,9 @@
             }
 
             var viewModel = new AddOfferInputModel();
-            viewModel.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
-            viewModel.BedTypes = this.bedTypesService.GetAllBedTypes();
-            viewModel.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
+            viewModel.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+            viewModel.BedTypes = this.bedTypesService.GetAll();
+            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 
             return this.View(viewModel);
         }
@@ -68,28 +68,29 @@
 
             if (!this.ModelState.IsValid)
             {
-                input.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
-                input.BedTypes = this.bedTypesService.GetAllBedTypes();
-                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
+                input.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+                input.BedTypes = this.bedTypesService.GetAll();
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 
                 return this.View(input);
             }
 
             try
             {
-                await this.offersService.AddOfferToProperty(id, input, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.AddToProperty(id, input, $"{this.environment.WebRootPath}/images/offers/");
             }
             catch (Exception ex)
             {
                 this.ModelState.AddModelError(nameof(input.Images), ex.Message);
 
-                input.OfferFacilities = this.facilitiesService.GetAllFacilitiesExceptGeneral();
-                input.BedTypes = this.bedTypesService.GetAllBedTypes();
-                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(id);
+                input.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+                input.BedTypes = this.bedTypesService.GetAll();
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 
                 return this.View(input);
             }
 
+            this.TempData["Message"] = "The offer was successfully added.";
             return this.RedirectToAction("ById", "Properties", new { id = id });
         }
 
@@ -99,6 +100,7 @@
             var propertyId = this.propertiesService.GetIdByOfferId(id);
             await this.offersService.DeleteAsync(id);
 
+            this.TempData["Message"] = "The offer was successfully deleted.";
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
 
@@ -106,7 +108,7 @@
         {
             var viewModel = this.offersService.GetById(id);
             var propertyId = this.propertiesService.GetIdByOfferId(id);
-            viewModel.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);
+            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
             return this.View(viewModel);
         }
@@ -118,13 +120,14 @@
             var propertyId = this.propertiesService.GetIdByOfferId(id);
             if (!this.ModelState.IsValid)
             {
-                input.CurrencyCode = this.currenciesService.GetCurrencyByPropertyId(propertyId);
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
                 return this.View(input);
             }
 
             await this.offersService.UpdateAsync(id, input);
 
+            this.TempData["Message"] = "The offer was successfully edited.";
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
 

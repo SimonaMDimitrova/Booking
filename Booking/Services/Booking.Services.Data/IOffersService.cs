@@ -1,8 +1,6 @@
 ﻿namespace Booking.Services.Data
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Booking.Web.ViewModels.Bookings;
@@ -10,7 +8,7 @@
 
     public interface IOffersService
     {
-        Task AddOfferToProperty(string propertyId, AddOfferInputModel input, string imagePath);
+        Task AddToProperty(string propertyId, AddOfferInputModel input, string imagePath);
 
         Task DeleteAsync(string id);
 

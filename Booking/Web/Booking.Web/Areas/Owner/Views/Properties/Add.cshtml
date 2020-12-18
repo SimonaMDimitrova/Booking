@@ -5,7 +5,8 @@
     var propertyCategories = this.Model.PropertyCategories.Select(x => new SelectListItem(x.Value, x.Key));
 }
 
-<div class="row padding">
+<div class="row">
+    <a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
     <form method="post" class="row" enctype="multipart/form-data">
         <h2 class="h2 text-center">@this.ViewData["Title"]</h2>
         <div class="col-md-6">

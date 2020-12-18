@@ -17,7 +17,7 @@
 
         public IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs()
         {
-            return this.propertyCategoriesRepositorty.AllAsNoTracking()
+            return this.propertyCategoriesRepositorty.All()
                 .Select(pc => new
                 {
                     pc.Id,
