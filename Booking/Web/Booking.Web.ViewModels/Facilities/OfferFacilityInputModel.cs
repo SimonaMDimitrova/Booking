@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.OffersFacilities
+﻿namespace Booking.Web.ViewModels.Facilities
 {
     using System;
     using System.Collections.Generic;

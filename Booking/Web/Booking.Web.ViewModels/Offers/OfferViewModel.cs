@@ -1,8 +1,9 @@
 ﻿namespace Booking.Web.ViewModels.Offers
 {
-    using Booking.Web.ViewModels.BedTypes;
-    using Booking.Web.ViewModels.OffersFacilities;
     using System.Collections.Generic;
+
+    using Booking.Web.ViewModels.BedTypes;
+    using Booking.Web.ViewModels.Facilities;
 
     public class OfferViewModel
     {

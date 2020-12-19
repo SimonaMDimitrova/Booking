@@ -122,7 +122,7 @@
             catch (Exception ex)
             {
                 this.TempData["Error"] = ex.Message;
-                return this.RedirectToAction(nameof(this.All));
+                return this.RedirectToAction(nameof(this.ById), new { id = id });
             }
 
             viewModel.Facilities = this.facilitiesService.GetAllByPropertyId(id);
@@ -165,7 +165,7 @@
             }
 
             this.TempData["Message"] = "Property was successfully edited.";
-            return this.RedirectToAction(nameof(this.All));
+            return this.RedirectToAction(nameof(this.ById), new { id = input.Id });
         }
 
         [HttpPost]

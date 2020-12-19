@@ -5,11 +5,13 @@
     using System.Threading.Tasks;
 
     using Booking.Common;
+    using Booking.Data.Models;
     using Booking.Services.Data;
     using Booking.Web.Controllers;
     using Booking.Web.ViewModels.Offers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize(Roles = GlobalConstants.OwnerRoleName)]
@@ -21,6 +23,7 @@
         private readonly IOffersService offersService;
         private readonly IPropertiesService propertiesService;
         private readonly ICurrenciesService currenciesService;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
 
         public OffersController(
@@ -29,6 +32,7 @@
             IOffersService offersService,
             IPropertiesService propertiesService,
             ICurrenciesService currenciesService,
+            UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment)
         {
             this.facilitiesService = facilitiesService;
@@ -36,18 +40,25 @@
             this.offersService = offersService;
             this.propertiesService = propertiesService;
             this.currenciesService = currenciesService;
+            this.userManager = userManager;
             this.environment = environment;
         }
 
-        public IActionResult Add(string id)
+        public async Task<IActionResult> Add(string id)
         {
-            if (id == null)
+            var user = await this.userManager.GetUserAsync(this.User);
+            try
             {
-                return this.NotFound();
+                this.propertiesService.GetById(id, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("All", "Properties");
             }
 
             var viewModel = new AddOfferInputModel();
-            viewModel.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+            viewModel.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
             viewModel.BedTypes = this.bedTypesService.GetAll();
             viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 
@@ -57,6 +68,17 @@
         [HttpPost]
         public async Task<IActionResult> Add(string id, AddOfferInputModel input)
         {
+            var user = await this.userManager.GetUserAsync(this.User);
+            try
+            {
+                this.propertiesService.GetById(id, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("All", "Properties");
+            }
+
             if (input.BedTypesCounts.Count() != 4
                 || input.BedTypesCounts.All(b => b <= 0)
                 || input.BedTypesCounts.Any(b => b < 0))
@@ -68,7 +90,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                input.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+                input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
                 input.BedTypes = this.bedTypesService.GetAll();
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 
@@ -83,7 +105,7 @@
             {
                 this.ModelState.AddModelError(nameof(input.Images), ex.Message);
 
-                input.OfferFacilities = this.facilitiesService.GetAllExeptInDeneralCategory();
+                input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
                 input.BedTypes = this.bedTypesService.GetAll();
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
 

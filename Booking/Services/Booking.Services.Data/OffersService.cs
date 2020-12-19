@@ -80,23 +80,26 @@
             }
 
             Directory.CreateDirectory($"{imagePath}");
-            foreach (var image in input.Images)
+            if (input.Images != null && input.Images.Any())
             {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                foreach (var image in input.Images)
                 {
-                    throw new Exception($"Invalid image extension {extension}");
+                    var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                    if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                    {
+                        throw new Exception($"Invalid image extension {extension}");
+                    }
+
+                    var offerImage = new OfferImage
+                    {
+                        Extension = extension,
+                    };
+                    offer.OfferImages.Add(offerImage);
+
+                    var physicalPath = $"{imagePath}{offerImage.Id}.{extension}";
+                    using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+                    await image.CopyToAsync(fileStream);
                 }
-
-                var offerImage = new OfferImage
-                {
-                    Extension = extension,
-                };
-                offer.OfferImages.Add(offerImage);
-
-                var physicalPath = $"{imagePath}{offerImage.Id}.{extension}";
-                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
             }
 
             await this.offersRepository.AddAsync(offer);

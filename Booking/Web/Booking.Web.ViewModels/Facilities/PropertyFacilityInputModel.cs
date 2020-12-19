@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.PropertyFacilities
+﻿namespace Booking.Web.ViewModels.Facilities
 {
     public class PropertyFacilityInputModel
     {

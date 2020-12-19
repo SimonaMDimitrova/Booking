@@ -9,15 +9,16 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.BedTypes;
+    using Booking.Web.ViewModels.Facilities;
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.Offers;
-    using Booking.Web.ViewModels.OffersFacilities;
     using Booking.Web.ViewModels.PropertiesViewModels;
+    using Booking.Web.ViewModels.Rules;
     using Booking.Web.ViewModels.SearchProperties;
 
     public class PropertiesService : IPropertiesService
     {
-        private const string EditError = "You don't have permission to edit this property or it doesn't exists.";
+        private const string EditError = "You don't have permission to make any changes to this property (or it doesn't exists).";
 
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
@@ -175,23 +176,26 @@
             }
 
             Directory.CreateDirectory($"{imagePath}");
-            foreach (var image in input.Images)
+            if (input.Images != null && input.Images.Any())
             {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                foreach (var image in input.Images)
                 {
-                    throw new Exception($"Invalid image extension {extension}");
+                    var extension = Path.GetExtension(image.FileName).TrimStart('.');
+                    if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+                    {
+                        throw new Exception($"Invalid image extension {extension}");
+                    }
+
+                    var propertyImage = new PropertyImage
+                    {
+                        Extension = extension,
+                    };
+                    property.PropertyImages.Add(propertyImage);
+
+                    var physicalPath = $"{imagePath}{propertyImage.Id}.{extension}";
+                    using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
+                    await image.CopyToAsync(fileStream);
                 }
-
-                var propertyImage = new PropertyImage
-                {
-                    Extension = extension,
-                };
-                property.PropertyImages.Add(propertyImage);
-
-                var physicalPath = $"{imagePath}{propertyImage.Id}.{extension}";
-                using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
             }
 
             await this.propertiesRepository.AddAsync(property);
@@ -343,6 +347,13 @@
                     CurrencyCode = p.Town.Country.Currency.CurrencyCode,
                     Facilities = p.PropertyFacilities
                         .Select(f => f.Facility.Name)
+                        .ToList(),
+                    Rules = p.PropertyRules
+                        .Select(r => new RuleNameIsAvailableViewModel
+                        {
+                            Name = r.Rule.Name,
+                            IsAllowed = r.IsAllowed,
+                        })
                         .ToList(),
                     Images = p.PropertyImages.Select(oi => "/images/properties/" + oi.Id + "." + oi.Extension).ToList(),
                     Offers = p.Offers

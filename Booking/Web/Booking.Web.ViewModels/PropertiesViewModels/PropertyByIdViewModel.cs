@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using Booking.Web.ViewModels.Offers;
+    using Booking.Web.ViewModels.Rules;
 
     public class PropertyByIdViewModel
     {
@@ -33,5 +34,7 @@
         public string CurrencyCode { get; set; }
 
         public IEnumerable<string> Images { get; set; }
+
+        public IEnumerable<RuleNameIsAvailableViewModel> Rules { get; set; }
     }
 }

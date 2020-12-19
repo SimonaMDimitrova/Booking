@@ -4,9 +4,9 @@
 }
 
 <div class="row">
-    <a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
+    <a asp-area="Owner" asp-controller="Properties" asp-action="ById" asp-route-id="@Model.Id" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to @Model.Name</span></a>
     <h2 class="h2 text-center">Edit property</h2>
-    <form method="post" class="row">
+    <form method="post" class="row margin-bottom">
         <div class="col-md-3">
         </div>
         <div class="col-md-6">
@@ -104,4 +104,5 @@
             <input type="submit" class="book-btn text-center" value="Edit" />
         </div>
     </form>
+    <a asp-area="Owner" asp-controller="Properties" asp-action="ById" asp-route-id="@Model.Id" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to @Model.Name</span></a>
 </div>

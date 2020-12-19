@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using Booking.Web.Infrastructure.ValidationAttributes;
-    using Booking.Web.ViewModels.OffersFacilities;
+    using Booking.Web.ViewModels.Facilities;
     using Microsoft.AspNetCore.Http;
 
     public class AddOfferInputModel : OfferBaseInputModel

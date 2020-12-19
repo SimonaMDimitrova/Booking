@@ -6,8 +6,6 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.Facilities;
-    using Booking.Web.ViewModels.OffersFacilities;
-    using Booking.Web.ViewModels.PropertyFacilities;
 
     public class FacilitiesService : IFacilitiesService
     {
@@ -57,7 +55,7 @@
             return facilitiesInListViewModel;
         }
 
-        public IEnumerable<OfferFacilityInputModel> GetAllExeptInDeneralCategory()
+        public IEnumerable<OfferFacilityInputModel> GetAllExeptInGeneralCategory()
         {
             return this.facilitiesRepository
                 .All()

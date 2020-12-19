@@ -1,4 +1,9 @@
-﻿strong {
+﻿.buttons {
+    position: relative;
+    left: 0;
+}
+
+strong {
     font-weight: 600;
 }
 
@@ -47,12 +52,39 @@ img.size {
 
 .controllers-carousel {
     text-align: center;
-    margin-top: 20px;
 }
 
 .arrow-carousel {
+    color: #fff;
     font-size: 20px;
-    padding: 15px 5px 5px 5px;
+    padding: 10px 15px;
+    opacity: 0.7;
+    position: absolute;
+    top: 45%;
+    transition: 0.5s ease-in-out;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    font-size: 40px;
+}
+
+    .arrow-carousel:hover {
+        opacity: 1;
+        color: #00d8ff;
+    }
+
+.left {
+    margin-left: 5%;
+    left: 0;
+}
+
+.right {
+    margin-right: 5%;
+    right: 0;
+}
+
+.ontrollers-carousel {
+    position: relative;
 }
 
 .nav-element {
@@ -233,7 +265,6 @@ img.size {
 
 .country-town {
     font-size: 13px;
-    margin-bottom: 10px;
 }
 
 .star {
@@ -245,12 +276,20 @@ img.size {
     padding-bottom: 5px;
     padding-top: 5px;
     font-weight: 500;
+    text-transform: capitalize;
 }
+
+    .hotel-name:hover, .hotel-name:focus {
+        font-size: 20px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        font-weight: 500;
+    }
 
 .button, a.button {
     margin-right: -10px;
-    background-color: #00d8ff;
-    border-color: #00c9ed;
+    background-color: #00d8ff !important;
+    border-color: #00c9ed !important;
     -webkit-transition: 0.5s ease-in-out;
     -moz-transition: 0.5s ease-in-out;
     -o-transition: 0.5s ease-in-out;
@@ -258,9 +297,9 @@ img.size {
     color: #fff !important;
 }
 
-    .button, a.button:hover {
+    .button:hover, a.button:hover {
         margin-right: -10px;
-        background-color: #00d8d5;
+        background-color: #00d8d5 !important;
         padding: 6px 12px;
         border-color: #00c5c2;
         line-height: 1.42857143;
@@ -268,7 +307,7 @@ img.size {
         color: #fff !important;
     }
 
-    .button, a.button:focus {
+    .button:focus, a.button:focus {
         margin-right: -10px;
         background-color: #00d8d5;
         padding: 6px 12px;
@@ -323,14 +362,6 @@ main {
 
 textarea.description {
     height: 17.8em;
-}
-
-.modal {
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.modal-backdrop {
-    display: none;
 }
 
 .btn-margin {
@@ -572,4 +603,12 @@ a {
 
 .logo a, .logo a:hover, .logo a:focus {
     color: #fff !important;
+}
+
+.modal {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-backdrop {
+    display: none !important;
 }
