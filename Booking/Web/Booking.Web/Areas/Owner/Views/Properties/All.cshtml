@@ -6,10 +6,6 @@
 <h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
 @if (Model.Properties.Count() == 0 || Model.Properties == null)
 {
-    @if (this.TempData.ContainsKey("Error"))
-    {
-        <div class="alert alert-danger margins-temp">@this.TempData["Error"]</div>
-    }
     <div class="text-center intro">No properties found. <a asp-area="Owner" asp-controller="Properties" asp-action="Add">Register your first property now!</a></div>
 }
 else
@@ -52,15 +48,6 @@ else
                         @property.Town, @property.Country
                     </div>
                 </div>
-                @*<ul class="list-inline">
-                    <li class="list-inline-item"><a class="btn button" asp-area="Owner" asp-controller="Properties" asp-action="ById" asp-route-id="@property.Id">View</a></li>
-                    <li class="list-inline-item"><a class="btn button" asp-area="Owner" asp-controller="Offers" asp-action="Add" asp-route-id="@property.Id">Add an offer</a></li>
-                    <li class="list-inline-item"><a class="btn button" asp-area="Owner" asp-controller="Properties" asp-route-id="@property.Id" asp-action="Edit">Edit</a></li>
-                    <li class="list-inline-item">
-                        <form method="post" asp-area="Owner" asp-controller="Properties" asp-action="Delete" id="deleteForm_@property.Id" asp-route-id="@property.Id"></form>
-                        <button id="deleteBtn" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@property.Id">Delete</button>
-                    </li>
-                </ul>*@
                 <hr />
             </div>
             <div class="modal" tabindex="-1" role="dialog" id="deleteModal_@property.Id">

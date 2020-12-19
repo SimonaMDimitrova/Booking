@@ -11,5 +11,7 @@
         IEnumerable<string> GetTheSixMostVisitedNames();
 
         IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs();
+
+        IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs();
     }
 }

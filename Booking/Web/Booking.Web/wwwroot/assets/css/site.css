@@ -1,4 +1,13 @@
-﻿.buttons {
+﻿.back {
+    padding-left: 0 !important;
+}
+
+.logout {
+    position: relative;
+    bottom: 1.5px;
+}
+
+.buttons {
     position: relative;
     left: 0;
 }
@@ -343,7 +352,7 @@ main {
 
 .travel-box {
     position: relative;
-    bottom: 69px;
+    bottom: 42px;
 }
 
 .gallery-section {
@@ -612,3 +621,11 @@ a {
 .modal-backdrop {
     display: none !important;
 }
+
+.hovers, a.hovers {
+    color: #fff;
+}
+
+    .hovers:hover, a.hovers:hover, a.hovers:focus, a.hovers:active {
+        color: #00d8d5 !important;
+    }

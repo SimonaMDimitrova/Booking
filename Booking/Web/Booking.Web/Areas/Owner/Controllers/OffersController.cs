@@ -47,35 +47,31 @@
         public async Task<IActionResult> Add(string id)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            try
+            var property = this.propertiesService.GetById(id, user.Id);
+            if (property == null)
             {
-                this.propertiesService.GetById(id, user.Id);
-            }
-            catch (Exception ex)
-            {
-                this.TempData["Error"] = ex.Message;
+                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
                 return this.RedirectToAction("All", "Properties");
             }
 
             var viewModel = new AddOfferInputModel();
+            viewModel.PropertyId = id;
             viewModel.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
             viewModel.BedTypes = this.bedTypesService.GetAll();
             viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(id);
+            viewModel.PropertyName = this.propertiesService.GetNameById(id);
 
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(string id, AddOfferInputModel input)
+        public async Task<IActionResult> Add(AddOfferInputModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            try
+            var property = this.propertiesService.GetById(input.PropertyId, user.Id);
+            if (property == null)
             {
-                this.propertiesService.GetById(id, user.Id);
-            }
-            catch (Exception ex)
-            {
-                this.TempData["Error"] = ex.Message;
+                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
                 return this.RedirectToAction("All", "Properties");
             }
 
@@ -92,54 +88,108 @@
             {
                 input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
                 input.BedTypes = this.bedTypesService.GetAll();
-                input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(input.PropertyId);
+                input.PropertyName = this.propertiesService.GetNameById(input.PropertyId);
+
+                this.TempData["Error"] = " ";
 
                 return this.View(input);
             }
 
             try
             {
-                await this.offersService.AddToProperty(id, input, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.AddToProperty(input, $"{this.environment.WebRootPath}/images/offers/");
             }
             catch (Exception ex)
             {
-                this.ModelState.AddModelError(nameof(input.Images), ex.Message);
+                if (ex.Message.Contains("offer"))
+                {
+                    this.ModelState.AddModelError(nameof(input.BedTypesCounts), ex.Message);
+                }
+                else
+                {
+                    this.ModelState.AddModelError(nameof(input.Images), ex.Message);
+                }
 
                 input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
                 input.BedTypes = this.bedTypesService.GetAll();
-                input.CurrencyCode = this.currenciesService.GetByPropertyId(id);
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(input.PropertyId);
 
                 return this.View(input);
             }
 
             this.TempData["Message"] = "The offer was successfully added.";
-            return this.RedirectToAction("ById", "Properties", new { id = id });
+            return this.RedirectToAction("ById", "Properties", new { id = input.PropertyId });
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            var propertyId = this.propertiesService.GetIdByOfferId(id);
-            await this.offersService.DeleteAsync(id);
+            var user = await this.userManager.GetUserAsync(this.User);
+            string propertyId;
+            try
+            {
+                propertyId = this.propertiesService.GetIdByOfferId(id, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("All", "Properties");
+            }
+
+            try
+            {
+                await this.offersService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}/images/offers/");
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("ById", "Properties", new { id = propertyId });
+            }
 
             this.TempData["Message"] = "The offer was successfully deleted.";
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            var viewModel = this.offersService.GetById(id);
-            var propertyId = this.propertiesService.GetIdByOfferId(id);
+            var user = await this.userManager.GetUserAsync(this.User);
+            string propertyId;
+            try
+            {
+                propertyId = this.propertiesService.GetIdByOfferId(id, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("All", "Properties");
+            }
+
+            EditOfferViewModel viewModel = this.offersService.GetById(id, user.Id);
             viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
+            viewModel.PropertyId = propertyId;
+            viewModel.PropertyName = this.propertiesService.GetNameById(propertyId);
 
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, EditOfferViewModel input)
+        public async Task<IActionResult> Edit(EditOfferViewModel input)
         {
+            var user = await this.userManager.GetUserAsync(this.User);
+            string propertyId;
+            try
+            {
+                propertyId = this.propertiesService.GetIdByOfferId(input.OfferId, user.Id);
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction("All", "Properties");
+            }
+
             this.ValidateCheckToDate(input);
-            var propertyId = this.propertiesService.GetIdByOfferId(id);
+
             if (!this.ModelState.IsValid)
             {
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
@@ -147,7 +197,7 @@
                 return this.View(input);
             }
 
-            await this.offersService.UpdateAsync(id, input);
+            await this.offersService.UpdateAsync(user.Id, input);
 
             this.TempData["Message"] = "The offer was successfully edited.";
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });

@@ -8,6 +8,8 @@
 
     public interface IPropertiesService
     {
+        string GetNameById(string id);
+
         Task CreateAsync(AddPropertyInputModel input, string userId, string imagePath);
 
         bool CheckIfNameIsAvailable(string name);
@@ -20,13 +22,13 @@
 
         EditPropertyInputModel GetById(string propertyId, string userId);
 
-        Task EditAsync(EditPropertyInputModel input, string userId);
+        Task UpdateAsync(EditPropertyInputModel input, string userId);
 
-        Task DeleteAsync(string propertyId, string userId);
+        Task DeleteAsync(string propertyId, string userId, string imagePath);
 
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
 
-        string GetIdByOfferId(string id);
+        string GetIdByOfferId(string id, string userId);
 
         SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input);
     }

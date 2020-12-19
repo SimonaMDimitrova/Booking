@@ -16,12 +16,17 @@
 
         public IActionResult GetTowns(string id)
         {
-            return this.Json(this.townsService.GetAllByCountryId(int.Parse(id)));
+            return this.Json(this.townsService.GetAllByKeyValuePairBasedOnCountryId(int.Parse(id)));
         }
 
         public IActionResult GetCurrencyCode(string id)
         {
             return this.Json(this.currenciesService.GetByCountryId(int.Parse(id)));
+        }
+
+        public IActionResult GetMostPopularTowns(string id)
+        {
+            return this.Json(this.townsService.GetMostPopularByKeyValuePairBasedOnCountryId(int.Parse(id)));
         }
     }
 }

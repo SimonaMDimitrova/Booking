@@ -38,6 +38,19 @@
             return countries;
         }
 
+        public IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs()
+        {
+            return this.countriesRepository.All()
+                .Where(c => c.Towns.Count != 0 && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)))
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                })
+                .OrderBy(c => c.Name)
+                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
+        }
+
         public IEnumerable<CountryInListViewModel> GetTheSixMostVisited()
         {
             var countriesDb = this.countriesRepository

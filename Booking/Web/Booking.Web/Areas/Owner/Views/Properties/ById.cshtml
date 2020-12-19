@@ -5,7 +5,6 @@
     var images = new List<string>();
 }
 
-<a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
 <h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
 <div class="row">
     <div class="col-md-12 margins-temp">
@@ -89,7 +88,7 @@
             }
         }
     </div>
-    @if (images.Count > 0)
+    @if (images.Count > 1)
     {
         <div class="controllers-carousel">
             <a class="" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -123,7 +122,7 @@
         <hr />
         <h3 class="text-center">Property facilities</h3>
         <hr />
-        @if (Model.Facilities.Any() || Model.Facilities != null)
+        @if (Model.Facilities.Any() && Model.Facilities != null)
         {
             <ul>
                 @foreach (var facility in Model.Facilities)
@@ -255,9 +254,8 @@
     }
 </div>
 <hr />
-<a asp-area="Owner" asp-controller="Properties" asp-action="All" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to my properties</span></a>
 
-<div class="modal" tabindex="-1" role="dialog" id="deleteModal_@Model.Id">
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteModal_@Model.Id">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">

@@ -18,24 +18,30 @@
 
     public class PropertiesService : IPropertiesService
     {
-        private const string EditError = "You don't have permission to make any changes to this property (or it doesn't exists).";
+        private const string Error = "You don't have permission to make any changes to this property (or it doesn't exists).";
 
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository;
+        private readonly IRepository<PropertyImage> propertyImagesRepository;
+        private readonly IDeletableEntityRepository<PropertyRule> propertyRulesRepository;
 
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
             IRepository<Rule> rulesRepository,
             IDeletableEntityRepository<Offer> offersRepository,
-            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository)
+            IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository,
+            IRepository<PropertyImage> propertyImagesRepository,
+            IDeletableEntityRepository<PropertyRule> propertyRulesRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
             this.offersRepository = offersRepository;
             this.propertyFacilitiesRepository = propertyFacilitiesRepository;
+            this.propertyImagesRepository = propertyImagesRepository;
+            this.propertyRulesRepository = propertyRulesRepository;
         }
 
         public bool CheckIfEditInputNameIsAvailable(string name, string propertyId)
@@ -202,7 +208,7 @@
             await this.propertiesRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string propertyId, string userId)
+        public async Task DeleteAsync(string propertyId, string userId, string imagePath)
         {
             var property = this.propertiesRepository
                 .All()
@@ -212,32 +218,43 @@
                 throw new Exception("Cannot delete someone else property!");
             }
 
-            var offers = this.offersRepository
+            var rules = this.propertyRulesRepository
                 .All()
-                .Where(o => o.PropertyId == propertyId)
+                .Where(r => r.PropertyId == propertyId)
                 .ToList();
-
-            if (offers != null)
+            foreach (var rule in rules)
             {
-                foreach (var offer in offers)
+                this.propertyRulesRepository.Delete(rule);
+            }
+
+            var images = this.propertyImagesRepository
+                .All()
+                .Where(p => p.PropertyId == propertyId)
+                .ToList();
+            foreach (var image in images)
+            {
+                var fileName = $"{imagePath}{image.Id}.{image.Extension}";
+                this.propertyImagesRepository.Delete(image);
+                if (File.Exists(fileName))
                 {
-                    this.offersRepository.Delete(offer);
+                    File.Delete(fileName);
                 }
             }
 
             this.propertiesRepository.Delete(property);
             await this.propertiesRepository.SaveChangesAsync();
-            await this.offersRepository.SaveChangesAsync();
+            await this.propertyImagesRepository.SaveChangesAsync();
+            await this.propertyRulesRepository.SaveChangesAsync();
         }
 
-        public async Task EditAsync(EditPropertyInputModel input, string userId)
+        public async Task UpdateAsync(EditPropertyInputModel input, string userId)
         {
             var property = this.propertiesRepository
                 .All()
                 .FirstOrDefault(p => input.Id == p.Id && userId == p.ApplicationUserId);
             if (property == null)
             {
-                throw new Exception(EditError);
+                throw new Exception(Error);
             }
 
             property.Name = input.Name;
@@ -319,7 +336,9 @@
                         Id = p.Id,
                         Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
                             $"../../images/properties/{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
-                            : $"../../assets/images/defaults/default.png",
+                            : p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault() != null ?
+                            $"../../images/offers/{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
+                            : "../../assets/images/defaults/default.png",
                     })
                     .ToList(),
             };
@@ -402,11 +421,6 @@
                 })
                 .FirstOrDefault();
 
-            if (property == null)
-            {
-                throw new Exception(EditError);
-            }
-
             return property;
         }
 
@@ -423,12 +437,25 @@
                 .Id;
         }
 
-        public string GetIdByOfferId(string id)
+        public string GetIdByOfferId(string id, string userId)
+        {
+            var property = this.propertiesRepository
+                .All()
+                .FirstOrDefault(p => p.Offers.Any(o => o.Id == id) && p.ApplicationUserId == userId);
+            if (property == null)
+            {
+                throw new Exception(Error);
+            }
+
+            return property.Id;
+        }
+
+        public string GetNameById(string id)
         {
             return this.propertiesRepository
                 .All()
-                .FirstOrDefault(p => p.Offers.Any(o => o.Id == id))
-                .Id;
+                .FirstOrDefault(p => p.Id == id)
+                .Name;
         }
     }
 }

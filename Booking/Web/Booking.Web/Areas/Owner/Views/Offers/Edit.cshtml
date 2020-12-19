@@ -3,27 +3,32 @@
     this.ViewData["Title"] = "Edit an offer";
 }
 
-<div class="row padding">
-    <h2 class="h2 text-center">Edit an offer</h2>
+<div class="row">
+    <h2 class="h2 text-center">Edit an offer *</h2>
     <div class="col-md-3"></div>
-    <form class="col-md-6" method="post">
-        <hr />
-        <div class="form-group">
-            <label asp-for="ValidFrom"></label>
-            <input type="date" asp-for="ValidFrom" class="form-control" />
-            <span asp-validation-for="ValidFrom" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ValidTo"></label>
-            <input type="date" asp-for="ValidTo" class="form-control" />
-            <span asp-validation-for="ValidTo" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PricePerPerson">Price per person - @Model.CurrencyCode</label>
-            <input asp-for="PricePerPerson" class="form-control" />
-            <span asp-validation-for="PricePerPerson" class="text-danger"></span>
-        </div>
-        <hr />
-        <input type="submit" value="Edit an offer" class="book-btn text-center" />
-    </form>
+    <div class="col-md-6">
+        <form class="margin-bottom" method="post">
+            <hr />
+            <div class="form-group">
+                <label asp-for="ValidFrom"></label>
+                <input type="date" asp-for="ValidFrom" class="form-control" />
+                <span asp-validation-for="ValidFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidTo"></label>
+                <input type="date" asp-for="ValidTo" class="form-control" />
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PricePerPerson">Price per person - @Model.CurrencyCode</label>
+                <input asp-for="PricePerPerson" class="form-control" />
+                <span asp-validation-for="PricePerPerson" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="OfferId" class="form-control" />
+            <hr />
+            <input type="submit" value="Edit an offer" class="book-btn text-center" />
+        </form>
+        *from property @Model.PropertyName
+    </div>
 </div>
+<hr />

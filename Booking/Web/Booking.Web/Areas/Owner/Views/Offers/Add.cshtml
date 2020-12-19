@@ -4,8 +4,8 @@
 }
 
 <div class="row">
-    <h2 class="h2 text-center">Add an offer</h2>
-    <form method="post" class="row" enctype="multipart/form-data">
+    <h2 class="h2 text-center">Add an offer *</h2>
+    <form method="post" class="row margin-bottom" enctype="multipart/form-data">
         <div class="col-md-6">
             <hr />
             <h4 class="h4-padding">Offer information</h4>
@@ -28,7 +28,7 @@
             <hr />
             <h4 class="h4-padding">Sleeping places</h4>
             <hr />
-            <div class="form-group hr-padding">
+            <div class="form-group">
                 @foreach (var bedType in Model.BedTypes)
                 {
                     <div class="col-md-3">
@@ -42,14 +42,20 @@
                 }
                 <span asp-validation-for="BedTypesCounts" class="text-danger"></span>
             </div>
-            <hr />
+            @if (this.TempData.ContainsKey("Error"))
+            {
+                <hr />
+            }
+            else
+            {
+                <hr style="margin-top: 100px;" />
+            }
             <div class="form-group">
                 <label asp-for="Images"></label>
                 <input asp-for="Images" class="form-control" />
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
             <hr />
-            <input type="submit" value="Add an offer" class="book-btn text-center" />
         </div>
         <div class="col-md-6">
             <hr />
@@ -108,5 +114,9 @@
             <hr />
             <input type="hidden" asp-for="PropertyId" />
         </div>
+        <div class="col-md-12">
+            <input type="submit" value="Add an offer" class="book-btn text-center" />
+        </div>
     </form>
+    *to property @Model.PropertyName
 </div>

@@ -9,6 +9,10 @@
 
     public abstract class OfferBaseInputModel
     {
+        public string PropertyId { get; set; }
+
+        public string PropertyName { get; set; }
+
         [Required]
         [Range(1, double.MaxValue, ErrorMessage = "Price is required. It must be more than 1.00.")]
         public decimal PricePerPerson { get; set; }

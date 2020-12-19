@@ -2,5 +2,6 @@
 {
     public class EditOfferViewModel : OfferBaseInputModel
     {
+        public string OfferId { get; set; }
     }
 }

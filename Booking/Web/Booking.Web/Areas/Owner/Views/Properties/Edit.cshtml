@@ -4,8 +4,7 @@
 }
 
 <div class="row">
-    <a asp-area="Owner" asp-controller="Properties" asp-action="ById" asp-route-id="@Model.Id" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to @Model.Name</span></a>
-    <h2 class="h2 text-center">Edit property</h2>
+    <h2 class="h2 text-center">Edit property - @Model.Name</h2>
     <form method="post" class="row margin-bottom">
         <div class="col-md-3">
         </div>
@@ -101,8 +100,8 @@
                 }
             </div>
             <hr />
+            <input type="hidden" asp-for="Id" />
             <input type="submit" class="book-btn text-center" value="Edit" />
         </div>
     </form>
-    <a asp-area="Owner" asp-controller="Properties" asp-action="ById" asp-route-id="@Model.Id" class="add"><i class="fas fa-arrow-circle-left"></i> <span class="underline">Back to @Model.Name</span></a>
 </div>

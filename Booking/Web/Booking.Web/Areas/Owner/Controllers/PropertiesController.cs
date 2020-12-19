@@ -24,6 +24,7 @@
         private readonly IFacilitiesService facilitiesService;
         private readonly IRulesService rulesService;
         private readonly IWebHostEnvironment environment;
+        private readonly IOffersService offersService;
 
         public PropertiesController(
             ICountriesService countriesService,
@@ -34,7 +35,8 @@
             UserManager<ApplicationUser> userManager,
             IFacilitiesService facilitiesService,
             IRulesService rulesService,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IOffersService offersService)
             : base(townsService, currenciesService)
         {
             this.countriesService = countriesService;
@@ -44,6 +46,7 @@
             this.facilitiesService = facilitiesService;
             this.rulesService = rulesService;
             this.environment = environment;
+            this.offersService = offersService;
         }
 
         public async Task<IActionResult> All()
@@ -114,15 +117,11 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            EditPropertyInputModel viewModel;
-            try
+            var viewModel = this.propertiesService.GetById(id, user.Id);
+            if (viewModel == null)
             {
-                viewModel = this.propertiesService.GetById(id, user.Id);
-            }
-            catch (Exception ex)
-            {
-                this.TempData["Error"] = ex.Message;
-                return this.RedirectToAction(nameof(this.ById), new { id = id });
+                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
+                return this.RedirectToAction("All", "Properties");
             }
 
             viewModel.Facilities = this.facilitiesService.GetAllByPropertyId(id);
@@ -134,6 +133,14 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditPropertyInputModel input)
         {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var property = this.propertiesService.GetById(input.Id, user.Id);
+            if (property == null)
+            {
+                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
+                return this.RedirectToAction("All", "Properties");
+            }
+
             if (this.propertiesService.CheckIfEditInputNameIsAvailable(input.Name, input.Id))
             {
                 this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
@@ -147,22 +154,7 @@
                 return this.View(input);
             }
 
-            if (input.Id == null)
-            {
-                this.TempData["Error"] = "The property is invalid.";
-                return this.RedirectToAction(nameof(this.All));
-            }
-
-            var user = await this.userManager.GetUserAsync(this.User);
-            try
-            {
-                await this.propertiesService.EditAsync(input, user.Id);
-            }
-            catch (Exception ex)
-            {
-                this.TempData["Error"] = ex.Message;
-                return this.RedirectToAction(nameof(this.All));
-            }
+            await this.propertiesService.UpdateAsync(input, user.Id);
 
             this.TempData["Message"] = "Property was successfully edited.";
             return this.RedirectToAction(nameof(this.ById), new { id = input.Id });
@@ -174,10 +166,21 @@
             var user = await this.userManager.GetUserAsync(this.User);
             try
             {
-                await this.propertiesService.DeleteAsync(id, user.Id);
+                await this.propertiesService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}/images/properties/");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.TempData["Error"] = ex.Message;
+                return this.RedirectToAction(nameof(this.All));
+            }
+
+            try
+            {
+                await this.offersService.DeleteAllByPropertyIdAsync(id, user.Id, $"{this.environment.WebRootPath}/images/offers/");
+            }
+            catch (Exception ex)
+            {
+                this.TempData["Error"] = ex.Message;
                 return this.RedirectToAction(nameof(this.All));
             }
 

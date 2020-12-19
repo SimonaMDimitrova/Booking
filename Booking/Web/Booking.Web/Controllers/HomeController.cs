@@ -19,7 +19,7 @@
 
         public IActionResult Index()
         {
-            var countries = this.countriesService.GetAllByKeyValuePairs();
+            var countries = this.countriesService.GetMostPopularByKeyValuePairs();
 
             var input = new SearchIndexInputModel
             {
