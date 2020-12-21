@@ -1,5 +1,6 @@
-﻿namespace Booking.Web.ViewModels.SearchProperties
+﻿namespace Booking.Web.ViewModels.ViewComponents.SearchResults
 {
+    using System;
     using System.Collections.Generic;
 
     public class SearchIndexListViewModel

@@ -7,16 +7,24 @@
     public class SearchPropertiesController : BaseController
     {
         private readonly IPropertiesService propertiesService;
+        private readonly ICountriesService countriesService;
 
-        public SearchPropertiesController(IPropertiesService propertiesService)
+        public SearchPropertiesController(
+            IPropertiesService propertiesService,
+            ICountriesService countriesService)
         {
             this.propertiesService = propertiesService;
+            this.countriesService = countriesService;
         }
 
         public IActionResult Index(IndexInputModel input)
         {
-            var viewModel = this.propertiesService.GetBySearchRequirements(input);
-            return this.View(viewModel);
+            var countries = this.countriesService.GetMostPopularByKeyValuePairs();
+
+            input.Countries = countries;
+
+            //var viewModel = this.propertiesService.GetBySearchRequirements(input);
+            return this.View(input);
         }
     }
 }

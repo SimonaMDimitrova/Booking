@@ -14,7 +14,7 @@
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.PropertiesViewModels;
     using Booking.Web.ViewModels.Rules;
-    using Booking.Web.ViewModels.SearchProperties;
+    using Booking.Web.ViewModels.ViewComponents.SearchResults;
 
     public class PropertiesService : IPropertiesService
     {
@@ -88,52 +88,28 @@
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Address = p.Address,
                     Country = p.Town.Country.Name,
                     Town = p.Town.Name,
-                    Description = p.Description,
-                    Floors = p.Floors,
                     CheckIn = checkIn,
                     CheckOut = checkOut,
                     Stars = p.Stars,
                     PropertyCategory = p.PropertyCategory.Name,
-                    PropertyType = p.PropertyCategory.PropertyType.Name,
-                    CurrencyCode = p.Town.Country.Currency.CurrencyCode,
-                    Facilities = p.PropertyFacilities
-                        .Select(f => f.Facility.Name)
-                        .ToList(),
-                    Offers = p.Offers
+                    Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
+                            $"../../images/properties/{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
+                            : p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault() != null ?
+                            $"../../images/offers/{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
+                            : "../../assets/images/defaults/default.png",
+                    OffersCount = p.Offers
                         .Where(
                             o => (o.ValidFrom.Date >= DateTime.UtcNow.Date ? o.ValidFrom.Date : DateTime.UtcNow.Date) <= checkIn.Date
                                 && o.ValidTo.Date <= checkOut.Date
-                                && (checkOut - checkIn).TotalDays >= 2)
-                            .Select(o => new OfferViewModel
-                            {
-                                Id = o.Id,
-                                Price = o.PricePerPerson,
-                                ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
-                                ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
-                                OfferFacilities = o.OfferFacilities
-                                    .Select(f => new OfferFacilityViewModel
-                                    {
-                                        Name = f.Facility.Name,
-                                        Category = f.Facility.FacilityCategory.Name,
-                                    })
-                                    .ToList(),
-                                Rooms = o.OfferBedTypes
-                                    .Select(b => new BedTypeViewModel
-                                    {
-                                        Type = b.BedType.Type,
-                                        Capacity = b.BedType.Capacity,
-                                    })
-                                    .ToList(),
-                                Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                            })
-                            .Where(
-                                o => o.Guests == input.Members
-                                && (o.Price >= input.MinBudget && o.Price <= (input.MaxBudget == 0 ? int.MaxValue : input.MaxBudget)))
-                            .ToList(),
+                                && (checkOut - checkIn).TotalDays >= 2
+                                && (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity) == input.Members
+                                && o.PricePerPerson >= input.MinBudget && o.PricePerPerson <= (input.MaxBudget == 0 ? int.MaxValue : input.MaxBudget))
+                        .ToList()
+                        .Count,
                 })
+                .Where(p => p.OffersCount > 0)
                 .ToList();
 
             if (properties == null)

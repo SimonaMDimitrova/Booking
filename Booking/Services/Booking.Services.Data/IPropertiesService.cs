@@ -4,7 +4,7 @@
 
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.PropertiesViewModels;
-    using Booking.Web.ViewModels.SearchProperties;
+    using Booking.Web.ViewModels.ViewComponents.SearchResults;
 
     public interface IPropertiesService
     {

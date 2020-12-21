@@ -1,7 +1,5 @@
 ﻿namespace Booking.Web.ViewComponents
 {
-    using System.Linq;
-
     using Booking.Services.Data;
     using Booking.Web.ViewModels.ViewComponents.Countries;
     using Microsoft.AspNetCore.Mvc;

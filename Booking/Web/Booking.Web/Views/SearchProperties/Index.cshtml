@@ -1,65 +1,105 @@
-﻿@model Booking.Web.ViewModels.SearchProperties.SearchIndexListViewModel
+﻿@model Booking.Web.ViewModels.Home.IndexInputModel
 @{
     this.ViewData["Title"] = "Searched result";
+    var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
 }
 
-@if (Model != null && Model.Properties.Any(p => p.Offers.Any()))
-{
-    foreach (var property in Model.Properties)
-    {
-        <h3>Property information</h3>
-        <p>@property.Name</p>
-        <p>@property.Description</p>
-        <p>@property.Stars</p>
-        <p>@property.Floors</p>
-        <p>@property.Country</p>
-        <p>@property.Town</p>
-        <p>@property.Address</p>
-        <p>@property.PropertyCategory</p>
-        <p>@property.PropertyType</p>
-        <p>@property.CurrencyCode</p>
 
-        <h3>Property facilities</h3>
-        <p>
-            <ul>
-                @foreach (var facility in property.Facilities)
-                {
-                    <li>@facility</li>
+@*<h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>*@
+<div class="row">
+    <div class="col-md-3">
+        <h3>Search</h3>
+        <hr />
+        <form method="get">
+            <div class="form-group">
+                <label>Destination</label>
+                <select id="countriesId" asp-for="CountryId" class="form-control" asp-items="countries">
+                    <option value="0">Choose a country ...</option>
+                </select>
+                <select id="townsId" asp-for="TownId" class="form-control">
+                    <option value="0">Choose a country first ...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckIn"></label>
+                <input asp-for="CheckIn" type="date" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckOut"></label>
+                <input asp-for="CheckOut" type="date" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Members"></label>
+                <select id="membersId" asp-for="Members" class="form-control ">
+                    <option value="1">1 Member</option>
+                    @for (int i = 2; i <= 30; i++)
+                    {
+                        <option value="@i">@i Members</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label id="currencyId">Budget</label>
+                <input asp-for="MinBudget" class="form-control" />
+                <span>* min price per person</span>
+                <input asp-for="MaxBudget" class="form-control" />
+                <span>* max price per person</span>
+            </div>
+            <input type="submit" class="book-btn" value="Search" />
+        </form>
+    </div>
+    <div class="col-md-9">
+        <vc:search-results input="Model" />
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/most-popular-towns.js"></script>
+    <script>
+    var countriesSelection = document.getElementById('countriesId');
+    countriesSelection.value = @Model.CountryId;
+    var countryId = @Model.CountryId;
+    let currency = document.getElementById("currencyId");
+
+    let option = document.createElement("option");
+    option.text = @Model.TownId;
+    option.value = @Model.TownId;
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let townsDropdown = document.getElementById('townsId');
+            if (countryId != 0) {
+                townsDropdown[0].innerText = 'Choose a town ...';
+
+                var towns = JSON.parse(this.responseText);
+                for (let i = 0; i < towns.length; i++) {
+                    let town = towns[i];
+                    let option = document.createElement("option");
+                    option.text = town.value;
+                    option.value = town.key;
+                    townsDropdown.add(option);
                 }
-            </ul>
-        </p>
 
-        <h3>Offers</h3>
-        foreach (var offer in property.Offers)
-        {
-            <p>@(offer.Price * offer.Guests) @property.CurrencyCode</p>
-            <p>@offer.ValidFrom</p>
-            <p>@offer.ValidTo</p>
-            <p>@offer.Guests</p>
-
-            <p>------------------------------------</p>
-
-            foreach (var facility in offer.OfferFacilities)
-            {
-                <p>@facility.Category</p>
-                <p>@facility.Name</p>
+                townsDropdown.value = @Model.TownId;
+                getCurrencyCode(currency, countryId);
             }
-            foreach (var room in offer.Rooms)
-            {
-                <p>@room</p>
-            }
-
-            <form asp-action="Book" asp-controller="Bookings">
-                <input type="hidden" name="CheckIn" value="@property.CheckIn" />
-                <input type="hidden" name="CheckOut" value="@property.CheckOut" />
-                <input type="hidden" name="OfferId" value="@offer.Id" />
-                <input type="submit" class="btn btn-primary" value="Book!" />
-            </form>
-            <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
         }
+    };
+    xhr.open("GET", `/Home/GetMostPopularTowns/${countryId}`);
+    xhr.send();
+
+    function getCurrencyCode(currency, countryId) {
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                currency.innerText = `Budget-${this.responseText}`;
+            }
+        }
+        xhr.open("GET", `/Home/GetCurrencyCode/${countryId.toString()}`);
+        xhr.send();
     }
-}
-else
-{
-    <p>NOT FOUND</p>
+    </script>
 }
