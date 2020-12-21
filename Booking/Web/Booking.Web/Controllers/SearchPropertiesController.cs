@@ -13,7 +13,7 @@
             this.propertiesService = propertiesService;
         }
 
-        public IActionResult Index(SearchIndexInputModel input)
+        public IActionResult Index(IndexInputModel input)
         {
             var viewModel = this.propertiesService.GetBySearchRequirements(input);
             return this.View(viewModel);

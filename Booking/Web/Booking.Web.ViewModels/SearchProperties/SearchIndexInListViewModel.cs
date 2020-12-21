@@ -1,11 +1,13 @@
 ﻿namespace Booking.Web.ViewModels.SearchProperties
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
-    public class SearchIndexInListViewModel
+    using Booking.Web.ViewModels.PropertiesViewModels;
+
+    public class SearchIndexInListViewModel : PropertyByIdViewModel
     {
-        public IEnumerable<SearchIndexViewModel> Properties { get; set; }
+        public DateTime CheckIn { get; set; }
+
+        public DateTime CheckOut { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class SearchIndexInputModel
+    public class IndexInputModel
     {
         public IEnumerable<KeyValuePair<string, string>> Countries { get; set; }
 

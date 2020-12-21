@@ -58,21 +58,23 @@
                 .Any(p => p.Name == name);
         }
 
-        public SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input)
+        public SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input)
         {
-            var isCountryIdValid = int.TryParse(input.CountryId, out int countryId);
-            var townIdParsed = int.TryParse(input.TownId, out int townId);
+            var isCountryIdParsed = int.TryParse(input.CountryId, out int countryId);
+            var isTownIdParsed = int.TryParse(input.TownId, out int townId);
+            var isCheckInValid = DateTime.TryParse(input.CheckIn.ToString(), out var checkIn);
+            var isCheckOutValid = DateTime.TryParse(input.CheckOut.ToString(), out var checkOut);
 
-            // TODO: check checkIn and Out
-            if (input.CheckIn == null
-                || input.CheckOut == null
-                || !isCountryIdValid
-                || !townIdParsed
+            if (
+                !isCheckInValid
+                || !isCheckOutValid
+                || !isCountryIdParsed
+                || !isTownIdParsed
                 || countryId <= 0
                 || townId <= 0
                 || input.Members <= 0
                 || input.MinBudget < 0
-                || input.MinBudget >= input.MaxBudget)
+                || input.MinBudget > input.MaxBudget)
             {
                 return null;
             }
@@ -82,7 +84,7 @@
                 .Where(
                     p => p.TownId == townId
                     && p.Town.CountryId == countryId)
-                .Select(p => new SearchIndexViewModel
+                .Select(p => new SearchIndexInListViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -91,8 +93,8 @@
                     Town = p.Town.Name,
                     Description = p.Description,
                     Floors = p.Floors,
-                    CheckIn = (DateTime)input.CheckIn,
-                    CheckOut = (DateTime)input.CheckOut,
+                    CheckIn = checkIn,
+                    CheckOut = checkOut,
                     Stars = p.Stars,
                     PropertyCategory = p.PropertyCategory.Name,
                     PropertyType = p.PropertyCategory.PropertyType.Name,
@@ -100,30 +102,37 @@
                     Facilities = p.PropertyFacilities
                         .Select(f => f.Facility.Name)
                         .ToList(),
-                    //Offers = p.Offers
-                    //.Where(
-                    //    o => o.ValidFrom >= input.CheckIn
-                    //        && o.ValidTo <= input.CheckOut)
-                    //    .Select(o => new OfferViewModel
-                    //    {
-                    //        Id = o.Id,
-                    //        Price = o.PricePerPerson,
-                    //        ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
-                    //        ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
-                    //        OfferFacilities = o.OfferFacilities
-                    //            .Select(f => new OfferFacilityViewModel
-                    //            {
-                    //                Name = f.Facility.Name,
-                    //                Category = f.Facility.FacilityCategory.Name,
-                    //            })
-                    //            .ToList(),
-                    //        Rooms = o.OfferBedTypes.Select(b => b.BedType.Type).ToList(),
-                    //        Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                    //    })
-                    //    .Where(
-                    //        o => o.Guests == input.Members
-                    //        && (o.Price >= input.MinBudget || o.Price <= input.MaxBudget))
-                    //    .ToList(),
+                    Offers = p.Offers
+                        .Where(
+                            o => (o.ValidFrom.Date >= DateTime.UtcNow.Date ? o.ValidFrom.Date : DateTime.UtcNow.Date) <= checkIn.Date
+                                && o.ValidTo.Date <= checkOut.Date
+                                && (checkOut - checkIn).TotalDays >= 2)
+                            .Select(o => new OfferViewModel
+                            {
+                                Id = o.Id,
+                                Price = o.PricePerPerson,
+                                ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
+                                ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
+                                OfferFacilities = o.OfferFacilities
+                                    .Select(f => new OfferFacilityViewModel
+                                    {
+                                        Name = f.Facility.Name,
+                                        Category = f.Facility.FacilityCategory.Name,
+                                    })
+                                    .ToList(),
+                                Rooms = o.OfferBedTypes
+                                    .Select(b => new BedTypeViewModel
+                                    {
+                                        Type = b.BedType.Type,
+                                        Capacity = b.BedType.Capacity,
+                                    })
+                                    .ToList(),
+                                Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                            })
+                            .Where(
+                                o => o.Guests == input.Members
+                                && (o.Price >= input.MinBudget && o.Price <= (input.MaxBudget == 0 ? int.MaxValue : input.MaxBudget)))
+                            .ToList(),
                 })
                 .ToList();
 
@@ -132,7 +141,7 @@
                 return null;
             }
 
-            var propertiesViewModel = new SearchIndexInListViewModel();
+            var propertiesViewModel = new SearchIndexListViewModel();
             propertiesViewModel.Properties = properties;
 
             return propertiesViewModel;

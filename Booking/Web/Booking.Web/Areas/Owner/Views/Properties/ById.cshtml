@@ -32,7 +32,7 @@
         <div class="country-town margin-bottom">@Model.Address, @Model.Town, @Model.Country</div>
     </div>
     <div class="col-md-6 text-right">
-        <ul class="list-inline">
+        <ul class="list-inline margin-bottom">
             <li class="list-inline-item"><a class="btn button" asp-area="Owner" asp-controller="Properties" asp-route-id="@Model.Id" asp-action="Edit">Edit</a></li>
             <li class="list-inline-item">
                 <form method="post" asp-area="Owner" asp-controller="Properties" asp-action="Delete" id="deleteForm_@Model.Id" asp-route-id="@Model.Id"></form>

@@ -30,6 +30,6 @@
 
         string GetIdByOfferId(string id, string userId);
 
-        SearchIndexInListViewModel GetBySearchRequirements(SearchIndexInputModel input);
+        SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input);
     }
 }

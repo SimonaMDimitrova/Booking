@@ -1,13 +1,9 @@
-﻿@model Booking.Web.ViewModels.SearchProperties.SearchIndexInListViewModel
+﻿@model Booking.Web.ViewModels.SearchProperties.SearchIndexListViewModel
 @{
     this.ViewData["Title"] = "Searched result";
 }
 
-@if (Model == null)
-{
-    <p>NOT FOUND</p>
-}
-else
+@if (Model != null && Model.Properties.Any(p => p.Offers.Any()))
 {
     foreach (var property in Model.Properties)
     {
@@ -34,39 +30,36 @@ else
         </p>
 
         <h3>Offers</h3>
-        @if (property.Offers.Count() == 0)
+        foreach (var offer in property.Offers)
         {
-            <p><a asp-controller="Offers" asp-action="Add" asp-route-id="@property.Id">Add an offer</a></p>
-        }
-        else
-        {
-            foreach (var offer in property.Offers)
+            <p>@(offer.Price * offer.Guests) @property.CurrencyCode</p>
+            <p>@offer.ValidFrom</p>
+            <p>@offer.ValidTo</p>
+            <p>@offer.Guests</p>
+
+            <p>------------------------------------</p>
+
+            foreach (var facility in offer.OfferFacilities)
             {
-                <p>@(offer.Price * offer.Guests) @property.CurrencyCode</p>
-                <p>@offer.ValidFrom</p>
-                <p>@offer.ValidTo</p>
-                <p>@offer.Guests</p>
-
-                <p>------------------------------------</p>
-
-                foreach (var facility in offer.OfferFacilities)
-                {
-                    <p>@facility.Category</p>
-                    <p>@facility.Name</p>
-                }
-                foreach (var room in offer.Rooms)
-                {
-                    <p>@room</p>
-                }
-                
-                <form asp-action="Book" asp-controller="Bookings">
-                    <input type="hidden" name="CheckIn" value="@property.CheckIn" />
-                    <input type="hidden" name="CheckOut" value="@property.CheckOut" />
-                    <input type="hidden" name="OfferId" value="@offer.Id" />
-                    <input type="submit" class="btn btn-primary" value="Book!" />
-                </form>
-                <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
+                <p>@facility.Category</p>
+                <p>@facility.Name</p>
             }
+            foreach (var room in offer.Rooms)
+            {
+                <p>@room</p>
+            }
+
+            <form asp-action="Book" asp-controller="Bookings">
+                <input type="hidden" name="CheckIn" value="@property.CheckIn" />
+                <input type="hidden" name="CheckOut" value="@property.CheckOut" />
+                <input type="hidden" name="OfferId" value="@offer.Id" />
+                <input type="submit" class="btn btn-primary" value="Book!" />
+            </form>
+            <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
         }
     }
+}
+else
+{
+    <p>NOT FOUND</p>
 }

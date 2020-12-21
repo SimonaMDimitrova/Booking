@@ -21,7 +21,7 @@
         {
             var countries = this.countriesService.GetMostPopularByKeyValuePairs();
 
-            var input = new SearchIndexInputModel
+            var input = new IndexInputModel
             {
                 Countries = countries,
             };
