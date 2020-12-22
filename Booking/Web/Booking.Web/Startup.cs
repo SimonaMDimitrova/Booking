@@ -75,6 +75,7 @@
             services.AddTransient<IOffersService, OffersService>();
             services.AddTransient<IBedTypesService, BedTypesService>();
             services.AddTransient<IDictionariesService, DictionariesService>();
+            services.AddTransient<IBookingsService, BookingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

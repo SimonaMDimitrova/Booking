@@ -58,7 +58,7 @@
                 .Any(p => p.Name == name);
         }
 
-        public SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input)
+        public SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input, string userEmail)
         {
             var isCountryIdParsed = int.TryParse(input.CountryId, out int countryId);
             var isTownIdParsed = int.TryParse(input.TownId, out int townId);
@@ -83,7 +83,8 @@
                 .All()
                 .Where(
                     p => p.TownId == townId
-                    && p.Town.CountryId == countryId)
+                    && p.Town.CountryId == countryId
+                    && p.ApplicationUser.Email != userEmail)
                 .Select(p => new SearchIndexInListViewModel
                 {
                     Id = p.Id,

@@ -6,9 +6,9 @@
 
     using global::Booking.Data.Common.Models;
 
-    public class ApplicationUserOffer : BaseDeletableModel<string>
+    public class Booking : BaseDeletableModel<string>
     {
-        public ApplicationUserOffer()
+        public Booking()
         {
             this.Id = Guid.NewGuid().ToString();
         }

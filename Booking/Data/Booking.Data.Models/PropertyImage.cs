@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
     public class PropertyImage : BaseModel<string>
     {

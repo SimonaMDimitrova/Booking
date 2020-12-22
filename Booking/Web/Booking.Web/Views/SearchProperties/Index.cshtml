@@ -1,4 +1,5 @@
 ﻿@model Booking.Web.ViewModels.Home.IndexInputModel
+@inject Microsoft.AspNetCore.Identity.UserManager<Booking.Data.Models.ApplicationUser> UserManager
 @{
     this.ViewData["Title"] = "Searched result";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
@@ -49,7 +50,7 @@
         </form>
     </div>
     <div class="col-md-9">
-        <vc:search-results input="Model" />
+        <vc:search-results input="Model" user-email="@this.User.Identity.Name" />
     </div>
 </div>
 

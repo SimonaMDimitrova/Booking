@@ -18,7 +18,7 @@ namespace Booking.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
             this.Properties = new HashSet<Property>();
-            this.ApplicationUserOffers = new HashSet<ApplicationUserOffer>();
+            this.ApplicationUserOffers = new HashSet<Booking>();
         }
 
         // Audit info
@@ -39,6 +39,6 @@ namespace Booking.Data.Models
 
         public virtual ICollection<Property> Properties { get; set; }
 
-        public virtual ICollection<ApplicationUserOffer> ApplicationUserOffers { get; set; }
+        public virtual ICollection<Booking> ApplicationUserOffers { get; set; }
     }
 }

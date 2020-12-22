@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Text;
 
-    using Booking.Data.Common.Models;
+    using global::Booking.Data.Common.Models;
 
     public class OfferImage : BaseModel<string>
     {

@@ -17,7 +17,7 @@
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IRepository<BedType> bedTypesRepository;
-        private readonly IDeletableEntityRepository<ApplicationUserOffer> applicationUserOfferRepository;
+        private readonly IDeletableEntityRepository<Booking> applicationUserOfferRepository;
         private readonly IDeletableEntityRepository<OfferBedType> offerBedTypesRepository;
         private readonly IDeletableEntityRepository<OfferFacility> offerFacilitiesRepository;
         private readonly IRepository<OfferImage> offerImagesRepository;
@@ -25,7 +25,7 @@
         public OffersService(
             IDeletableEntityRepository<Offer> offersRepository,
             IRepository<BedType> bedTypesRepository,
-            IDeletableEntityRepository<ApplicationUserOffer> applicationUserOfferRepository,
+            IDeletableEntityRepository<Booking> applicationUserOfferRepository,
             IDeletableEntityRepository<OfferBedType> offerBedTypesRepository,
             IDeletableEntityRepository<OfferFacility> offerFacilitiesRepository,
             IRepository<OfferImage> offerImagesRepository)
@@ -134,7 +134,7 @@
         public async Task AddToUserBookingList(BookingInputModel input, string userId)
         {
             var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == input.OfferId);
-            var applicationUserOffer = new ApplicationUserOffer
+            var applicationUserOffer = new Booking
             {
                 ApplicationUserId = userId,
                 OfferId = input.OfferId,

@@ -58,7 +58,7 @@
 
         public DbSet<OfferFacility> OfferFacilities { get; set; }
 
-        public DbSet<ApplicationUserOffer> ApplicationUserOffers { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         public DbSet<PropertyImage> PropertyImages { get; set; }
 
