@@ -19,6 +19,8 @@
             this.OfferImages = new HashSet<OfferImage>();
         }
 
+        public byte Count { get; set; }
+
         public decimal PricePerPerson { get; set; }
 
         public DateTime ValidFrom { get; set; }
