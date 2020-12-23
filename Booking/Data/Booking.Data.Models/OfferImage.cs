@@ -1,9 +1,7 @@
 ﻿namespace Booking.Data.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
 
     using global::Booking.Data.Common.Models;
 
@@ -14,6 +12,7 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
+        [Required]
         public string OfferId { get; set; }
 
         public virtual Offer Offer { get; set; }

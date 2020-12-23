@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class PropertyType : BaseModel<int>
@@ -13,7 +14,7 @@
         }
 
         [Required]
-        [MaxLength(80)]
+        [MaxLength(GlobalConstants.PropertyTypeNameMaxLength)]
         public string Name { get; set; }
 
         public virtual ICollection<PropertyCategory> PropertyCategories { get; set; }

@@ -1,19 +1,20 @@
-﻿namespace Booking.Data.Seeding.ImportDTOs
+﻿namespace Booking.Data.Seeding.Datasets
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Booking.Common;
     using Newtonsoft.Json;
 
     internal class CountryModel
     {
         [JsonRequired]
-        [MinLength(2)]
-        [MaxLength(100)]
+        [MinLength(GlobalConstants.CountryNameMinLength)]
+        [MaxLength(GlobalConstants.CountryNameMaxLength)]
         [JsonProperty("country")]
         public string Country { get; set; }
 
         [Required]
-        [MaxLength(3)]
+        [MaxLength(GlobalConstants.CurrencyCodeMaxLength)]
         [JsonProperty("currency_code")]
         public string CurrencyCode { get; set; }
     }

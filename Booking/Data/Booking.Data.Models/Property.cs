@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class Property : BaseDeletableModel<string>
@@ -20,34 +20,31 @@
         }
 
         [Required]
-        [MaxLength(150)]
+        [MaxLength(GlobalConstants.PropertyNameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(200)]
+        [MaxLength(GlobalConstants.PropertyAddressMaxLength)]
         public string Address { get; set; }
 
         public byte Floors { get; set; }
 
         public byte Stars { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(GlobalConstants.PropertyDescriptionMaxLength)]
         public string Description { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Town))]
         public int TownId { get; set; }
 
         public virtual Town Town { get; set; }
 
         [Required]
-        [ForeignKey(nameof(PropertyCategory))]
         public int PropertyCategoryId { get; set; }
 
         public virtual PropertyCategory PropertyCategory { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }

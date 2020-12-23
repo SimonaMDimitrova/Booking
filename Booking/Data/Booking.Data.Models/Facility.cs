@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class Facility : BaseModel<int>
@@ -15,11 +15,10 @@
         }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.FacilityNameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [ForeignKey(nameof(FacilityCategory))]
         public int FacilityCategoryId { get; set; }
 
         public virtual FacilityCategory FacilityCategory { get; set; }

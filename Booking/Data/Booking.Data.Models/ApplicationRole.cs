@@ -1,5 +1,4 @@
-﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace Booking.Data.Models
+﻿namespace Booking.Data.Models
 {
     using System;
 

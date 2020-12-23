@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using global::Booking.Data.Common.Models;
 
@@ -28,7 +27,6 @@
         public DateTime ValidTo { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Property))]
         public string PropertyId { get; set; }
 
         public virtual Property Property { get; set; }

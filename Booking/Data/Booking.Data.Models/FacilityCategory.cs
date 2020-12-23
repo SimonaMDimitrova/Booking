@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class FacilityCategory : BaseModel<int>
@@ -13,7 +14,7 @@
         }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.FacilityCategoryNameMaxLength)]
         public string Name { get; set; }
 
         public virtual ICollection<Facility> Facilities { get; set; }

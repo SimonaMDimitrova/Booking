@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class Currency : BaseModel<int>
@@ -13,7 +14,7 @@
         }
 
         [Required]
-        [MaxLength(3)]
+        [MaxLength(GlobalConstants.CurrencyCodeMaxLength)]
         public string CurrencyCode { get; set; }
 
         public virtual ICollection<Country> Countries { get; set; }

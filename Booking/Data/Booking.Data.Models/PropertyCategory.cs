@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class PropertyCategory : BaseModel<int>
@@ -14,11 +14,10 @@
         }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.PropertyCategoryNameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [ForeignKey(nameof(PropertyType))]
         public int PropertyTypeId { get; set; }
 
         public virtual PropertyType PropertyType { get; set; }

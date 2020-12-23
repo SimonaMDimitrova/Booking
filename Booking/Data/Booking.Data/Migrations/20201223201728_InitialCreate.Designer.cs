@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201214091204_AddImagesToOffersEntity")]
-    partial class AddImagesToOffersEntity
+    [Migration("20201223201728_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -141,7 +141,33 @@ namespace Booking.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Booking.Data.Models.ApplicationUserOffer", b =>
+            modelBuilder.Entity("Booking.Data.Models.BedType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<byte>("Capacity")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BedTypes");
+                });
+
+            modelBuilder.Entity("Booking.Data.Models.Booking", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -180,33 +206,7 @@ namespace Booking.Data.Migrations
 
                     b.HasIndex("OfferId");
 
-                    b.ToTable("ApplicationUserOffers");
-                });
-
-            modelBuilder.Entity("Booking.Data.Models.BedType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<byte>("Capacity")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BedTypes");
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Booking.Data.Models.Country", b =>
@@ -315,6 +315,9 @@ namespace Booking.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte>("Count")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -440,6 +443,7 @@ namespace Booking.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OfferId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -590,6 +594,7 @@ namespace Booking.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PropertyId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -817,7 +822,7 @@ namespace Booking.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Booking.Data.Models.ApplicationUserOffer", b =>
+            modelBuilder.Entity("Booking.Data.Models.Booking", b =>
                 {
                     b.HasOne("Booking.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("ApplicationUserOffers")
@@ -911,7 +916,9 @@ namespace Booking.Data.Migrations
                 {
                     b.HasOne("Booking.Data.Models.Offer", "Offer")
                         .WithMany("OfferImages")
-                        .HasForeignKey("OfferId");
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Offer");
                 });
@@ -977,7 +984,9 @@ namespace Booking.Data.Migrations
                 {
                     b.HasOne("Booking.Data.Models.Property", "Property")
                         .WithMany("PropertyImages")
-                        .HasForeignKey("PropertyId");
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Property");
                 });

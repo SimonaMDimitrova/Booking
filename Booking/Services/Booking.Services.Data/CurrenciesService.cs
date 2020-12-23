@@ -5,12 +5,12 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
 
-    public class CurrencyService : ICurrenciesService
+    public class CurrenciesService : ICurrenciesService
     {
         private readonly IRepository<Country> countriesRepository;
         private readonly IRepository<Property> propertyRepository;
 
-        public CurrencyService(
+        public CurrenciesService(
             IRepository<Country> countriesRepository,
             IRepository<Property> propertyRepository)
         {

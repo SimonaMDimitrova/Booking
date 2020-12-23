@@ -1,5 +1,4 @@
-﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace Booking.Data.Models
+﻿namespace Booking.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -21,12 +20,10 @@ namespace Booking.Data.Models
             this.ApplicationUserOffers = new HashSet<Booking>();
         }
 
-        // Audit info
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 
-        // Deletable entity
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }

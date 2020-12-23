@@ -63,9 +63,7 @@ namespace Booking.Data.Migrations
                     Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Capacity = table.Column<byte>(type: "tinyint", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,9 +78,7 @@ namespace Booking.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,9 +93,7 @@ namespace Booking.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,9 +108,7 @@ namespace Booking.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,9 +123,7 @@ namespace Booking.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,9 +245,7 @@ namespace Booking.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,9 +267,7 @@ namespace Booking.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FacilityCategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,9 +289,7 @@ namespace Booking.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PropertyTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -327,9 +311,7 @@ namespace Booking.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -351,6 +333,7 @@ namespace Booking.Data.Migrations
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Floors = table.Column<byte>(type: "tinyint", nullable: false),
                     Stars = table.Column<byte>(type: "tinyint", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     TownId = table.Column<int>(type: "int", nullable: false),
                     PropertyCategoryId = table.Column<int>(type: "int", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -387,11 +370,10 @@ namespace Booking.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsCreditCardAllowed = table.Column<bool>(type: "bit", nullable: false),
-                    CancellationDays = table.Column<byte>(type: "tinyint", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Count = table.Column<byte>(type: "tinyint", nullable: false),
+                    PricePerPerson = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ValidFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ValidTo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PropertyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -440,6 +422,27 @@ namespace Booking.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PropertyImages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PropertyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropertyImages_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PropertyRules",
                 columns: table => new
                 {
@@ -471,10 +474,12 @@ namespace Booking.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserOffers",
+                name: "Bookings",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OfferId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -484,15 +489,45 @@ namespace Booking.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserOffers", x => x.Id);
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserOffers_AspNetUsers_ApplicationUserId",
+                        name: "FK_Bookings_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserOffers_Offers_OfferId",
+                        name: "FK_Bookings_Offers_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfferBedTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfferId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BedTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfferBedTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfferBedTypes_BedTypes_BedTypeId",
+                        column: x => x.BedTypeId,
+                        principalTable: "BedTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OfferBedTypes_Offers_OfferId",
                         column: x => x.OfferId,
                         principalTable: "Offers",
                         principalColumn: "Id",
@@ -530,73 +565,25 @@ namespace Booking.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rooms",
+                name: "OfferImages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    OfferId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OfferId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.PrimaryKey("PK_OfferImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rooms_Offers_OfferId",
+                        name: "FK_OfferImages_Offers_OfferId",
                         column: x => x.OfferId,
                         principalTable: "Offers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "RoomBedTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoomId = table.Column<int>(type: "int", nullable: false),
-                    BedTypeId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoomBedTypes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoomBedTypes_BedTypes_BedTypeId",
-                        column: x => x.BedTypeId,
-                        principalTable: "BedTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RoomBedTypes_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserOffers_ApplicationUserId",
-                table: "ApplicationUserOffers",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserOffers_IsDeleted",
-                table: "ApplicationUserOffers",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserOffers_OfferId",
-                table: "ApplicationUserOffers",
-                column: "OfferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -648,9 +635,19 @@ namespace Booking.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BedTypes_IsDeleted",
-                table: "BedTypes",
+                name: "IX_Bookings_ApplicationUserId",
+                table: "Bookings",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_IsDeleted",
+                table: "Bookings",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_OfferId",
+                table: "Bookings",
+                column: "OfferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Countries_CurrencyId",
@@ -658,29 +655,24 @@ namespace Booking.Data.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Countries_IsDeleted",
-                table: "Countries",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Currencies_IsDeleted",
-                table: "Currencies",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Facilities_FacilityCategoryId",
                 table: "Facilities",
                 column: "FacilityCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Facilities_IsDeleted",
-                table: "Facilities",
+                name: "IX_OfferBedTypes_BedTypeId",
+                table: "OfferBedTypes",
+                column: "BedTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfferBedTypes_IsDeleted",
+                table: "OfferBedTypes",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FacilityCategories_IsDeleted",
-                table: "FacilityCategories",
-                column: "IsDeleted");
+                name: "IX_OfferBedTypes_OfferId",
+                table: "OfferBedTypes",
+                column: "OfferId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfferFacilities_FacilityId",
@@ -695,6 +687,11 @@ namespace Booking.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_OfferFacilities_OfferId",
                 table: "OfferFacilities",
+                column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfferImages_OfferId",
+                table: "OfferImages",
                 column: "OfferId");
 
             migrationBuilder.CreateIndex(
@@ -728,11 +725,6 @@ namespace Booking.Data.Migrations
                 column: "TownId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyCategories_IsDeleted",
-                table: "PropertyCategories",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PropertyCategories_PropertyTypeId",
                 table: "PropertyCategories",
                 column: "PropertyTypeId");
@@ -753,6 +745,11 @@ namespace Booking.Data.Migrations
                 column: "PropertyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PropertyImages_PropertyId",
+                table: "PropertyImages",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropertyRules_IsDeleted",
                 table: "PropertyRules",
                 column: "IsDeleted");
@@ -768,56 +765,13 @@ namespace Booking.Data.Migrations
                 column: "RuleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyTypes_IsDeleted",
-                table: "PropertyTypes",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomBedTypes_BedTypeId",
-                table: "RoomBedTypes",
-                column: "BedTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomBedTypes_IsDeleted",
-                table: "RoomBedTypes",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomBedTypes_RoomId",
-                table: "RoomBedTypes",
-                column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rooms_IsDeleted",
-                table: "Rooms",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rooms_OfferId",
-                table: "Rooms",
-                column: "OfferId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rules_IsDeleted",
-                table: "Rules",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Towns_CountryId",
                 table: "Towns",
                 column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Towns_IsDeleted",
-                table: "Towns",
-                column: "IsDeleted");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApplicationUserOffers");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -834,19 +788,34 @@ namespace Booking.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "OfferBedTypes");
+
+            migrationBuilder.DropTable(
                 name: "OfferFacilities");
+
+            migrationBuilder.DropTable(
+                name: "OfferImages");
 
             migrationBuilder.DropTable(
                 name: "PropertyFacilities");
 
             migrationBuilder.DropTable(
+                name: "PropertyImages");
+
+            migrationBuilder.DropTable(
                 name: "PropertyRules");
 
             migrationBuilder.DropTable(
-                name: "RoomBedTypes");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "BedTypes");
+
+            migrationBuilder.DropTable(
+                name: "Offers");
 
             migrationBuilder.DropTable(
                 name: "Facilities");
@@ -855,19 +824,10 @@ namespace Booking.Data.Migrations
                 name: "Rules");
 
             migrationBuilder.DropTable(
-                name: "BedTypes");
-
-            migrationBuilder.DropTable(
-                name: "Rooms");
+                name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "FacilityCategories");
-
-            migrationBuilder.DropTable(
-                name: "Offers");
-
-            migrationBuilder.DropTable(
-                name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

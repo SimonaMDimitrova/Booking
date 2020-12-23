@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using global::Booking.Data.Common.Models;
 
@@ -18,13 +17,11 @@
         public DateTime CheckOut { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Offer))]
         public string OfferId { get; set; }
 
         public Offer Offer { get; set; }

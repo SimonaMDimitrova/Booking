@@ -441,6 +441,7 @@ namespace Booking.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OfferId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -591,6 +592,7 @@ namespace Booking.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PropertyId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -912,7 +914,9 @@ namespace Booking.Data.Migrations
                 {
                     b.HasOne("Booking.Data.Models.Offer", "Offer")
                         .WithMany("OfferImages")
-                        .HasForeignKey("OfferId");
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Offer");
                 });
@@ -978,7 +982,9 @@ namespace Booking.Data.Migrations
                 {
                     b.HasOne("Booking.Data.Models.Property", "Property")
                         .WithMany("PropertyImages")
-                        .HasForeignKey("PropertyId");
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Property");
                 });

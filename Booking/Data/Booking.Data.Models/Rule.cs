@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class Rule : BaseModel<int>
@@ -13,7 +14,7 @@
         }
 
         [Required]
-        [MaxLength(80)]
+        [MaxLength(GlobalConstants.RuleNameMaxLength)]
         public string Name { get; set; }
 
         public virtual ICollection<PropertyRule> PropertyRules { get; set; }

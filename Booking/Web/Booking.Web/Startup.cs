@@ -67,7 +67,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<ITownsService, TownsService>();
-            services.AddTransient<ICurrenciesService, CurrencyService>();
+            services.AddTransient<ICurrenciesService, CurrenciesService>();
             services.AddTransient<IPropertyCategoriesService, PropertyCategoriesService>();
             services.AddTransient<IPropertiesService, PropertiesService>();
             services.AddTransient<IFacilitiesService, FacilitiesService>();

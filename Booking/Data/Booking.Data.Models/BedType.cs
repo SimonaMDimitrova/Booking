@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class BedType : BaseModel<int>
@@ -13,7 +14,7 @@
         }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(GlobalConstants.BedTypeNameMaxLength)]
         public string Type { get; set; }
 
         public byte Capacity { get; set; }

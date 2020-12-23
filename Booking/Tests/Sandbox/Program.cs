@@ -14,24 +14,18 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Data.Repositories;
-    using Booking.Data.Seeding;
-    using Booking.Data.Seeding.ImportDTOs;
     using Booking.Services.Messaging;
-
-    using CommandLine;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
 
     public static class Program
     {
         public static void Main()
         {
         }
-
 
         private static bool IsValid(object obj)
         {

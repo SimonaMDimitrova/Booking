@@ -12,6 +12,7 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
+        [Required]
         public string PropertyId { get; set; }
 
         public virtual Property Property { get; set; }

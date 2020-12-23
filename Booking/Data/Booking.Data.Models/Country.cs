@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+    using global::Booking.Common;
     using global::Booking.Data.Common.Models;
 
     public class Country : BaseModel<int>
@@ -14,11 +14,10 @@
         }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(GlobalConstants.CountryNameMaxLength)]
         public string Name { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Currency))]
         public int CurrencyId { get; set; }
 
         public virtual Currency Currency { get; set; }
