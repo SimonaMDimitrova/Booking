@@ -1,7 +1,10 @@
 ﻿namespace Booking.Web.Controllers
 {
+    using System;
+
     using Booking.Services.Data;
     using Booking.Web.ViewModels.Home;
+    using Booking.Web.ViewModels.SearchProperties;
     using Microsoft.AspNetCore.Mvc;
 
     public class SearchPropertiesController : BaseController
@@ -20,11 +23,22 @@
         public IActionResult Index(IndexInputModel input)
         {
             var countries = this.countriesService.GetMostPopularByKeyValuePairs();
-
             input.Countries = countries;
 
-            //var viewModel = this.propertiesService.GetBySearchRequirements(input);
             return this.View(input);
+        }
+
+        public IActionResult ById(SearchedInputModel input)
+        {
+            var viewModel = this.propertiesService.GetByIdBasedOnSearchRequirements(input);
+
+            if (viewModel == null || !this.ModelState.IsValid)
+            {
+                this.TempData["Error"] = "Something went wrong. Try again!";
+                return this.RedirectToAction(nameof(this.Index), new IndexInputModel());
+            }
+
+            return this.View(viewModel);
         }
     }
 }

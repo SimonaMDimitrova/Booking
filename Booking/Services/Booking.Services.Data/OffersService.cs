@@ -1,14 +1,12 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Web.ViewModels.Bookings;
     using Booking.Web.ViewModels.Offers;
 
     public class OffersService : IOffersService
@@ -17,7 +15,6 @@
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IRepository<BedType> bedTypesRepository;
-        private readonly IDeletableEntityRepository<Booking> applicationUserOfferRepository;
         private readonly IDeletableEntityRepository<OfferBedType> offerBedTypesRepository;
         private readonly IDeletableEntityRepository<OfferFacility> offerFacilitiesRepository;
         private readonly IRepository<OfferImage> offerImagesRepository;
@@ -25,14 +22,12 @@
         public OffersService(
             IDeletableEntityRepository<Offer> offersRepository,
             IRepository<BedType> bedTypesRepository,
-            IDeletableEntityRepository<Booking> applicationUserOfferRepository,
             IDeletableEntityRepository<OfferBedType> offerBedTypesRepository,
             IDeletableEntityRepository<OfferFacility> offerFacilitiesRepository,
             IRepository<OfferImage> offerImagesRepository)
         {
             this.offersRepository = offersRepository;
             this.bedTypesRepository = bedTypesRepository;
-            this.applicationUserOfferRepository = applicationUserOfferRepository;
             this.offerBedTypesRepository = offerBedTypesRepository;
             this.offerFacilitiesRepository = offerFacilitiesRepository;
             this.offerImagesRepository = offerImagesRepository;
@@ -131,21 +126,6 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
-        public async Task AddToUserBookingList(BookingInputModel input, string userId)
-        {
-            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == input.OfferId);
-            var applicationUserOffer = new Booking
-            {
-                ApplicationUserId = userId,
-                OfferId = input.OfferId,
-                CheckIn = input.CheckIn,
-                CheckOut = input.CheckOut,
-            };
-
-            offer.ApplicationUserOffers.Add(applicationUserOffer);
-            await this.offersRepository.SaveChangesAsync();
-        }
-
         public async Task DeleteAllByPropertyIdAsync(string id, string userId, string imagePath)
         {
             var offersIds = this.offersRepository
@@ -209,38 +189,6 @@
             await this.offerFacilitiesRepository.SaveChangesAsync();
             await this.offerImagesRepository.SaveChangesAsync();
             await this.offersRepository.SaveChangesAsync();
-        }
-
-        public async Task DeleteBookingAsync(string bookingId, string userId)
-        {
-            var booking = this.applicationUserOfferRepository
-                .All()
-                .Where(a => a.ApplicationUserId == userId && a.Id == bookingId)
-                .FirstOrDefault();
-
-            this.applicationUserOfferRepository.Delete(booking);
-            await this.applicationUserOfferRepository.SaveChangesAsync();
-        }
-
-        public IEnumerable<BookingViewModel> GetBookingsByUserId(string userId)
-        {
-            var bookings = this.applicationUserOfferRepository
-                .All()
-                .Where(a => a.ApplicationUserId == userId)
-                .Select(a => new BookingViewModel
-                {
-                    Id = a.Id,
-                    Address = a.Offer.Property.Address,
-                    Country = a.Offer.Property.Town.Country.Name,
-                    Town = a.Offer.Property.Town.Name,
-                    CurrencyCode = a.Offer.Property.Town.Country.Currency.CurrencyCode,
-                    PropertyName = a.Offer.Property.Name,
-                    Members = a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                    Price = a.Offer.PricePerPerson * a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                })
-                .ToList();
-
-            return bookings;
         }
 
         public EditOfferViewModel GetById(string id, string userId)

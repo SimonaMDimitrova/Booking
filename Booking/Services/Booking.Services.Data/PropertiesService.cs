@@ -14,6 +14,7 @@
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.PropertiesViewModels;
     using Booking.Web.ViewModels.Rules;
+    using Booking.Web.ViewModels.SearchProperties;
     using Booking.Web.ViewModels.ViewComponents.SearchResults;
 
     public class PropertiesService : IPropertiesService
@@ -91,8 +92,6 @@
                     Name = p.Name,
                     Country = p.Town.Country.Name,
                     Town = p.Town.Name,
-                    CheckIn = checkIn,
-                    CheckOut = checkOut,
                     Stars = p.Stars,
                     PropertyCategory = p.PropertyCategory.Name,
                     Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
@@ -102,8 +101,8 @@
                             : "../../assets/images/defaults/default.png",
                     OffersCount = p.Offers
                         .Where(
-                            o => (o.ValidFrom.Date >= DateTime.UtcNow.Date ? o.ValidFrom.Date : DateTime.UtcNow.Date) <= checkIn.Date
-                                && o.ValidTo.Date <= checkOut.Date
+                            o => (o.ValidFrom.Date >= DateTime.UtcNow.Date ? o.ValidFrom.Date : DateTime.UtcNow.Date).AddDays(2) <= checkIn.Date
+                                && o.ValidTo.Date >= checkOut.Date
                                 && (checkOut - checkIn).TotalDays >= 2
                                 && (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity) == input.Members
                                 && o.PricePerPerson >= input.MinBudget && o.PricePerPerson <= (input.MaxBudget == 0 ? int.MaxValue : input.MaxBudget))
@@ -118,7 +117,12 @@
                 return null;
             }
 
-            var propertiesViewModel = new SearchIndexListViewModel();
+            var propertiesViewModel = new SearchIndexListViewModel
+            {
+                CheckIn = checkIn,
+                CheckOut = checkOut,
+                Members = input.Members,
+            };
             propertiesViewModel.Properties = properties;
 
             return propertiesViewModel;
@@ -442,6 +446,70 @@
                 .All()
                 .FirstOrDefault(p => p.Id == id)
                 .Name;
+        }
+
+        public SearchedPropertyByIdViewModel GetByIdBasedOnSearchRequirements(SearchedInputModel input)
+        {
+            var property = this.propertiesRepository
+                .All()
+                .Where(p => p.Id == input.Id)
+                .Select(p => new SearchedPropertyByIdViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Country = p.Town.Country.Name,
+                    Town = p.Town.Name,
+                    Stars = p.Stars,
+                    Address = p.Address,
+                    CurrencyCode = p.Town.Country.Currency.CurrencyCode,
+                    Description = p.Description,
+                    Floors = p.Floors,
+                    Facilities = p.PropertyFacilities
+                        .Select(f => f.Facility.Name)
+                        .ToList(),
+                    Rules = p.PropertyRules
+                        .Select(r => new RuleNameIsAvailableViewModel
+                        {
+                            Name = r.Rule.Name,
+                            IsAllowed = r.IsAllowed,
+                        })
+                        .ToList(),
+                    PropertyType = p.PropertyCategory.PropertyType.Name,
+                    PropertyCategory = p.PropertyCategory.Name,
+                    Images = p.PropertyImages.Select(oi => "/images/properties/" + oi.Id + "." + oi.Extension).ToList(),
+                    Offers = p.Offers
+                        .Where(o => o.OfferBedTypes.Sum(b => b.BedType.Capacity) == input.Members
+                            && o.ValidFrom.Date <= input.CheckIn.Date
+                                && o.ValidTo.Date >= input.CheckOut.Date
+                                && (input.CheckOut - input.CheckIn).TotalDays >= 2)
+                        .Select(o => new SearchedOfferViewModel
+                        {
+                            Id = o.Id,
+                            Price = o.PricePerPerson,
+                            CheckIn = input.CheckIn.ToString("dd/MM/yyyy"),
+                            CheckOut = input.CheckOut.ToString("dd/MM/yyyy"),
+                            OfferFacilities = o.OfferFacilities
+                                .Select(f => new OfferFacilityViewModel
+                                {
+                                    Name = f.Facility.Name,
+                                    Category = f.Facility.FacilityCategory.Name,
+                                })
+                                .ToList(),
+                            Rooms = o.OfferBedTypes
+                                .Select(b => new BedTypeViewModel
+                                {
+                                    Type = b.BedType.Type,
+                                    Capacity = b.BedType.Capacity,
+                                })
+                                .ToList(),
+                            Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
+                            Images = o.OfferImages.Select(oi => "/images/offers/" + oi.Id + "." + oi.Extension).ToList(),
+                        })
+                        .ToList(),
+                })
+                .FirstOrDefault();
+
+            return property;
         }
     }
 }

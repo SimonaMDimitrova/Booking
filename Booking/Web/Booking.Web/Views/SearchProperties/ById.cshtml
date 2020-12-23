@@ -1,5 +1,229 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Booking.Web.ViewModels.SearchProperties.SearchedPropertyByIdViewModel
+@inject Booking.Services.IDictionariesService dictionariesService
 @{
+    this.ViewData["Title"] = this.Model.Name;
+    var images = new List<string>();
 }
+
+<h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-12 margins-temp">
+        @if (this.TempData.ContainsKey("Error"))
+        {
+            <div class="alert alert-danger">@this.TempData["Error"]</div>
+        }
+    </div>
+    <div class="col-md-6 byid">
+        <div>
+            @for (int i = 0; i < Model.Stars; i++)
+            {
+                <i class="fas fa-star star"></i>
+            }
+            @for (int i = 0; i < 5 - Model.Stars; i++)
+            {
+                <i class="far fa-star star"></i>
+            }
+        </div>
+        <div>
+            <span class="property-badge">@Model.PropertyCategory</span>
+            <span class="property-badge">@Model.Floors floors</span>
+            <span class="property-badge">@Model.PropertyType</span>
+        </div>
+        <div class="country-town margin-bottom">@Model.Address, @Model.Town, @Model.Country</div>
+    </div>
+</div>
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        @{
+            if (Model.Images.Any() && Model.Images != null)
+            {
+                foreach (var image in Model.Images)
+                {
+                    images.Add(image);
+                }
+            }
+
+            if (Model.Offers.Any() && Model.Offers != null)
+            {
+                foreach (var offer in Model.Offers)
+                {
+                    if (offer.Images.Any() && offer.Images != null)
+                    {
+                        foreach (var image in offer.Images)
+                        {
+                            images.Add(image);
+                        }
+                    }
+                }
+            }
+
+            if (images.Count > 0)
+            {
+                for (int i = 0; i < images.Count; i++)
+                {
+                    var currentImage = images[i];
+                    if (i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <img class="d-block size" src="@currentImage" alt="@Model.Name">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img class="d-block size" src="@currentImage" alt="@Model.Name">
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+    @if (images.Count > 1)
+    {
+        <div class="controllers-carousel">
+            <a class="" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="arrow-carousel left" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+                <span class="sr-only"></span>
+            </a>
+            <a class="" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="arrow-carousel right" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    }
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <hr />
+        <h3 class="text-center">Description</h3>
+        <hr />
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div>@Model.Description</div>
+        }
+        else
+        {
+            <div>There is no additional information.</div>
+        }
+    </div>
+    <div class="col-md-3">
+        <hr />
+        <h3 class="text-center">Property facilities</h3>
+        <hr />
+        @if (Model.Facilities.Any() && Model.Facilities != null)
+        {
+            <ul>
+                @foreach (var facility in Model.Facilities)
+                {
+                    <li><i class="fas fa-check"></i> @facility</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div>
+                None.
+            </div>
+        }
+    </div>
+    <div class="col-md-3">
+        <hr />
+        <h3 class="text-center">Property rules</h3>
+        <hr />
+        <ul>
+            @foreach (var rule in Model.Rules)
+            {
+                if (rule.IsAllowed)
+                {
+                    <li><i class="fas fa-check"></i> @rule.Name</li>
+                }
+                else
+                {
+                    <li><i class="fas fa-times"></i> @rule.Name</li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<hr />
+<div class="row col-md-12">
+    <table class="table table-bordered">
+        <thead class="thead-gray">
+            <tr>
+                <th>Check in - Check out</th>
+                <th>Guests and prices</th>
+                <th>Bed types</th>
+                <th>Facilities</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model.Offers)
+            {
+                <tr>
+                    <td>
+                        <strong>@offer.CheckIn</strong> - <strong>@offer.CheckOut</strong>
+                        <form method="post" asp-area="" asp-controller="Bookings" asp-action="Book" id="bookForm_@offer.Id">
+                            <input type="hidden" name="checkIn" value="@offer.CheckIn" />
+                            <input type="hidden" name="checkOut" value="@offer.CheckOut" />
+                            <input type="hidden" name="offerId" value="@offer.Id" />
+                            <input type="hidden" name="propertyId" value="@Model.Id" />
+                            <input type="hidden" name="members" value="@offer.Guests" />
+                        </form>
+                        <button id="bookBtn" class="btn button" data-toggle="modal" data-target="#bookModal_@offer.Id">Book!</button>
+                        <div class="modal" tabindex="-1" role="dialog" id="bookModal_@offer.Id">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <h4>Are you sure you want to book this offer?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn button btn-margin" onclick="document.getElementById('bookForm_@offer.Id').submit()">Yes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>Guests:</strong> @offer.Guests<br />
+                        <strong>Single price:</strong> @(offer.Price * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays - 1)) @Model.CurrencyCode <br />
+                        <strong>All price:</strong> @(offer.Price * offer.Guests * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays - 1)) @Model.CurrencyCode
+                    </td>
+                    <td>
+                        @{var rooms = dictionariesService.CreateBedTypeDictionary(offer.Rooms)
+                                          .OrderByDescending(r => r.Value);
+                            foreach (var room in rooms)
+                            {
+                                <div>
+                                    <strong>@(room.Value / offer.Rooms.FirstOrDefault(r => r.Type == room.Key).Capacity) x</strong> @room.Key
+                                </div>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{var facilities = dictionariesService.CreateFacilitiesDictionary(offer.OfferFacilities);
+                            foreach (var facility in facilities)
+                            {
+                                <div class="padding-facilities">@facility.Key</div>
+                                foreach (var facilityName in facility.Value)
+                                {
+                                    <div><i class="fas fa-check"></i> @facilityName</div>
+                                }
+                            }
+
+                            if (!facilities.Any())
+                            {
+                                <div>None.</div>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+</div>

@@ -17,11 +17,5 @@
         Task UpdateAsync(string userId, EditOfferViewModel input);
 
         EditOfferViewModel GetById(string id, string userId);
-
-        Task AddToUserBookingList(BookingInputModel input, string userId);
-
-        IEnumerable<BookingViewModel> GetBookingsByUserId(string userId);
-
-        Task DeleteBookingAsync(string bookingId, string userId);
     }
 }

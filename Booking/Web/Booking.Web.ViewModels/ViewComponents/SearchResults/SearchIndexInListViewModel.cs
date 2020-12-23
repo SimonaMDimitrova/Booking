@@ -6,10 +6,6 @@
 
     public class SearchIndexInListViewModel : PropertyInListViewModel
     {
-        public DateTime CheckIn { get; set; }
-
-        public DateTime CheckOut { get; set; }
-
         public int OffersCount { get; set; }
     }
 }

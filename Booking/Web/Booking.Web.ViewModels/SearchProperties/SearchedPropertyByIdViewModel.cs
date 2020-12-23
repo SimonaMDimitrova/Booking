@@ -4,7 +4,7 @@
 
     using Booking.Web.ViewModels.PropertiesViewModels;
 
-    public class SearchedPropertyById : PropertyByIdBaseViewModel
+    public class SearchedPropertyByIdViewModel : PropertyByIdBaseViewModel
     {
         public IEnumerable<SearchedOfferViewModel> Offers { get; set; }
     }

@@ -6,5 +6,11 @@
     public class SearchIndexListViewModel
     {
         public IEnumerable<SearchIndexInListViewModel> Properties { get; set; }
+
+        public DateTime CheckIn { get; set; }
+
+        public DateTime CheckOut { get; set; }
+
+        public byte Members { get; set; }
     }
 }

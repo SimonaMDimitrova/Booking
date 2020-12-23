@@ -15,7 +15,7 @@
 
         public DateTime? CheckOut { get; set; }
 
-        public int Members { get; set; }
+        public byte Members { get; set; }
 
         public decimal MinBudget { get; set; }
 

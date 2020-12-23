@@ -2,14 +2,14 @@
 
 @if (Model != null && Model.Properties.Any())
 {
+    <h3 class="text-center">Results found: @Model.Properties.Count()</h3>
+    <hr />
     @foreach (var property in Model.Properties)
     {
         <div class="media col-md-6">
-            <a asp-area="" asp-controller="Properties" asp-action="ById" asp-route-id="@property.Id">
-                <img class="mr-4" style="width: 100%; height: 200px;" src="@property.Image" alt="@property.Name">
-            </a>
+            <img onclick="document.getElementById('form').submit();" class="mr-4" style="width: 100%; height: 200px; cursor: pointer;" src="@property.Image" alt="@property.Name">
             <div class="media-body">
-                <div class="mt-0"><a class="hotel-name" asp-area="" asp-controller="SearchProperties" asp-action="ById" asp-route-id="@property.Id">@property.Name</a></div>
+                <div class="mt-0"><a style="cursor: pointer;" onclick="document.getElementById('form').submit();" id="nameBtnLike" class="hotel-name">@property.Name</a></div>
                 <div>
                     @for (int i = 0; i < property.Stars; i++)
                     {
@@ -30,11 +30,19 @@
             </div>
             <hr />
         </div>
+        <form id="form" asp-area="" asp-controller="SearchProperties" asp-action="ById" asp-route-id="@property.Id" method="post">
+            <input type="hidden" name="id" value="@property.Id" />
+            <input type="hidden" name="checkIn" value="@Model.CheckIn" />
+            <input type="hidden" name="checkOut" value="@Model.CheckOut" />
+            <input type="hidden" name="members" value="@Model.Members" />
+        </form>
     }
 }
 else
 {
     <div class="col-md-12">
+        <h3 class="text-center">Results found: 0</h3>
+        <hr />
         Nothing found based on criteria you had entered. Try again!
     </div>
 }

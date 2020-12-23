@@ -1,17 +1,17 @@
-﻿namespace Booking.Web.ViewModels.Bookings
+﻿namespace Booking.Web.ViewModels.SearchProperties
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class BookingInputModel
+    using Booking.Web.Infrastructure.ValidationAttributes;
+
+    public class SearchedInputModel
     {
         [Required]
-        public string OfferId { get; set; }
+        public string Id { get; set; }
 
         [Required]
-        public string PropertyId { get; set; }
-
-        [Required]
+        [DateMinValue]
         public DateTime CheckIn { get; set; }
 
         [Required]

@@ -1,22 +1,66 @@
-﻿@model Booking.Web.ViewModels.Bookings.BookingInListViewModel
+﻿@model Booking.Web.ViewModels.Bookings.BookingsListViewModel
 @{
     this.ViewData["Title"] = "All bookings";
 }
 
-@if (Model.Bookings == null)
+<h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
+@if (this.TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger">@this.TempData["Error"]</div>
+}
+
+@if (this.TempData.ContainsKey("Message"))
+{
+    <div class="alert alert-success">@this.TempData["Message"]</div>
+}
+
+@if (Model.Bookings == null || !Model.Bookings.Any())
 {
     <p>No bookings were recently added.</p>
 }
 
 @foreach (var booking in Model.Bookings)
 {
-    <p>@booking.PropertyName</p>
-    <p>@booking.Country</p>
-    <p>@booking.Town</p>
-    <p>@booking.Address</p>
-    <p>@booking.Price @booking.CurrencyCode</p>
-    <p>@booking.Members</p>
-    <form method="post" asp-action="Delete" asp-route-id="@booking.Id">
-        <input type="submit" class="btn btn-danger" value="Delete" />
-    </form>
+    <table class="table table-bordered">
+        <thead class="thead-gray">
+            <tr>
+                <th>Check in - Check out</th>
+                <th>Property</th>
+                <th>Guests and prices</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <strong>@booking.CheckIn</strong> - <strong>@booking.CheckOut</strong>
+                    <form method="post" asp-area="" asp-controller="Bookings" asp-action="Cancel" id="cancelForm_@booking.Id" asp-route-id="@booking.Id">
+                    </form>
+                    <button id="cancelBtn" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal_@booking.Id">Cancel</button>
+                    <div class="modal" tabindex="-1" role="dialog" id="cancelModal_@booking.Id">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h4>Are you sure you want to cancel your booking?</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn button btn-margin" onclick="document.getElementById('cancelForm_@booking.Id').submit()">Yes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <strong>@booking.PropertyName</strong>
+                    <div>@booking.Country, @booking.Town</div>
+                    <div>@booking.Address</div>
+                </td>
+                <td>
+                    <strong>Guests:</strong> @booking.Members<br />
+                    <strong>Single price:</strong> @((booking.Price * (decimal)((DateTime.Parse(booking.CheckOut) - DateTime.Parse(booking.CheckIn)).TotalDays - 1)).ToString("f2")) @booking.CurrencyCode <br />
+                    <strong>All price:</strong> @((booking.Price * booking.Members * (decimal)((DateTime.Parse(booking.CheckOut) - DateTime.Parse(booking.CheckIn)).TotalDays - 1)).ToString("f2")) @booking.CurrencyCode
+                </td>
+            </tr>
+        </tbody>
+    </table>
 }
