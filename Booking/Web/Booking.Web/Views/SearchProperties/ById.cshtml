@@ -194,7 +194,7 @@
                         <strong>All price:</strong> @(offer.Price * offer.Guests * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays - 1)) @Model.CurrencyCode
                     </td>
                     <td>
-                        @{var rooms = dictionariesService.CreateBedTypeDictionary(offer.Rooms)
+                        @{var rooms = dictionariesService.CreateBedType(offer.Rooms)
                                           .OrderByDescending(r => r.Value);
                             foreach (var room in rooms)
                             {
@@ -205,7 +205,7 @@
                         }
                     </td>
                     <td>
-                        @{var facilities = dictionariesService.CreateFacilitiesDictionary(offer.OfferFacilities);
+                        @{var facilities = dictionariesService.CreateFacilities(offer.OfferFacilities);
                             foreach (var facility in facilities)
                             {
                                 <div class="padding-facilities">@facility.Key</div>

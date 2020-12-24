@@ -7,8 +7,8 @@
 
     public interface IDictionariesService
     {
-        IDictionary<string, int> CreateBedTypeDictionary(IEnumerable<BedTypeViewModel> bedTypes);
+        IDictionary<string, int> CreateBedType(IEnumerable<BedTypeViewModel> bedTypes);
 
-        IDictionary<string, List<string>> CreateFacilitiesDictionary(IEnumerable<OfferFacilityViewModel> facilities);
+        IDictionary<string, List<string>> CreateFacilities(IEnumerable<OfferFacilityViewModel> facilities);
     }
 }

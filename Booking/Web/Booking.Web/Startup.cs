@@ -1,7 +1,6 @@
 ﻿namespace Booking.Web
 {
     using System.Reflection;
-    using System.Threading.Tasks;
 
     using Booking.Data;
     using Booking.Data.Common;

@@ -7,7 +7,7 @@
 
     public class DictionariesService : IDictionariesService
     {
-        public IDictionary<string, int> CreateBedTypeDictionary(IEnumerable<BedTypeViewModel> bedTypes)
+        public IDictionary<string, int> CreateBedType(IEnumerable<BedTypeViewModel> bedTypes)
         {
             var bedTypesDictionary = new Dictionary<string, int>();
             foreach (var bedType in bedTypes)
@@ -23,7 +23,7 @@
             return bedTypesDictionary;
         }
 
-        public IDictionary<string, List<string>> CreateFacilitiesDictionary(IEnumerable<OfferFacilityViewModel> facilities)
+        public IDictionary<string, List<string>> CreateFacilities(IEnumerable<OfferFacilityViewModel> facilities)
         {
             var facilitiesDictionary = new Dictionary<string, List<string>>();
             foreach (var facility in facilities)

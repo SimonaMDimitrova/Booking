@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
     <PackageReference Include="Moq" Version="4.15.1" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Booking.Data\Booking.Data.csproj" />
     <ProjectReference Include="..\..\Services\Booking.Services.Data\Booking.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Booking.Services\Booking.Services.csproj" />
   </ItemGroup>
 
 </Project>
