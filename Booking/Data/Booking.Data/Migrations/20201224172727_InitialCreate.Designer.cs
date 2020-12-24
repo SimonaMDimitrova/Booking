@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201223201728_InitialCreate")]
+    [Migration("20201224172727_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -831,7 +831,7 @@ namespace Booking.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Booking.Data.Models.Offer", "Offer")
-                        .WithMany("ApplicationUserOffers")
+                        .WithMany("Bookings")
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1114,7 +1114,7 @@ namespace Booking.Data.Migrations
 
             modelBuilder.Entity("Booking.Data.Models.Offer", b =>
                 {
-                    b.Navigation("ApplicationUserOffers");
+                    b.Navigation("Bookings");
 
                     b.Navigation("OfferBedTypes");
 

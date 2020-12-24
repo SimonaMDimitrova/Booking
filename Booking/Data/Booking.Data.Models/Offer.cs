@@ -14,7 +14,7 @@
 
             this.OfferFacilities = new HashSet<OfferFacility>();
             this.OfferBedTypes = new HashSet<OfferBedType>();
-            this.ApplicationUserOffers = new HashSet<Booking>();
+            this.Bookings = new HashSet<Booking>();
             this.OfferImages = new HashSet<OfferImage>();
         }
 
@@ -31,7 +31,7 @@
 
         public virtual Property Property { get; set; }
 
-        public virtual ICollection<Booking> ApplicationUserOffers { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
 
         public virtual ICollection<OfferFacility> OfferFacilities { get; set; }
 

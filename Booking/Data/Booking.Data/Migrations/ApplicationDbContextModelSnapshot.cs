@@ -829,7 +829,7 @@ namespace Booking.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Booking.Data.Models.Offer", "Offer")
-                        .WithMany("ApplicationUserOffers")
+                        .WithMany("Bookings")
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1112,7 +1112,7 @@ namespace Booking.Data.Migrations
 
             modelBuilder.Entity("Booking.Data.Models.Offer", b =>
                 {
-                    b.Navigation("ApplicationUserOffers");
+                    b.Navigation("Bookings");
 
                     b.Navigation("OfferBedTypes");
 

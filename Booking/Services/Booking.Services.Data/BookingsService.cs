@@ -79,7 +79,7 @@
                 CheckOut = input.CheckOut,
             };
 
-            offer.ApplicationUserOffers.Add(applicationUserOffer);
+            offer.Bookings.Add(applicationUserOffer);
             await this.offersRepository.SaveChangesAsync();
         }
     }

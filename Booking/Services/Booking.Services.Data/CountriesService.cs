@@ -25,7 +25,7 @@
 
         public IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs()
         {
-            var countries = this.countriesRepository.All()
+            return this.countriesRepository.All()
                 .Where(c => c.Towns.Count != 0)
                 .Select(c => new
                 {
@@ -34,8 +34,6 @@
                 })
                 .OrderBy(c => c.Name)
                 .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
-
-            return countries;
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs()
@@ -90,11 +88,11 @@
                 countries.Add(country);
             }
 
-            var countriesCount = countries.Count();
+            int countriesCount = countries.Count();
 
             return countries
                 .OrderByDescending(c => c.PropertiesCount)
-                .Take(countriesCount == 6 ? 6 : countriesCount);
+                .Take(countriesCount >= 6 ? 6 : countriesCount);
         }
 
         public IEnumerable<string> GetTheSixMostVisitedNames()
