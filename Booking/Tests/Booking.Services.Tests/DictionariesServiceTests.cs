@@ -33,7 +33,7 @@
             };
 
         [Fact]
-        public void CheckCreateBedTypeWithElements()
+        public void CheckCreateBedTypeMethod()
         {
             var expectedResult = new Dictionary<string, int>()
             {
@@ -48,7 +48,7 @@
         }
 
         [Fact]
-        public void CheckCreateFacilitiesWithElements()
+        public void CheckCreateFacilitiesMethod()
         {
             var expectedResult = new Dictionary<string, List<string>>()
             {

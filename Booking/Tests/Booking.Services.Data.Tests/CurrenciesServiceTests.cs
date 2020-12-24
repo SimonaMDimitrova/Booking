@@ -1,9 +1,5 @@
 ﻿namespace Booking.Services.Data.Tests
 {
-    using System;
-    using System.Linq;
-
-    using Booking.Data;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Microsoft.Extensions.DependencyInjection;
@@ -13,10 +9,6 @@
     public class CurrenciesServiceTests : BaseServiceTests
     {
         private ICurrenciesService Service => this.ServiceProvider.GetRequiredService<ICurrenciesService>();
-
-        private IRepository<Currency> CurrenciesRepository => this.ServiceProvider.GetRequiredService<IRepository<Currency>>();
-
-        private IRepository<Country> CountriesRepository => this.ServiceProvider.GetRequiredService<IRepository<Country>>();
 
         [Fact]
         public void CheckGetByCountryIdMethod()
