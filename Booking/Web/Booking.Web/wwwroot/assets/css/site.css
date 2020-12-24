@@ -629,3 +629,20 @@ a {
     .hovers:hover, a.hovers:hover, a.hovers:focus, a.hovers:active {
         color: #00d8d5 !important;
     }
+
+.text {
+    color: #fff;
+    font-size: 24px;
+    text-transform: capitalize;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    margin-bottom: 3px;
+    -webkit-transition: all 0.6s linear;
+    -moz-transition: all 0.6s linear;
+    -o-transition: all 0.6s linear;
+    transition: all 0.6s linear;
+}
+
+.filtr-item:hover div.text {
+    color: #2cdbb5;
+}

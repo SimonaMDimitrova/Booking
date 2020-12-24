@@ -1,9 +1,7 @@
 ﻿namespace Booking.Web.ViewComponents
 {
-    using Booking.Data.Models;
     using Booking.Services.Data;
     using Booking.Web.ViewModels.Home;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class SearchResultsViewComponent : ViewComponent
