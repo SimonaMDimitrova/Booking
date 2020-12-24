@@ -30,7 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Booking.Data\Booking.Data.csproj" />
     <ProjectReference Include="..\..\Services\Booking.Services.Data\Booking.Services.Data.csproj" />
-    <ProjectReference Include="..\..\Services\Booking.Services\Booking.Services.csproj" />
+    <ProjectReference Include="..\..\Services\Booking.Services.Messaging\Booking.Services.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

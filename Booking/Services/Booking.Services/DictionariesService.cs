@@ -7,7 +7,7 @@
 
     public class DictionariesService : IDictionariesService
     {
-        public IDictionary<string, int> CreateBedType(IEnumerable<BedTypeViewModel> bedTypes)
+        public IDictionary<string, int> CreateBedTypes(IEnumerable<BedTypeViewModel> bedTypes)
         {
             var bedTypesDictionary = new Dictionary<string, int>();
             foreach (var bedType in bedTypes)

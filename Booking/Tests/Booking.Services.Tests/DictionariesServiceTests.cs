@@ -41,7 +41,7 @@
                 { "Bedroom", 4 },
                 { "Bunkbed", 4 },
             };
-            var actualResult = this.service.CreateBedType(this.bedTypes);
+            var actualResult = this.service.CreateBedTypes(this.bedTypes);
 
             Assert.Equal(expectedResult.Count, actualResult.Count);
             Assert.Equal(expectedResult, actualResult);

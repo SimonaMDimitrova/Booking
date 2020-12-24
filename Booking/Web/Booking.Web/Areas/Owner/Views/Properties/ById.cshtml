@@ -218,7 +218,7 @@
                                 <strong>Price per day to all guests:</strong> @(offer.Price * offer.Guests) @Model.CurrencyCode
                             </td>
                             <td>
-                                @{var rooms = dictionariesService.CreateBedType(offer.Rooms)
+                                @{var rooms = dictionariesService.CreateBedTypes(offer.Rooms)
                                               .OrderByDescending(r => r.Value);
                                     foreach (var room in rooms)
                                     {
