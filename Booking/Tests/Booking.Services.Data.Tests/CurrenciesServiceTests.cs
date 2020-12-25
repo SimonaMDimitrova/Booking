@@ -1,9 +1,7 @@
 ﻿namespace Booking.Services.Data.Tests
 {
-    using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Microsoft.Extensions.DependencyInjection;
-    using Moq;
     using Xunit;
 
     public class CurrenciesServiceTests : BaseServiceTests

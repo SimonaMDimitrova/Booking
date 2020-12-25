@@ -10,42 +10,15 @@
 
     public class CountriesServiceTests : BaseServiceTests
     {
-        private Country country = new Country
-        {
-            Name = "Country1",
-            Currency = new Currency { CurrencyCode = "CN1" },
-            Towns =
-                {
-                    new Town
-                    {
-                        Name = "Town1",
-                        Properties =
-                        {
-                            new Property
-                            {
-                                Name = "Property1",
-                                Offers =
-                                {
-                                    new Offer
-                                    {
-                                        Bookings = { new Booking { }, },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-        };
-
         private ICountriesService Service => this.ServiceProvider.GetRequiredService<ICountriesService>();
 
         [Fact]
         public void CheckGetAllByKeyValuePairsMethod()
         {
-            this.AddToDb();
+            var country = this.AddToDb();
 
             var expectedResult = new List<KeyValuePair<string, string>>();
-            expectedResult.Add(new KeyValuePair<string, string>(this.country.Id.ToString(), this.country.Name));
+            expectedResult.Add(new KeyValuePair<string, string>(country.Id.ToString(), country.Name));
 
             var actualResult = this.Service.GetAllByKeyValuePairs().ToList();
 
@@ -56,11 +29,11 @@
         [Fact]
         public void CheckGetMostPopularByKeyValuePairsMethod()
         {
-            this.AddToDb();
+            var country = this.AddToDb();
 
             var expectedResult = new List<KeyValuePair<string, string>>()
             {
-                new KeyValuePair<string, string>(this.country.Id.ToString(), this.country.Name),
+                new KeyValuePair<string, string>(country.Id.ToString(), country.Name),
             };
             var actualResult = this.Service.GetMostPopularByKeyValuePairs().ToList();
 
@@ -71,13 +44,13 @@
         [Fact]
         public void CheckGetTheSixMostVisitedMethod()
         {
-            this.AddToDb();
+            var country = this.AddToDb();
 
             var expectedResult = new List<CountryInListViewModel>();
             expectedResult.Add(new CountryInListViewModel
             {
-                PropertiesCount = this.country.Towns.Sum(t => t.Properties.Count),
-                Name = this.country.Name,
+                PropertiesCount = country.Towns.Sum(t => t.Properties.Count),
+                Name = country.Name,
                 Image = "assets/images/defaults/default.png",
             });
 
@@ -92,9 +65,10 @@
         [Fact]
         public void CheckGetTheSixMostVisitedMethodWhenCountriesAreMoreThan6()
         {
+            var countries = new List<Country>();
             for (int i = 0; i < 7; i++)
             {
-                this.DbContext.Countries.Add(new Country
+                var country = new Country
                 {
                     Name = $"Country{i}",
                     Currency = new Currency { CurrencyCode = $"CN{i}" },
@@ -119,17 +93,22 @@
                             },
                         },
                     },
-                });
+                };
+
+                this.DbContext.Countries.Add(country);
+                countries.Add(country);
             }
+
             this.DbContext.SaveChanges();
 
             var expectedResult = new List<CountryInListViewModel>();
             for (int i = 0; i < 6; i++)
             {
+                var currentCountry = countries[i];
                 expectedResult.Add(new CountryInListViewModel
                 {
-                    PropertiesCount = this.country.Towns.Sum(t => t.Properties.Count),
-                    Name = this.country.Name,
+                    PropertiesCount = currentCountry.Towns.Sum(t => t.Properties.Count),
+                    Name = currentCountry.Name,
                     Image = "assets/images/defaults/default.png",
                 });
             }
@@ -137,15 +116,21 @@
             var actualResult = this.Service.GetTheSixMostVisited().ToList();
 
             Assert.Equal(expectedResult.Count, actualResult.Count);
+            for (int i = 0; i < 6; i++)
+            {
+                Assert.Equal(expectedResult[i].Image, actualResult[i].Image);
+                Assert.Equal(expectedResult[i].Name, actualResult[i].Name);
+                Assert.Equal(expectedResult[i].PropertiesCount, actualResult[i].PropertiesCount);
+            }
         }
 
         [Fact]
         public void CheckGetTheSixMostVisitedNamesMethod()
         {
-            this.AddToDb();
+            var country = this.AddToDb();
 
             var expectedResult = new List<string>();
-            expectedResult.Add(this.country.Name);
+            expectedResult.Add(country.Name);
 
             var actualResult = this.Service.GetTheSixMostVisitedNames().ToList();
 
@@ -153,11 +138,39 @@
             Assert.Equal(expectedResult, actualResult);
         }
 
-        private void AddToDb()
+        private Country AddToDb()
         {
-            this.DbContext.Countries.Add(this.country);
+            var country = new Country
+            {
+                Name = "Country1",
+                Currency = new Currency { CurrencyCode = "CN1" },
+                Towns =
+                {
+                    new Town
+                    {
+                        Name = "Town1",
+                        Properties =
+                        {
+                            new Property
+                            {
+                                Name = "Property1",
+                                Offers =
+                                {
+                                    new Offer
+                                    {
+                                        Bookings = { new Booking { }, },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
 
+            this.DbContext.Countries.Add(country);
             this.DbContext.SaveChanges();
+
+            return country;
         }
     }
 }
