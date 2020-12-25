@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
