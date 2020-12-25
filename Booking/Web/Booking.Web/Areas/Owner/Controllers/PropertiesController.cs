@@ -176,7 +176,7 @@
 
             try
             {
-                await this.offersService.DeleteAllByPropertyIdAsync(id, user.Id, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.DeleteAllByPropertyIdAsync(id, $"{this.environment.WebRootPath}/images/offers/");
             }
             catch (Exception ex)
             {

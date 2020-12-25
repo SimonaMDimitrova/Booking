@@ -139,7 +139,7 @@
 
             try
             {
-                await this.offersService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.DeleteAsync(id, $"{this.environment.WebRootPath}/images/offers/");
             }
             catch (Exception ex)
             {

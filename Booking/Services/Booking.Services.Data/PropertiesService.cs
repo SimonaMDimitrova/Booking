@@ -231,10 +231,20 @@
                 }
             }
 
+            var facilities = this.propertyFacilitiesRepository
+                .All()
+                .Where(r => r.PropertyId == propertyId)
+                .ToList();
+            foreach (var facility in facilities)
+            {
+                this.propertyFacilitiesRepository.Delete(facility);
+            }
+
             this.propertiesRepository.Delete(property);
             await this.propertiesRepository.SaveChangesAsync();
             await this.propertyImagesRepository.SaveChangesAsync();
             await this.propertyRulesRepository.SaveChangesAsync();
+            await this.propertyFacilitiesRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(EditPropertyInputModel input, string userId)

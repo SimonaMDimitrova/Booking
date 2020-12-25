@@ -1,6 +1,7 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -126,27 +127,27 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAllByPropertyIdAsync(string id, string userId, string imagePath)
+        public async Task DeleteAllByPropertyIdAsync(string id, string imagePath)
         {
             var offersIds = this.offersRepository
                 .All()
-                .Where(o => o.PropertyId == id && o.Property.ApplicationUserId == userId)
+                .Where(o => o.PropertyId == id)
                 .Select(o => o.Id)
                 .ToList();
             if (offersIds.Any() && offersIds != null)
             {
                 foreach (var offerId in offersIds)
                 {
-                    await this.DeleteAsync(offerId, userId, imagePath);
+                    await this.DeleteAsync(offerId, imagePath);
                 }
             }
         }
 
-        public async Task DeleteAsync(string offerId, string userId, string imagePath)
+        public async Task DeleteAsync(string offerId, string imagePath)
         {
             var offer = this.offersRepository
                 .All()
-                .FirstOrDefault(o => o.Id == offerId && userId == o.Property.ApplicationUserId);
+                .FirstOrDefault(o => o.Id == offerId);
             if (offer == null)
             {
                 throw new Exception(Error);

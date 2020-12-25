@@ -8,11 +8,11 @@
 
     public interface IOffersService
     {
-        Task DeleteAllByPropertyIdAsync(string id, string userId, string imagePath);
+        Task DeleteAllByPropertyIdAsync(string id, string imagePath);
 
         Task AddToProperty(AddOfferInputModel input, string imagePath);
 
-        Task DeleteAsync(string offerId, string userId, string imagePath);
+        Task DeleteAsync(string offerId, string imagePath);
 
         Task UpdateAsync(string userId, EditOfferViewModel input);
 
