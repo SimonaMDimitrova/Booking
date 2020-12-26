@@ -3,8 +3,7 @@
     using System.Collections.Generic;
 
     using Booking.Services;
-    using Booking.Web.ViewModels.BedTypes;
-    using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.PropertiesViewModels.ById;
     using Xunit;
 
     public class DictionariesServiceTests

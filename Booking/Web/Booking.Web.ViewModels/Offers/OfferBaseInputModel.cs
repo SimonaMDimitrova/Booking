@@ -1,29 +1,28 @@
 ﻿namespace Booking.Web.ViewModels.Offers
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
 
+    using Booking.Common;
     using Booking.Web.Infrastructure.ValidationAttributes;
 
-    public abstract class OfferBaseInputModel
+    public class OfferBaseInputModel
     {
         public string PropertyId { get; set; }
 
         public string PropertyName { get; set; }
 
         [Required]
-        [Range(1, double.MaxValue, ErrorMessage = "Price is required. It must be more than 1.00.")]
+        [Range(1, double.MaxValue, ErrorMessage = GlobalConstants.ErrorMessages.OfferPrice)]
         public decimal PricePerPerson { get; set; }
 
-        [Required(ErrorMessage = "Valid from field is required.")]
+        [Required(ErrorMessage = GlobalConstants.ErrorMessages.OfferValidFromRequired)]
         [DateMinValueAttribute]
-        [Display(Name = "Valid from")]
+        [Display(Name = GlobalConstants.ValidFromDisplayName)]
         public DateTime? ValidFrom { get; set; }
 
-        [Required(ErrorMessage = "Valid to field is required.")]
-        [Display(Name = "Valid to")]
+        [Required(ErrorMessage = GlobalConstants.ErrorMessages.OfferValidToRequired)]
+        [Display(Name = GlobalConstants.ValidToDisplayName)]
         public DateTime? ValidTo { get; set; }
 
         public string CurrencyCode { get; set; }

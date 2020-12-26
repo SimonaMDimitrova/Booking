@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.BedTypes
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels.ById
 {
     public class BedTypeViewModel
     {

@@ -4,7 +4,6 @@
 
     using Booking.Web.ViewModels.PropertiesViewModels.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.Edit;
-    using Booking.Web.ViewModels.Rules;
 
     public interface IRulesService
     {

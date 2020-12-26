@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.Offers.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.Edit;
 

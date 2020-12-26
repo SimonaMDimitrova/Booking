@@ -1,8 +1,7 @@
-﻿namespace Booking.Web.ViewModels.Offers
+﻿namespace Booking.Web.ViewModels.Offers.Add
 {
     using System.Collections.Generic;
 
-    using Booking.Web.ViewModels.Facilities;
     using Microsoft.AspNetCore.Http;
 
     public class AddOfferInputModel : OfferBaseInputModel

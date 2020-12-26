@@ -2,8 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Web.ViewModels.BedTypes;
-    using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.PropertiesViewModels.ById;
 
     public class DictionariesService : IDictionariesService
     {

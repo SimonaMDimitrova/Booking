@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Booking.Web.ViewModels.Bookings;
-    using Booking.Web.ViewModels.Offers;
+    using Booking.Web.ViewModels.Offers.Add;
+    using Booking.Web.ViewModels.Offers.Edit;
 
     public interface IOffersService
     {

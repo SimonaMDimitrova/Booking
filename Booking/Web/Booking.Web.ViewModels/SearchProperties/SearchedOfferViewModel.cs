@@ -1,6 +1,6 @@
 ﻿namespace Booking.Web.ViewModels.SearchProperties
 {
-    using Booking.Web.ViewModels.Offers;
+    using Booking.Web.ViewModels.PropertiesViewModels;
 
     public class SearchedOfferViewModel : OfferBaseViewModel
     {

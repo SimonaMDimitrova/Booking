@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.Offers
+﻿namespace Booking.Web.ViewModels.Offers.Edit
 {
     public class EditOfferViewModel : OfferBaseInputModel
     {

@@ -31,6 +31,11 @@
 
         public const string DateFormat = "dd/MM/yyyy";
 
+        // Booking
+        public const int BookingMinMembers = 1;
+
+        public const int BookingMaxMembers = 30;
+
         // Offers
         public const string OfferImagesPath = "/images/offers/";
 
@@ -75,6 +80,11 @@
 
         public const string TownDisplayName = "Towns";
 
+        // Offer
+        public const string ValidFromDisplayName = "Valid from";
+
+        public const string ValidToDisplayName = "Valid to";
+
         public static class ErrorMessages
         {
             // Properies
@@ -116,6 +126,15 @@
             public const string DeleteErrorKey = "DeleteError";
 
             public const string DeleteErrorValue = "Cannot delete someone else property!";
+
+            // Offers
+            public const string OfferPrice = "Price is required. It must be more than 1.00.";
+
+            public const string OfferValidFrom = "The date cannot be before today.";
+
+            public const string OfferValidFromRequired = "Valid from field is required.";
+
+            public const string OfferValidToRequired = "Valid to field is required.";
         }
 
         public static class SuccessMessages

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Web.ViewModels.Rules;
+    using Booking.Web.ViewModels.PropertiesViewModels.ById;
 
     public abstract class PropertyByIdBaseViewModel
     {

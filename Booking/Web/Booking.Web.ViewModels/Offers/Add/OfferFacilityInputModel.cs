@@ -1,9 +1,5 @@
-﻿namespace Booking.Web.ViewModels.Facilities
+﻿namespace Booking.Web.ViewModels.Offers.Add
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     public class OfferFacilityInputModel
     {
         public int Id { get; set; }

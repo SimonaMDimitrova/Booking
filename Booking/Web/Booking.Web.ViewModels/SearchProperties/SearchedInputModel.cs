@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Booking.Common;
     using Booking.Web.Infrastructure.ValidationAttributes;
 
     public class SearchedInputModel
@@ -18,7 +19,7 @@
         public DateTime CheckOut { get; set; }
 
         [Required]
-        [Range(1, 30)]
+        [Range(GlobalConstants.BookingMinMembers, GlobalConstants.BookingMaxMembers)]
         public byte Members { get; set; }
     }
 }

@@ -3,11 +3,13 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Booking.Common;
+
     public class DateMinValueAttribute : ValidationAttribute
     {
         public DateMinValueAttribute()
         {
-            this.ErrorMessage = "The date cannot be before today.";
+            this.ErrorMessage = GlobalConstants.ErrorMessages.OfferValidFrom;
         }
 
         public override bool IsValid(object value)
