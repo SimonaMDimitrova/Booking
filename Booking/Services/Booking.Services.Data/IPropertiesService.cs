@@ -13,8 +13,12 @@
     public interface IPropertiesService
     {
         // done
+        bool IsUserHasAccessToProperty(string propertyId, string userId);
+
+        // done
         PropertiesListViewModel GetAllByUserId(string userId);
 
+        // done
         string GetNameById(string id);
 
         // done
@@ -40,6 +44,7 @@
         // done
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
 
+        // done
         string GetIdByOfferId(string id, string userId);
 
         SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input, string userEmail);

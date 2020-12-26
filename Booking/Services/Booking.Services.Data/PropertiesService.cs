@@ -166,7 +166,7 @@
                 }
             }
 
-            Directory.CreateDirectory($"{imagePath}");
+            Directory.CreateDirectory(imagePath);
             if (input.Images != null && input.Images.Any())
             {
                 foreach (var image in input.Images)
@@ -237,9 +237,6 @@
 
             this.propertiesRepository.Delete(property);
             await this.propertiesRepository.SaveChangesAsync();
-            await this.propertyImagesRepository.SaveChangesAsync();
-            await this.propertyRulesRepository.SaveChangesAsync();
-            await this.propertyFacilitiesRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(EditPropertyInputModel input)
@@ -435,7 +432,7 @@
                 .FirstOrDefault(p => p.Offers.Any(o => o.Id == id) && p.ApplicationUserId == userId);
             if (property == null)
             {
-                throw new Exception("You don't have permission to make any changes to this property (or it doesn't exists).");
+                throw new Exception(GlobalConstants.ErrorMessages.PropertyAccessValue);
             }
 
             return property.Id;
@@ -511,6 +508,13 @@
                 .FirstOrDefault();
 
             return property;
+        }
+
+        public bool IsUserHasAccessToProperty(string propertyId, string userId)
+        {
+            return this.propertiesRepository
+                .All()
+                .Any(p => p.Id == propertyId && p.ApplicationUserId == userId);
         }
     }
 }

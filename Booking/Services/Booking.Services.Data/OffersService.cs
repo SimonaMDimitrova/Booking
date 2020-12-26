@@ -34,7 +34,7 @@
             this.offerImagesRepository = offerImagesRepository;
         }
 
-        public async Task AddToProperty(AddOfferInputModel input, string imagePath)
+        public async Task CreateAsync(AddOfferInputModel input, string imagePath)
         {
             var offer = new Offer
             {
@@ -42,6 +42,7 @@
                 ValidFrom = (DateTime)input.ValidFrom,
                 PropertyId = input.PropertyId,
                 PricePerPerson = input.PricePerPerson,
+                Count = input.Count,
             };
 
             var index = 0;
@@ -78,11 +79,16 @@
                     count += bedTypesDb.First(x => x.Id == bedTypeId).Capacity * bedTypeCount;
                     if (count > 30)
                     {
-                        throw new Exception("Cannot have more than 30 members in an offer!");
+                        throw new Exception(GlobalConstants.ErrorMessages.MembersCount);
                     }
                 }
 
                 index++;
+            }
+
+            if (count <= 0)
+            {
+                throw new Exception(GlobalConstants.ErrorMessages.MembersCount);
             }
 
             var facilitiesIds = input.OfferFacilitiesIds;
@@ -100,7 +106,7 @@
                 }
             }
 
-            Directory.CreateDirectory($"{imagePath}");
+            Directory.CreateDirectory(imagePath);
             if (input.Images != null && input.Images.Any())
             {
                 foreach (var image in input.Images)
@@ -108,7 +114,7 @@
                     var extension = Path.GetExtension(image.FileName).TrimStart('.');
                     if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
                     {
-                        throw new Exception($"Invalid image extension {extension}");
+                        throw new Exception($"{GlobalConstants.ErrorMessages.ImageExtention} {extension}");
                     }
 
                     var offerImage = new OfferImage
@@ -186,9 +192,6 @@
             }
 
             this.offersRepository.Delete(offer);
-            await this.offerBedTypesRepository.SaveChangesAsync();
-            await this.offerFacilitiesRepository.SaveChangesAsync();
-            await this.offerImagesRepository.SaveChangesAsync();
             await this.offersRepository.SaveChangesAsync();
         }
 
@@ -203,6 +206,7 @@
                     ValidTo = o.ValidTo,
                     ValidFrom = o.ValidFrom,
                     OfferId = o.Id,
+                    Count = o.Count,
                 })
                 .FirstOrDefault();
             if (offer == null)
@@ -213,19 +217,16 @@
             return offer;
         }
 
-        public async Task UpdateAsync(string userId, EditOfferViewModel input)
+        public async Task UpdateAsync(EditOfferViewModel input)
         {
             var offer = this.offersRepository
                 .All()
-                .FirstOrDefault(o => o.Id == input.OfferId && o.Property.ApplicationUserId == userId);
-            if (offer == null)
-            {
-                throw new Exception(GlobalConstants.ErrorMessages.OfferAccessValue);
-            }
+                .FirstOrDefault(o => o.Id == input.OfferId);
 
             offer.PricePerPerson = input.PricePerPerson;
             offer.ValidFrom = (DateTime)input.ValidFrom;
             offer.ValidTo = (DateTime)input.ValidTo;
+            offer.Count = input.Count;
 
             await this.offersRepository.SaveChangesAsync();
         }

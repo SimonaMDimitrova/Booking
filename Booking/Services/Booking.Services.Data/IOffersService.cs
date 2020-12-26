@@ -9,11 +9,11 @@
     {
         Task DeleteAllByPropertyIdAsync(string propertyId, string userId, string imagePath);
 
-        Task AddToProperty(AddOfferInputModel input, string imagePath);
+        Task CreateAsync(AddOfferInputModel input, string imagePath);
 
         Task DeleteAsync(string offerId, string userId, string imagePath);
 
-        Task UpdateAsync(string userId, EditOfferViewModel input);
+        Task UpdateAsync(EditOfferViewModel input);
 
         EditOfferViewModel GetById(string id, string userId);
     }

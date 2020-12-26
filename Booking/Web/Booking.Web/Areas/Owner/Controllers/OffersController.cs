@@ -17,7 +17,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize(Roles = GlobalConstants.OwnerRoleName)]
-    [Area("Owner")]
+    [Area(GlobalConstants.OwnerRoleName)]
     public class OffersController : BaseController
     {
         private readonly IFacilitiesService facilitiesService;
@@ -49,19 +49,21 @@
         public async Task<IActionResult> Add(string id)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            var property = this.propertiesService.GetById(id, user.Id);
-            if (property == null)
+            var ifUserHasAccess = this.propertiesService.IsUserHasAccessToProperty(id, user.Id);
+            if (!ifUserHasAccess)
             {
-                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
+                this.TempData[GlobalConstants.ErrorMessages.PropertyAccessKey] = GlobalConstants.ErrorMessages.PropertyAccessValue;
                 return this.RedirectToAction("All", "Properties");
             }
 
-            var viewModel = new AddOfferInputModel();
-            viewModel.PropertyId = id;
-            viewModel.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
-            viewModel.BedTypes = this.bedTypesService.GetAll();
-            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(id);
-            viewModel.PropertyName = this.propertiesService.GetNameById(id);
+            var viewModel = new AddOfferInputModel
+            {
+                PropertyId = id,
+                PropertyName = this.propertiesService.GetNameById(id),
+                OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory(),
+                BedTypes = this.bedTypesService.GetAll(),
+                CurrencyCode = this.currenciesService.GetByPropertyId(id),
+            };
 
             return this.View(viewModel);
         }
@@ -70,18 +72,11 @@
         public async Task<IActionResult> Add(AddOfferInputModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            var property = this.propertiesService.GetById(input.PropertyId, user.Id);
-            if (property == null)
+            var ifUserHasAccess = this.propertiesService.IsUserHasAccessToProperty(input.PropertyId, user.Id);
+            if (!ifUserHasAccess)
             {
-                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
+                this.TempData[GlobalConstants.ErrorMessages.PropertyAccessKey] = GlobalConstants.ErrorMessages.PropertyAccessValue;
                 return this.RedirectToAction("All", "Properties");
-            }
-
-            if (input.BedTypesCounts.Count() != 4
-                || input.BedTypesCounts.All(b => b <= 0)
-                || input.BedTypesCounts.Any(b => b < 0))
-            {
-                this.ModelState.AddModelError(nameof(input.BedTypesCounts), "Enter correct sleeping places. At least one is required.");
             }
 
             this.ValidateCheckToDate(input);
@@ -93,18 +88,16 @@
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(input.PropertyId);
                 input.PropertyName = this.propertiesService.GetNameById(input.PropertyId);
 
-                this.TempData["Error"] = " ";
-
                 return this.View(input);
             }
 
             try
             {
-                await this.offersService.AddToProperty(input, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.CreateAsync(input, $"{this.environment.WebRootPath}{GlobalConstants.OfferImagesPath}");
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("offer"))
+                if (ex.Message.Contains(GlobalConstants.ErrorMessages.MembersCount))
                 {
                     this.ModelState.AddModelError(nameof(input.BedTypesCounts), ex.Message);
                 }
@@ -120,7 +113,7 @@
                 return this.View(input);
             }
 
-            this.TempData["Message"] = "The offer was successfully added.";
+            this.TempData[GlobalConstants.SuccessMessages.AddOfferKey] = GlobalConstants.SuccessMessages.AddOfferValue;
             return this.RedirectToAction("ById", "Properties", new { id = input.PropertyId });
         }
 
@@ -135,21 +128,21 @@
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.PropertyAccessKey] = ex.Message;
                 return this.RedirectToAction("All", "Properties");
             }
 
             try
             {
-                await this.offersService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}/images/offers/");
+                await this.offersService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}{GlobalConstants.OfferImagesPath}");
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.OfferAccessKey] = ex.Message;
                 return this.RedirectToAction("ById", "Properties", new { id = propertyId });
             }
 
-            this.TempData["Message"] = "The offer was successfully deleted.";
+            this.TempData[GlobalConstants.SuccessMessages.DeleteOfferKey] = GlobalConstants.SuccessMessages.DeleteOfferValue;
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
 
@@ -163,14 +156,14 @@
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.PropertyAccessKey] = ex.Message;
                 return this.RedirectToAction("All", "Properties");
             }
 
             EditOfferViewModel viewModel = this.offersService.GetById(id, user.Id);
-            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
             viewModel.PropertyId = propertyId;
             viewModel.PropertyName = this.propertiesService.GetNameById(propertyId);
+            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
             return this.View(viewModel);
         }
@@ -186,7 +179,7 @@
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.PropertyAccessKey] = ex.Message;
                 return this.RedirectToAction("All", "Properties");
             }
 
@@ -195,13 +188,15 @@
             if (!this.ModelState.IsValid)
             {
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
+                input.PropertyName = this.propertiesService.GetNameById(propertyId);
+                input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
                 return this.View(input);
             }
 
-            await this.offersService.UpdateAsync(user.Id, input);
+            await this.offersService.UpdateAsync(input);
 
-            this.TempData["Message"] = "The offer was successfully edited.";
+            this.TempData[GlobalConstants.SuccessMessages.EditOfferKey] = GlobalConstants.SuccessMessages.EditOfferValue;
             return this.RedirectToAction("ById", "Properties", new { id = propertyId });
         }
 
@@ -215,13 +210,8 @@
                 if (!(validFrom.Date.AddDays(1) < validTo)
                     || validTo.Date.AddDays(1) < DateTime.UtcNow)
                 {
-                    this.ModelState.AddModelError(nameof(input.ValidTo), "The date must be at least 2 days after valid from date.");
+                    this.ModelState.AddModelError(nameof(input.ValidTo), GlobalConstants.ErrorMessages.OfferValidTo);
                 }
-            }
-
-            if (input.ValidFrom == null)
-            {
-                this.ModelState.AddModelError(nameof(input.ValidTo), "Fill valid from field first.");
             }
         }
     }

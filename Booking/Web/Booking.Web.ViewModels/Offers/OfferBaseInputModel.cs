@@ -26,5 +26,9 @@
         public DateTime? ValidTo { get; set; }
 
         public string CurrencyCode { get; set; }
+
+        [Required]
+        [Range(GlobalConstants.MinOfferCount, GlobalConstants.MaxOfferCount, ErrorMessage = GlobalConstants.ErrorMessages.OffersCount)]
+        public byte Count { get; set; }
     }
 }

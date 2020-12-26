@@ -85,6 +85,10 @@
 
         public const string ValidToDisplayName = "Valid to";
 
+        public const int MinOfferCount = 1;
+
+        public const int MaxOfferCount = 20;
+
         public static class ErrorMessages
         {
             // Properies
@@ -119,9 +123,13 @@
 
             public const string ByIdErrorValue = "The property was not found.";
 
-            public const string OfferAccessKey = "AccessDenied";
+            public const string OfferAccessKey = "OfferAccessDenied";
 
-            public const string OfferAccessValue = "Access denied. You don't have permission to edit/delete this offer or it doesn't exist.";
+            public const string OfferAccessValue = "You don't have permission to edit/delete this offer.";
+
+            public const string PropertyAccessKey = "PropertyAccessDenied";
+
+            public const string PropertyAccessValue = "Property doesn't exists or you don't have permission to access it.";
 
             public const string DeleteErrorKey = "DeleteError";
 
@@ -135,6 +143,12 @@
             public const string OfferValidFromRequired = "Valid from field is required.";
 
             public const string OfferValidToRequired = "Valid to field is required.";
+
+            public const string OfferValidTo = "The date must be at least 2 days after valid from date.";
+
+            public const string MembersCount = "At least one sleeping place is required. Cannot have more than 30 members per offer.";
+
+            public const string OffersCount = "Offers must be between 1 and 20.";
         }
 
         public static class SuccessMessages
@@ -151,6 +165,19 @@
             public const string DeleteKey = "Delete";
 
             public const string DeleteValue = "Property was successfully deleted.";
+
+            // Offer
+            public const string AddOfferKey = "AddOffer";
+
+            public const string AddOfferValue = "The offer was successfully added.";
+
+            public const string EditOfferKey = "EditOffer";
+
+            public const string EditOfferValue = "The offer was successfully edited.";
+
+            public const string DeleteOfferKey = "DeleteOffer";
+
+            public const string DeleteOfferValue = "The offer was successfully deleted.";
         }
     }
 }

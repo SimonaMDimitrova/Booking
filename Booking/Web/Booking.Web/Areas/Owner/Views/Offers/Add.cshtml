@@ -34,14 +34,29 @@
                     var index = 0;
                     foreach (var bedType in Model.BedTypes)
                     {
-                        <div class="col-md-3">
-                            <label for="bedType_@bedType.Key">@bedType.Value</label>
-                            <input id="bedType_@bedType.Key"
-                                    class="form-control"
-                                    type="number"
-                                    name="BedTypesCounts"
-                                    value=@Model.BedTypesCounts.ToList()[index] />
-                        </div>
+                        if (Model.BedTypesCounts != null && Model.BedTypesCounts.Any())
+                        {
+                            <div class="col-md-3">
+                                <label for="bedType_@bedType.Key">@bedType.Value</label>
+                                <input id="bedType_@bedType.Key"
+                                       class="form-control"
+                                       type="number"
+                                       name="BedTypesCounts"
+                                       value=@Model.BedTypesCounts.ToList()[index] />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                <label for="bedType_@bedType.Key">@bedType.Value</label>
+                                <input id="bedType_@bedType.Key"
+                                       class="form-control"
+                                       type="number"
+                                       name="BedTypesCounts"
+                                       value="0" />
+                            </div>
+                        }
+
                         index++;
                     }
                 }
@@ -52,6 +67,12 @@
                 <label asp-for="Images"></label>
                 <input asp-for="Images" class="form-control" />
                 <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Count"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
             </div>
             <hr />
         </div>
@@ -68,7 +89,7 @@
                         {
                             var currentFacility = facility.Value[i];
                             <div class="col-md-6">
-                                @if (Model.OfferFacilitiesIds.Contains(currentFacility.Id))
+                                @if (Model.OfferFacilitiesIds != null && Model.OfferFacilitiesIds.Contains(currentFacility.Id))
                                 {
                                     <input id="facility_@currentFacility.Id"
                                        type="checkbox"

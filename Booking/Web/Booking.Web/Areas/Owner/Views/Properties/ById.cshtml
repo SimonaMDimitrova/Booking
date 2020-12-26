@@ -13,6 +13,26 @@
         {
             <div class="alert alert-success">@this.TempData[GlobalConstants.SuccessMessages.EditKey]</div>
         }
+
+        @if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.AddOfferKey))
+        {
+            <div class="alert alert-success">@this.TempData[GlobalConstants.SuccessMessages.AddOfferKey]</div>
+        }
+
+        @if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.EditOfferKey))
+        {
+            <div class="alert alert-success">@this.TempData[GlobalConstants.SuccessMessages.EditOfferKey]</div>
+        }
+
+        @if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.DeleteOfferKey))
+        {
+            <div class="alert alert-success">@this.TempData[GlobalConstants.SuccessMessages.DeleteOfferKey]</div>
+        }
+
+        @if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.OfferAccessKey))
+        {
+            <div class="alert alert-danger">@this.TempData[GlobalConstants.ErrorMessages.OfferAccessKey]</div>
+        }
     </div>
     <div class="col-md-6 byid">
         <div>

@@ -164,9 +164,9 @@
             {
                 await this.offersService.DeleteAllByPropertyIdAsync(id, user.Id, $"{this.environment.WebRootPath}{GlobalConstants.OfferImagesPath}");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.TempData[GlobalConstants.ErrorMessages.OfferAccessKey] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.DeleteErrorKey] = GlobalConstants.ErrorMessages.DeleteErrorValue;
                 return this.RedirectToAction(nameof(this.All));
             }
 

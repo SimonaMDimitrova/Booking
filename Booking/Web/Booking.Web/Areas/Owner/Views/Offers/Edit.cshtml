@@ -24,6 +24,11 @@
                 <input asp-for="PricePerPerson" class="form-control" />
                 <span asp-validation-for="PricePerPerson" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Count"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="OfferId" class="form-control" />
             <hr />
             <input type="submit" value="Edit an offer" class="book-btn text-center" />
