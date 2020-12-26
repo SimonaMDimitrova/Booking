@@ -5,5 +5,7 @@
         public string ValidFrom { get; set; }
 
         public string ValidTo { get; set; }
+
+        public byte Count { get; set; }
     }
 }

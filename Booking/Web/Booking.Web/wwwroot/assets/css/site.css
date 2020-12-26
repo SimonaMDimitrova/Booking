@@ -1,4 +1,15 @@
-﻿.back {
+﻿.explanation {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.position {
+    position: relative;
+    bottom: 15px;
+    margin-bottom: 0px!important;
+}
+
+.back {
     padding-left: 0 !important;
 }
 

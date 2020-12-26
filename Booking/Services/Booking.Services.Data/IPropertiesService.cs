@@ -12,39 +12,28 @@
 
     public interface IPropertiesService
     {
-        // done
         bool IsUserHasAccessToProperty(string propertyId, string userId);
 
-        // done
         PropertiesListViewModel GetAllByUserId(string userId);
 
-        // done
         string GetNameById(string id);
 
-        // done
         Task CreateAsync(AddPropertyInputModel input, string userId, string imagePath);
 
-        // done
         bool CheckIfNameIsAvailable(string name);
 
-        // done
         bool CheckIfEditInputNameIsAvailable(string name, string propertyId);
 
         string GetIdByName(string propertyName);
 
-        // done
         EditPropertyInputModel GetById(string propertyId, string userId);
 
-        // done
         Task UpdateAsync(EditPropertyInputModel input);
 
-        // done
         Task DeleteAsync(string propertyId, string userId, string imagePath);
 
-        // done
         PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
 
-        // done
         string GetIdByOfferId(string id, string userId);
 
         SearchIndexListViewModel GetBySearchRequirements(IndexInputModel input, string userEmail);

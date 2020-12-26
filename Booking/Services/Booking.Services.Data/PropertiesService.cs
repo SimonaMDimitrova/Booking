@@ -101,8 +101,7 @@
                                 && (checkOut - checkIn).TotalDays >= 2
                                 && (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity) == input.Members
                                 && o.PricePerPerson >= input.MinBudget && o.PricePerPerson <= (input.MaxBudget == 0 ? int.MaxValue : input.MaxBudget))
-                        .ToList()
-                        .Count,
+                        .Sum(o => o.Count),
                 })
                 .Where(p => p.OffersCount > 0)
                 .ToList();
@@ -367,6 +366,7 @@
                         .Select(o => new OfferViewModel
                         {
                             Id = o.Id,
+                            Count = o.Count,
                             Price = o.PricePerPerson,
                             ValidFrom = o.ValidFrom.ToString(GlobalConstants.DateFormat),
                             ValidTo = o.ValidTo.ToString(GlobalConstants.DateFormat),
@@ -483,6 +483,7 @@
                         .Select(o => new SearchedOfferViewModel
                         {
                             Id = o.Id,
+                            Count = o.Count,
                             Price = o.PricePerPerson,
                             CheckIn = input.CheckIn.ToString(GlobalConstants.DateFormat),
                             CheckOut = input.CheckOut.ToString(GlobalConstants.DateFormat),

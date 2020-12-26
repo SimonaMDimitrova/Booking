@@ -40,9 +40,10 @@
             <div class="form-group">
                 <label id="currencyId">Budget</label>
                 <input asp-for="MinBudget" class="form-control" />
-                <span>* min price per person</span>
+                <div class="explanation">* min price per person</div>
+
                 <input asp-for="MaxBudget" class="form-control" />
-                <span>* max price per person</span>
+                <div class="explanation">* max price per person</div>
             </div>
             <input type="submit" class="book-btn" value="Search" />
         </form>

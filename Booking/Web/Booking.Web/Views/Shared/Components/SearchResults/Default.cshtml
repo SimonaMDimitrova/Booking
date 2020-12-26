@@ -1,4 +1,5 @@
-﻿@model Booking.Web.ViewModels.ViewComponents.SearchResults.SearchIndexListViewModel
+﻿@using Booking.Common
+@model Booking.Web.ViewModels.ViewComponents.SearchResults.SearchIndexListViewModel
 
 @if (Model != null && Model.Properties.Any())
 {
@@ -26,7 +27,10 @@
                 <div class="country-town">
                     @property.Town, @property.Country
                 </div>
-                <div class="cat-property text-right font-italic">Offers found: @property.OffersCount</div>
+                @if (property.OffersCount <= 3)
+                {
+                    <div class="cat-property text-right text-danger">There are only @property.OffersCount offers left!</div>
+                }
             </div>
             <hr />
         </div>

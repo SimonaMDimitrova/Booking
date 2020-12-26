@@ -165,6 +165,10 @@
             {
                 <tr>
                     <td>
+                        @if (offer.Count <= 3)
+                        {
+                            <div class="text-danger"><strong>Only @offer.Count offers left!</strong></div>
+                        }
                         <strong>@offer.CheckIn</strong> - <strong>@offer.CheckOut</strong>
                         <form method="post" asp-area="" asp-controller="Bookings" asp-action="Book" id="bookForm_@offer.Id">
                             <input type="hidden" name="checkIn" value="@offer.CheckIn" />

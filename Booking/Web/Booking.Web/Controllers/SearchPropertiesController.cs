@@ -1,7 +1,7 @@
 ﻿namespace Booking.Web.Controllers
 {
     using System;
-
+    using Booking.Common;
     using Booking.Services.Data;
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.SearchProperties;
@@ -34,7 +34,6 @@
 
             if (viewModel == null || !this.ModelState.IsValid)
             {
-                this.TempData["Error"] = "Something went wrong. Try again!";
                 return this.RedirectToAction(nameof(this.Index), new IndexInputModel());
             }
 
