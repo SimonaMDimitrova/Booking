@@ -207,6 +207,9 @@
                     ValidFrom = o.ValidFrom,
                     OfferId = o.Id,
                     Count = o.Count,
+                    CurrencyCode = o.Property.Town.Country.Currency.CurrencyCode,
+                    PropertyId = o.PropertyId,
+                    PropertyName = o.Property.Name,
                 })
                 .FirstOrDefault();
             if (offer == null)

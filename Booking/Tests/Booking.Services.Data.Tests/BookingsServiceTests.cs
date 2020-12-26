@@ -39,9 +39,11 @@
                 PropertyId = property.Id,
                 OfferId = property.Offers.FirstOrDefault().Id,
             };
+
             await this.Service.AddAsync(input, userId);
 
             Assert.Equal(2, this.DbContext.Bookings.Count());
+            Assert.Equal(2, property.Offers.FirstOrDefault().Count);
         }
 
         [Fact]

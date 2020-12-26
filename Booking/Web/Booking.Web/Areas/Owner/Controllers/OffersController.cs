@@ -161,9 +161,6 @@
             }
 
             EditOfferViewModel viewModel = this.offersService.GetById(id, user.Id);
-            viewModel.PropertyId = propertyId;
-            viewModel.PropertyName = this.propertiesService.GetNameById(propertyId);
-            viewModel.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
             return this.View(viewModel);
         }
@@ -187,7 +184,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
+                input.PropertyId = propertyId;
                 input.PropertyName = this.propertiesService.GetNameById(propertyId);
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(propertyId);
 
