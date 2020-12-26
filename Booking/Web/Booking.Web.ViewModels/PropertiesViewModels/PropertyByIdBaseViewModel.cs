@@ -4,7 +4,7 @@
 
     using Booking.Web.ViewModels.Rules;
 
-    public class PropertyByIdBaseViewModel
+    public abstract class PropertyByIdBaseViewModel
     {
         public string Id { get; set; }
 

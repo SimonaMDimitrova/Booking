@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Booking.Web.ViewModels.PropertiesViewModels;
+    using Booking.Web.ViewModels.PropertiesViewModels.All;
 
     public class SearchIndexInListViewModel : PropertyInListViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.PropertiesViewModels
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels.All
 {
     using System.Collections.Generic;
 
