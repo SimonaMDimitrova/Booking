@@ -1,9 +1,6 @@
-﻿namespace Booking.Web.ViewModels.PropertiesViewModels
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels.Edit
 {
     using System.Collections.Generic;
-
-    using Booking.Web.ViewModels.Facilities;
-    using Booking.Web.ViewModels.Rules;
 
     public class EditPropertyInputModel : PropertyBaseInputModel
     {
@@ -12,9 +9,5 @@
         public IEnumerable<EditRuleInputModel> Rules { get; set; }
 
         public IEnumerable<PropertyFacilityInputModel> Facilities { get; set; }
-
-        public IEnumerable<string> AllImages { get; set; }
-
-        public IEnumerable<string> ImagesToBeRemoved { get; set; }
     }
 }

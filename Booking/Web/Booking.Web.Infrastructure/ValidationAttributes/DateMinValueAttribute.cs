@@ -1,9 +1,7 @@
 ﻿namespace Booking.Web.Infrastructure.ValidationAttributes
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
 
     public class DateMinValueAttribute : ValidationAttribute
     {

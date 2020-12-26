@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.BedTypes;
@@ -13,18 +14,17 @@
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.Offers;
     using Booking.Web.ViewModels.PropertiesViewModels;
+    using Booking.Web.ViewModels.PropertiesViewModels.Add;
+    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Booking.Web.ViewModels.Rules;
     using Booking.Web.ViewModels.SearchProperties;
     using Booking.Web.ViewModels.ViewComponents.SearchResults;
 
     public class PropertiesService : IPropertiesService
     {
-        private const string Error = "You don't have permission to make any changes to this property (or it doesn't exists).";
-
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<Rule> rulesRepository;
-        private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository;
         private readonly IRepository<PropertyImage> propertyImagesRepository;
         private readonly IDeletableEntityRepository<PropertyRule> propertyRulesRepository;
@@ -32,14 +32,12 @@
         public PropertiesService(
             IDeletableEntityRepository<Property> propertiesRepository,
             IRepository<Rule> rulesRepository,
-            IDeletableEntityRepository<Offer> offersRepository,
             IDeletableEntityRepository<PropertyFacility> propertyFacilitiesRepository,
             IRepository<PropertyImage> propertyImagesRepository,
             IDeletableEntityRepository<PropertyRule> propertyRulesRepository)
         {
             this.propertiesRepository = propertiesRepository;
             this.rulesRepository = rulesRepository;
-            this.offersRepository = offersRepository;
             this.propertyFacilitiesRepository = propertyFacilitiesRepository;
             this.propertyImagesRepository = propertyImagesRepository;
             this.propertyRulesRepository = propertyRulesRepository;
@@ -95,10 +93,10 @@
                     Stars = p.Stars,
                     PropertyCategory = p.PropertyCategory.Name,
                     Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
-                            $"../../images/properties/{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
+                            $"../..{GlobalConstants.PropertyImagesPath}{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
                             : p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault() != null ?
-                            $"../../images/offers/{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
-                            : "../../assets/images/defaults/default.png",
+                            $"../..{GlobalConstants.OfferImagesPath}{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
+                            : $"../..{GlobalConstants.DefaultImagePath}",
                     OffersCount = p.Offers
                         .Where(
                             o => (o.ValidFrom.Date >= DateTime.UtcNow.Date ? o.ValidFrom.Date : DateTime.UtcNow.Date).AddDays(2) <= checkIn.Date
@@ -142,7 +140,7 @@
                 Description = input.Description,
             };
 
-            var rules = this.rulesRepository.AllAsNoTracking();
+            var rules = this.rulesRepository.All();
             var rulesIds = input.RulesIds != null ? input.RulesIds : new List<int>();
             foreach (var rule in rules)
             {
@@ -179,7 +177,7 @@
                     var extension = Path.GetExtension(image.FileName).TrimStart('.');
                     if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
                     {
-                        throw new Exception($"Invalid image extension {extension}");
+                        throw new Exception($"{GlobalConstants.ErrorMessages.ImageExtention} {extension}");
                     }
 
                     var propertyImage = new PropertyImage
@@ -205,7 +203,7 @@
                 .FirstOrDefault(p => p.Id == propertyId && p.ApplicationUserId == userId);
             if (property == null)
             {
-                throw new Exception("Cannot delete someone else property!");
+                throw new Exception(GlobalConstants.ErrorMessages.DeleteErrorValue);
             }
 
             var rules = this.propertyRulesRepository
@@ -247,15 +245,11 @@
             await this.propertyFacilitiesRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(EditPropertyInputModel input, string userId)
+        public async Task UpdateAsync(EditPropertyInputModel input)
         {
             var property = this.propertiesRepository
                 .All()
-                .FirstOrDefault(p => input.Id == p.Id && userId == p.ApplicationUserId);
-            if (property == null)
-            {
-                throw new Exception(Error);
-            }
+                .FirstOrDefault(p => input.Id == p.Id);
 
             property.Name = input.Name;
             property.Floors = input.Floors;
@@ -335,10 +329,10 @@
                         PropertyCategory = p.PropertyCategory.Name,
                         Id = p.Id,
                         Image = p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id) != null ?
-                            $"../../images/properties/{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
+                            $"../..{GlobalConstants.PropertyImagesPath}{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Id}.{p.PropertyImages.FirstOrDefault(pi => pi.PropertyId == p.Id).Extension}"
                             : p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault() != null ?
-                            $"../../images/offers/{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
-                            : "../../assets/images/defaults/default.png",
+                            $"../..{GlobalConstants.OfferImagesPath}{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{p.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
+                            : $"../..{GlobalConstants.DefaultImagePath}",
                     })
                     .ToList(),
             };
@@ -374,14 +368,14 @@
                             IsAllowed = r.IsAllowed,
                         })
                         .ToList(),
-                    Images = p.PropertyImages.Select(oi => "/images/properties/" + oi.Id + "." + oi.Extension).ToList(),
+                    Images = p.PropertyImages.Select(oi => GlobalConstants.PropertyImagesPath + oi.Id + "." + oi.Extension).ToList(),
                     Offers = p.Offers
                         .Select(o => new OfferViewModel
                         {
                             Id = o.Id,
                             Price = o.PricePerPerson,
-                            ValidFrom = o.ValidFrom.ToString("dd/MM/yyyy"),
-                            ValidTo = o.ValidTo.ToString("dd/MM/yyyy"),
+                            ValidFrom = o.ValidFrom.ToString(GlobalConstants.DateFormat),
+                            ValidTo = o.ValidTo.ToString(GlobalConstants.DateFormat),
                             OfferFacilities = o.OfferFacilities
                                 .Select(f => new OfferFacilityViewModel
                                 {
@@ -397,7 +391,7 @@
                                 })
                                 .ToList(),
                             Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                            Images = o.OfferImages.Select(oi => "/images/offers/" + oi.Id + "." + oi.Extension).ToList(),
+                            Images = o.OfferImages.Select(oi => GlobalConstants.OfferImagesPath + oi.Id + "." + oi.Extension).ToList(),
                         })
                         .ToList(),
                 })
@@ -444,7 +438,7 @@
                 .FirstOrDefault(p => p.Offers.Any(o => o.Id == id) && p.ApplicationUserId == userId);
             if (property == null)
             {
-                throw new Exception(Error);
+                throw new Exception("You don't have permission to make any changes to this property (or it doesn't exists).");
             }
 
             return property.Id;
@@ -486,7 +480,7 @@
                         .ToList(),
                     PropertyType = p.PropertyCategory.PropertyType.Name,
                     PropertyCategory = p.PropertyCategory.Name,
-                    Images = p.PropertyImages.Select(oi => "/images/properties/" + oi.Id + "." + oi.Extension).ToList(),
+                    Images = p.PropertyImages.Select(oi => GlobalConstants.PropertyImagesPath + oi.Id + "." + oi.Extension).ToList(),
                     Offers = p.Offers
                         .Where(o => o.OfferBedTypes.Sum(b => b.BedType.Capacity) == input.Members
                             && o.ValidFrom.Date <= input.CheckIn.Date
@@ -496,8 +490,8 @@
                         {
                             Id = o.Id,
                             Price = o.PricePerPerson,
-                            CheckIn = input.CheckIn.ToString("dd/MM/yyyy"),
-                            CheckOut = input.CheckOut.ToString("dd/MM/yyyy"),
+                            CheckIn = input.CheckIn.ToString(GlobalConstants.DateFormat),
+                            CheckOut = input.CheckOut.ToString(GlobalConstants.DateFormat),
                             OfferFacilities = o.OfferFacilities
                                 .Select(f => new OfferFacilityViewModel
                                 {
@@ -513,7 +507,7 @@
                                 })
                                 .ToList(),
                             Guests = (byte)o.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                            Images = o.OfferImages.Select(oi => "/images/offers/" + oi.Id + "." + oi.Extension).ToList(),
+                            Images = o.OfferImages.Select(oi => GlobalConstants.OfferImagesPath + oi.Id + "." + oi.Extension).ToList(),
                         })
                         .ToList(),
                 })

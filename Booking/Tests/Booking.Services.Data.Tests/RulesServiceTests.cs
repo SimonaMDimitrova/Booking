@@ -5,7 +5,8 @@
     using System.Linq;
 
     using Booking.Data.Models;
-    using Booking.Web.ViewModels.Rules;
+    using Booking.Web.ViewModels.PropertiesViewModels.Add;
+    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 

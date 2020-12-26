@@ -7,6 +7,7 @@
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.Facilities;
+    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 

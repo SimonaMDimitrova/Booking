@@ -13,15 +13,7 @@ else
     <div class="row">
         <div class="col-md-12">
             <a asp-area="Owner" asp-controller="Properties" asp-action="Add" class="add"><i class="fas fa-plus-circle"></i> <span class="underline">Add new property</span></a>
-            @if (this.TempData.ContainsKey("Message"))
-            {
-                <div class="alert alert-success margins-temp">@this.TempData["Message"]</div>
-            }
-
-            @if (this.TempData.ContainsKey("Error"))
-            {
-                <div class="alert alert-danger margins-temp">@this.TempData["Error"]</div>
-            }
+            <partial name="_AllPropertiesTempDataPartial" />
         </div>
         @foreach (var property in Model.Properties)
         {

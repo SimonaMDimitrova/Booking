@@ -1,0 +1,31 @@
+﻿@using Booking.Common
+
+@if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.EditKey))
+{
+    <div class="alert alert-success margins-temp">@this.TempData[GlobalConstants.SuccessMessages.EditKey]</div>
+}
+
+@if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.DeleteKey))
+{
+    <div class="alert alert-success margins-temp">@this.TempData[GlobalConstants.SuccessMessages.DeleteKey]</div>
+}
+
+@if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.ByIdErrorKey))
+{
+    <div class="alert alert-danger margins-temp">@this.TempData[GlobalConstants.ErrorMessages.ByIdErrorKey]</div>
+}
+
+@if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.EditErrorKey))
+{
+    <div class="alert alert-danger margins-temp">@this.TempData[GlobalConstants.ErrorMessages.EditErrorKey]</div>
+}
+
+@if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.DeleteErrorKey))
+{
+    <div class="alert alert-danger margins-temp">@this.TempData[GlobalConstants.ErrorMessages.DeleteErrorKey]</div>
+}
+
+@if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.OfferAccessKey))
+{
+    <div class="alert alert-danger margins-temp">@this.TempData[GlobalConstants.ErrorMessages.OfferAccessKey]</div>
+}

@@ -1,4 +1,4 @@
-﻿@model Booking.Web.ViewModels.PropertiesViewModels.AddPropertyInputModel
+﻿@model Booking.Web.ViewModels.PropertiesViewModels.Add.AddPropertyInputModel
 @{
     this.ViewData["Title"] = "Create a property";
     var countries = this.Model.Countries.Select(x => new SelectListItem(x.Value, x.Key));
@@ -82,10 +82,22 @@
                 @foreach (var facility in Model.Facilities)
                 {
                     <div class="col-md-6">
-                        <input id="facility_@facility.Id"
+                        @if (Model.FacilitiesIds != null && Model.FacilitiesIds.Contains(facility.Id))
+                        {
+                            <input id="facility_@facility.Id"
+                               type="checkbox"
+                               name="FacilitiesIds"
+                               checked
+                               value="@facility.Id" />
+                        }
+                        else
+                        {
+                            <input id="facility_@facility.Id"
                                type="checkbox"
                                name="FacilitiesIds"
                                value="@facility.Id" />
+                        }
+
                         <label for="facility_@facility.Id">@facility.Name</label>
                     </div>
                 }
@@ -96,13 +108,25 @@
             <div class="form-group row">
                 @foreach (var rule in Model.Rules)
                 {
-                    <div class="col-md-6">
+                <div class="col-md-6">
+                    @if (Model.FacilitiesIds != null && Model.RulesIds.Contains(rule.Id))
+                    {
+                        <input id="rule_@rule.Id"
+                               type="checkbox"
+                               name="RulesIds"
+                               checked
+                               value="@rule.Id" />
+                    }
+                    else
+                    {
                         <input id="rule_@rule.Id"
                                type="checkbox"
                                name="RulesIds"
                                value="@rule.Id" />
-                        <label for="rule_@rule.Id">@rule.Name</label>
-                    </div>
+                    }
+
+                    <label for="rule_@rule.Id">@rule.Name</label>
+                </div>
                 }
             </div>
             <hr />
@@ -115,4 +139,38 @@
 
 @section Scripts {
     <script src="~/assets/js/ajax-countries-towns.js"></script>
+    <script>
+        var countriesSelection = document.getElementById('countriesId');
+        countriesSelection.value = @Model.CountryId;
+        var countryId = @Model.CountryId;
+        let currency = document.getElementById("currencyId");
+
+        let option = document.createElement("option");
+        option.text = @Model.TownId;
+        option.value = @Model.TownId;
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let townsDropdown = document.getElementById('townsId');
+                if (countryId != 0) {
+                    townsDropdown[0].innerText = 'Choose a town ...';
+
+                    var towns = JSON.parse(this.responseText);
+                    for (let i = 0; i < towns.length; i++) {
+                        let town = towns[i];
+                        let option = document.createElement("option");
+                        option.text = town.value;
+                        option.value = town.key;
+                        townsDropdown.add(option);
+                    }
+
+                    townsDropdown.value = @Model.TownId;
+                }
+            }
+        };
+        xhr.open("GET", `/Home/GetTowns/${countryId}`);
+        xhr.send();
+    </script>
 }

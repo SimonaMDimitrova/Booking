@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.Rules
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels.Add
 {
     public class RuleInputModel
     {

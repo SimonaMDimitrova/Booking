@@ -3,21 +3,24 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Booking.Common;
     using Microsoft.AspNetCore.Http;
 
     public abstract class PropertyBaseInputModel
     {
-        [Required(ErrorMessage = "Enter name.")]
-        [MinLength(3, ErrorMessage = "Name must be between 3 and 150 characters long.")]
-        [MaxLength(150, ErrorMessage = "Name must be between 3 and 150 characters long.")]
+        [Required]
+        [MinLength(GlobalConstants.PropertyNameMinLength, ErrorMessage = GlobalConstants.ErrorMessages.PropertyName)]
+        [MaxLength(GlobalConstants.PropertyNameMaxLength, ErrorMessage = GlobalConstants.ErrorMessages.PropertyName)]
         public string Name { get; set; }
 
-        [MaxLength(500, ErrorMessage = "Description can't be more than 500 characters long.")]
+        [MaxLength(GlobalConstants.PropertyDescriptionMaxLength, ErrorMessage = GlobalConstants.ErrorMessages.PropertyDescription)]
         public string Description { get; set; }
 
-        [Display(Name = "Property rating")]
+        [Display(Name = GlobalConstants.PropertyRatingDisplay)]
         public byte PropertyRating { get; set; }
 
+        [Required]
+        [Range(GlobalConstants.PropertyFloorMin, GlobalConstants.PropertyFloorMax, ErrorMessage = GlobalConstants.ErrorMessages.PropertyFloors)]
         public byte Floors { get; set; }
 
         public IEnumerable<int> FacilitiesIds { get; set; }

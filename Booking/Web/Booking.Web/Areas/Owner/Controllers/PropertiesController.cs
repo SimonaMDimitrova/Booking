@@ -8,13 +8,15 @@
     using Booking.Services.Data;
     using Booking.Web.Controllers;
     using Booking.Web.ViewModels.PropertiesViewModels;
+    using Booking.Web.ViewModels.PropertiesViewModels.Add;
+    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize(Roles = GlobalConstants.OwnerRoleName)]
-    [Area("Owner")]
+    [Area(GlobalConstants.OwnerRoleName)]
     public class PropertiesController : PropertiesBaseController
     {
         private readonly ICountriesService countriesService;
@@ -74,7 +76,7 @@
         {
             if (this.propertiesService.CheckIfNameIsAvailable(input.Name))
             {
-                this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
+                this.ModelState.AddModelError(nameof(input.Name), GlobalConstants.ErrorMessages.PropertyNameIsAlreadyUsed);
             }
 
             if (!this.ModelState.IsValid)
@@ -90,7 +92,7 @@
             var user = await this.userManager.GetUserAsync(this.User);
             try
             {
-                await this.propertiesService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}/images/properties/");
+                await this.propertiesService.CreateAsync(input, user.Id, $"{this.environment.WebRootPath}{GlobalConstants.PropertyImagesPath}");
             }
             catch (Exception ex)
             {
@@ -104,24 +106,18 @@
                 return this.View(input);
             }
 
-            this.TempData["Message"] = "Property was successfully created.";
+            this.TempData[GlobalConstants.SuccessMessages.AddKey] = GlobalConstants.SuccessMessages.AddValue;
             return this.Redirect(nameof(this.All));
         }
 
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                this.TempData["Error"] = "The property is invalid.";
-                return this.RedirectToAction(nameof(this.All));
-            }
-
             var user = await this.userManager.GetUserAsync(this.User);
             var viewModel = this.propertiesService.GetById(id, user.Id);
             if (viewModel == null)
             {
-                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
-                return this.RedirectToAction("All", "Properties");
+                this.TempData[GlobalConstants.ErrorMessages.EditErrorKey] = GlobalConstants.ErrorMessages.EditErrorValue;
+                return this.RedirectToAction(nameof(this.All));
             }
 
             viewModel.Facilities = this.facilitiesService.GetAllByPropertyId(id);
@@ -137,13 +133,13 @@
             var property = this.propertiesService.GetById(input.Id, user.Id);
             if (property == null)
             {
-                this.TempData["Error"] = "You don't have permission to make any changes to this property (or it doesn't exists).";
-                return this.RedirectToAction("All", "Properties");
+                this.TempData[GlobalConstants.ErrorMessages.EditErrorKey] = GlobalConstants.ErrorMessages.EditErrorValue;
+                return this.RedirectToAction(nameof(this.All));
             }
 
             if (this.propertiesService.CheckIfEditInputNameIsAvailable(input.Name, input.Id))
             {
-                this.ModelState.AddModelError(nameof(input.Name), "This property name is already used. Try different one!");
+                this.ModelState.AddModelError(nameof(input.Name), GlobalConstants.ErrorMessages.PropertyNameIsAlreadyUsed);
             }
 
             if (!this.ModelState.IsValid)
@@ -154,9 +150,9 @@
                 return this.View(input);
             }
 
-            await this.propertiesService.UpdateAsync(input, user.Id);
+            await this.propertiesService.UpdateAsync(input);
 
-            this.TempData["Message"] = "Property was successfully edited.";
+            this.TempData[GlobalConstants.SuccessMessages.EditKey] = GlobalConstants.SuccessMessages.EditValue;
             return this.RedirectToAction(nameof(this.ById), new { id = input.Id });
         }
 
@@ -166,25 +162,25 @@
             var user = await this.userManager.GetUserAsync(this.User);
             try
             {
-                await this.propertiesService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}/images/properties/");
+                await this.offersService.DeleteAllByPropertyIdAsync(id, user.Id, $"{this.environment.WebRootPath}{GlobalConstants.OfferImagesPath}");
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.OfferAccessKey] = ex.Message;
                 return this.RedirectToAction(nameof(this.All));
             }
 
             try
             {
-                await this.offersService.DeleteAllByPropertyIdAsync(id, $"{this.environment.WebRootPath}/images/offers/");
+                await this.propertiesService.DeleteAsync(id, user.Id, $"{this.environment.WebRootPath}{GlobalConstants.PropertyImagesPath}");
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.DeleteErrorKey] = ex.Message;
                 return this.RedirectToAction(nameof(this.All));
             }
 
-            this.TempData["Message"] = "Property was successfully deleted.";
+            this.TempData[GlobalConstants.SuccessMessages.DeleteKey] = GlobalConstants.SuccessMessages.DeleteValue;
             return this.RedirectToAction(nameof(this.All));
         }
 
@@ -192,10 +188,9 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
             var viewModel = this.propertiesService.GetPropertyAndOffersById(id, user.Id);
-
-            if (id == null || viewModel == null)
+            if (viewModel == null)
             {
-                this.TempData["Error"] = "The property was not found.";
+                this.TempData[GlobalConstants.ErrorMessages.ByIdErrorKey] = GlobalConstants.ErrorMessages.ByIdErrorValue;
                 return this.RedirectToAction(nameof(this.All));
             }
 

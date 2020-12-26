@@ -1,18 +1,17 @@
 ﻿namespace Booking.Services.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.Offers;
 
     public class OffersService : IOffersService
     {
-        private const string Error = "Access denied. You don't have permission to edit/delete this offer or it doesn't exist.";
         private readonly string[] allowedExtensions = new[] { "jpg", "png" };
         private readonly IDeletableEntityRepository<Offer> offersRepository;
         private readonly IRepository<BedType> bedTypesRepository;
@@ -127,30 +126,30 @@
             await this.offersRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAllByPropertyIdAsync(string id, string imagePath)
+        public async Task DeleteAllByPropertyIdAsync(string propertyId, string userId, string imagePath)
         {
             var offersIds = this.offersRepository
                 .All()
-                .Where(o => o.PropertyId == id)
+                .Where(o => o.PropertyId == propertyId && userId == o.Property.ApplicationUserId)
                 .Select(o => o.Id)
                 .ToList();
             if (offersIds.Any() && offersIds != null)
             {
                 foreach (var offerId in offersIds)
                 {
-                    await this.DeleteAsync(offerId, imagePath);
+                    await this.DeleteAsync(offerId, userId, imagePath);
                 }
             }
         }
 
-        public async Task DeleteAsync(string offerId, string imagePath)
+        public async Task DeleteAsync(string offerId, string userId, string imagePath)
         {
             var offer = this.offersRepository
                 .All()
-                .FirstOrDefault(o => o.Id == offerId);
+                .FirstOrDefault(o => o.Id == offerId && o.Property.ApplicationUserId == userId);
             if (offer == null)
             {
-                throw new Exception(Error);
+                throw new Exception(GlobalConstants.ErrorMessages.OfferAccessValue);
             }
 
             var bedTypes = this.offerBedTypesRepository
@@ -207,7 +206,7 @@
                 .FirstOrDefault();
             if (offer == null)
             {
-                throw new Exception(Error);
+                throw new Exception(GlobalConstants.ErrorMessages.OfferAccessValue);
             }
 
             return offer;
@@ -220,7 +219,7 @@
                 .FirstOrDefault(o => o.Id == input.OfferId && o.Property.ApplicationUserId == userId);
             if (offer == null)
             {
-                throw new Exception(Error);
+                throw new Exception(GlobalConstants.ErrorMessages.OfferAccessValue);
             }
 
             offer.PricePerPerson = input.PricePerPerson;

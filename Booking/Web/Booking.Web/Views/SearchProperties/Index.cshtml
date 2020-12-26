@@ -55,50 +55,50 @@
 @section Scripts {
     <script src="~/assets/js/most-popular-towns.js"></script>
     <script>
-    var countriesSelection = document.getElementById('countriesId');
-    countriesSelection.value = @Model.CountryId;
-    var countryId = @Model.CountryId;
-    let currency = document.getElementById("currencyId");
+        var countriesSelection = document.getElementById('countriesId');
+        countriesSelection.value = @Model.CountryId;
+        var countryId = @Model.CountryId;
+        let currency = document.getElementById("currencyId");
 
-    let option = document.createElement("option");
-    option.text = @Model.TownId;
-    option.value = @Model.TownId;
+        let option = document.createElement("option");
+        option.text = @Model.TownId;
+        option.value = @Model.TownId;
 
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let townsDropdown = document.getElementById('townsId');
-            if (countryId != 0) {
-                townsDropdown[0].innerText = 'Choose a town ...';
-
-                var towns = JSON.parse(this.responseText);
-                for (let i = 0; i < towns.length; i++) {
-                    let town = towns[i];
-                    let option = document.createElement("option");
-                    option.text = town.value;
-                    option.value = town.key;
-                    townsDropdown.add(option);
-                }
-
-                townsDropdown.value = @Model.TownId;
-                getCurrencyCode(currency, countryId);
-            }
-        }
-    };
-    xhr.open("GET", `/Home/GetMostPopularTowns/${countryId}`);
-    xhr.send();
-
-    function getCurrencyCode(currency, countryId) {
         let xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                currency.innerText = `Budget-${this.responseText}`;
+                let townsDropdown = document.getElementById('townsId');
+                if (countryId != 0) {
+                    townsDropdown[0].innerText = 'Choose a town ...';
+
+                    var towns = JSON.parse(this.responseText);
+                    for (let i = 0; i < towns.length; i++) {
+                        let town = towns[i];
+                        let option = document.createElement("option");
+                        option.text = town.value;
+                        option.value = town.key;
+                        townsDropdown.add(option);
+                    }
+
+                    townsDropdown.value = @Model.TownId;
+                    getCurrencyCode(currency, countryId);
+                }
             }
-        }
-        xhr.open("GET", `/Home/GetCurrencyCode/${countryId.toString()}`);
+        };
+        xhr.open("GET", `/Home/GetMostPopularTowns/${countryId}`);
         xhr.send();
-    }
+
+        function getCurrencyCode(currency, countryId) {
+            let xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    currency.innerText = `Budget-${this.responseText}`;
+                }
+            }
+            xhr.open("GET", `/Home/GetCurrencyCode/${countryId.toString()}`);
+            xhr.send();
+        }
     </script>
 }

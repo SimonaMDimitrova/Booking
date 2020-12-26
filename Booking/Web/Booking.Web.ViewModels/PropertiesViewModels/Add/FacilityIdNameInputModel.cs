@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.Facilities
+﻿namespace Booking.Web.ViewModels.PropertiesViewModels.Add
 {
     public class FacilityIdNameInputModel
     {
