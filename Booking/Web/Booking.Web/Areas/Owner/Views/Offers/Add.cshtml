@@ -1,4 +1,5 @@
 ﻿@model Booking.Web.ViewModels.Offers.Add.AddOfferInputModel
+@inject Booking.Services.IDictionariesService dictionariesService
 @{
     this.ViewData["Title"] = "Add an offer";
 }
@@ -29,27 +30,24 @@
             <h4 class="h4-padding">Sleeping places</h4>
             <hr />
             <div class="form-group">
-                @foreach (var bedType in Model.BedTypes)
-                {
-                    <div class="col-md-3">
-                        <label for="bedType_@bedType.Key">@bedType.Value</label>
-                        <input id="bedType_@bedType.Key"
-                               class="form-control"
-                               type="number"
-                               name="BedTypesCounts"
-                               value="0" />
-                    </div>
+                @{
+                    var index = 0;
+                    foreach (var bedType in Model.BedTypes)
+                    {
+                        <div class="col-md-3">
+                            <label for="bedType_@bedType.Key">@bedType.Value</label>
+                            <input id="bedType_@bedType.Key"
+                                    class="form-control"
+                                    type="number"
+                                    name="BedTypesCounts"
+                                    value=@Model.BedTypesCounts.ToList()[index] />
+                        </div>
+                        index++;
+                    }
                 }
                 <span asp-validation-for="BedTypesCounts" class="text-danger"></span>
             </div>
-            @if (this.TempData.ContainsKey("Error"))
-            {
-                <hr />
-            }
-            else
-            {
-                <hr style="margin-top: 100px;" />
-            }
+            <hr />
             <div class="form-group">
                 <label asp-for="Images"></label>
                 <input asp-for="Images" class="form-control" />
@@ -58,59 +56,40 @@
             <hr />
         </div>
         <div class="col-md-6">
-            <hr />
-            <h4 class="h4-padding">Outside and view</h4>
-            <hr />
-            <div class="form-group row">
-                @foreach (var facility in Model.OfferFacilities)
+            @{
+                var facilities = dictionariesService.CreateFacilitiesInput(Model.OfferFacilities);
+                foreach (var facility in facilities)
                 {
-                    @if (facility.Category == "Outside and view")
-                    {
-                        <div class="col-md-6">
-                            <input id="facility_@facility.Id"
-                                   type="checkbox"
-                                   name="OfferFacilitiesIds"
-                                   value="@facility.Id" />
-                            <label for="facility_@facility.Id">@facility.Name</label>
-                        </div>
-                    }
+                    <hr />
+                    <h4 class="h4-padding">@facility.Key</h4>
+                    <hr />
+                    <div class="form-group row">
+                        @for (int i = 0; i < facility.Value.Count; i++)
+                        {
+                            var currentFacility = facility.Value[i];
+                            <div class="col-md-6">
+                                @if (Model.OfferFacilitiesIds.Contains(currentFacility.Id))
+                                {
+                                    <input id="facility_@currentFacility.Id"
+                                       type="checkbox"
+                                       checked
+                                       name="OfferFacilitiesIds"
+                                       value="@currentFacility.Id" />
+                                }
+                                else
+                                {
+                                    <input id="facility_@currentFacility.Id"
+                                       type="checkbox"
+                                       name="OfferFacilitiesIds"
+                                       value="@currentFacility.Id" />
+                                }
+
+                                <label for="facility_@currentFacility.Id">@currentFacility.Name</label>
+                            </div>
+                        }
+                    </div>
                 }
-            </div>
-            <hr />
-            <h4 class="h4-padding">Entertainment</h4>
-            <hr />
-            <div class="form-group row">
-                @foreach (var facility in Model.OfferFacilities)
-                {
-                    @if (facility.Category == "Entertainment")
-                    {
-                        <div class="col-md-6">
-                            <input id="facility_@facility.Id"
-                                   type="checkbox"
-                                   name="OfferFacilitiesIds"
-                                   value="@facility.Id" />
-                            <label for="facility_@facility.Id">@facility.Name</label>
-                        </div>
-                    }
-                }
-            </div>
-            <hr /><h4 class="h4-padding">Cooking and cleaning</h4>
-            <hr />
-            <div class="form-group row">
-                @foreach (var facility in Model.OfferFacilities)
-                {
-                    @if (facility.Category == "Cooking and cleaning")
-                    {
-                        <div class="col-md-6">
-                            <input id="facility_@facility.Id"
-                                   type="checkbox"
-                                   name="OfferFacilitiesIds"
-                                   value="@facility.Id" />
-                            <label for="facility_@facility.Id">@facility.Name</label>
-                        </div>
-                    }
-                }
-            </div>
+            }
             <hr />
             <input type="hidden" asp-for="PropertyId" />
         </div>

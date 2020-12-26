@@ -3,6 +3,8 @@
     using System.Collections.Generic;
 
     using Booking.Services;
+    using Booking.Services.Models;
+    using Booking.Web.ViewModels.Offers.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.ById;
     using Xunit;
 
@@ -59,6 +61,40 @@
 
             Assert.Equal(expectedResult.Count, actualResult.Count);
             Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void CheckCreateFacilitiesInputMethod()
+        {
+            List<OfferFacilityInputModel> facilities = new List<OfferFacilityInputModel>
+            {
+                new OfferFacilityInputModel { Id = 1, Category = "First cat", Name = "First facility", },
+                new OfferFacilityInputModel { Id = 2, Category = "Thrid cat", Name = "First facility", },
+                new OfferFacilityInputModel { Id = 3, Category = "General", Name = "First general" },
+            };
+
+            var expectedResult = new Dictionary<string, List<FacilityIdNameServiceModel>>()
+            {
+                { "First cat", new List<FacilityIdNameServiceModel> { new FacilityIdNameServiceModel { Id = 1, Name = "First facility" } } },
+                { "Thrid cat", new List<FacilityIdNameServiceModel> { new FacilityIdNameServiceModel { Id = 2, Name = "First facility" } } },
+                { "General", new List<FacilityIdNameServiceModel> { new FacilityIdNameServiceModel { Id = 3, Name = "First general" } } },
+            };
+
+            var actualResult = this.service.CreateFacilitiesInput(facilities);
+
+            Assert.Equal(expectedResult.Count, actualResult.Count);
+            foreach (var result in actualResult)
+            {
+                Assert.True(expectedResult.ContainsKey(result.Key));
+                for (int i = 0; i < result.Value.Count; i++)
+                {
+                    var actual = result.Value[i];
+                    var expected = expectedResult[result.Key][i];
+
+                    Assert.Equal(expected.Id, actual.Id);
+                    Assert.Equal(expected.Name, actual.Name);
+                }
+            }
         }
     }
 }

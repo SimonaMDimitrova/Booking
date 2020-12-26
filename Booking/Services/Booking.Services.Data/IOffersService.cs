@@ -1,6 +1,5 @@
 ﻿namespace Booking.Services.Data
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Booking.Web.ViewModels.Offers.Add;

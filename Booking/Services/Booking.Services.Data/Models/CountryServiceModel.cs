@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class CountryDto
+    public class CountryServiceModel
     {
-        public IEnumerable<TownDto> Towns { get; set; }
+        public IEnumerable<TownServiceModel> Towns { get; set; }
 
         public string CurrencyCode { get; set; }
     }

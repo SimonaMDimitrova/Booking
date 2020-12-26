@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using Booking.Services.Models;
+    using Booking.Web.ViewModels.Offers.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.ById;
 
     public class DictionariesService : IDictionariesService
@@ -33,6 +35,23 @@
                 }
 
                 facilitiesDictionary[facility.Category].Add(facility.Name);
+            }
+
+            return facilitiesDictionary;
+        }
+
+        public IDictionary<string, List<FacilityIdNameServiceModel>> CreateFacilitiesInput(IEnumerable<OfferFacilityInputModel> facilities)
+        {
+            var facilitiesDictionary = new Dictionary<string, List<FacilityIdNameServiceModel>>();
+            foreach (var facility in facilities)
+            {
+                if (!facilitiesDictionary.ContainsKey(facility.Category))
+                {
+                    facilitiesDictionary[facility.Category] = new List<FacilityIdNameServiceModel>();
+                }
+
+                facilitiesDictionary[facility.Category]
+                    .Add(new FacilityIdNameServiceModel { Name = facility.Name, Id = facility.Id });
             }
 
             return facilitiesDictionary;
