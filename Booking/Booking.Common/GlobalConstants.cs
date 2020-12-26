@@ -8,7 +8,6 @@
 
         public const string OwnerRoleName = "Owner";
 
-        // Property
         public const int PropertyNameMinLength = 3;
 
         public const int PropertyNameMaxLength = 150;
@@ -31,31 +30,24 @@
 
         public const string DateFormat = "dd/MM/yyyy";
 
-        // Booking
         public const int BookingMinMembers = 1;
 
         public const int BookingMaxMembers = 30;
 
-        // Offers
         public const string OfferImagesPath = "/images/offers/";
 
-        // PropertyCategory
         public const int PropertyCategoryNameMaxLength = 100;
 
         public const int PropertyCategoryMinId = 1;
 
         public const string PropertyCategoryDisplayName = "Property category";
 
-        // FacilityCategory
         public const int FacilityCategoryNameMaxLength = 100;
 
-        // Facility
         public const int FacilityNameMaxLength = 100;
 
-        // Currency
         public const int CurrencyCodeMaxLength = 3;
 
-        // Country
         public const int CountryNameMinLength = 2;
 
         public const int CountryNameMaxLength = 100;
@@ -64,23 +56,18 @@
 
         public const string CountryDisplayName = "Country";
 
-        // BedType
         public const int BedTypeNameMaxLength = 50;
 
-        // PropertyType
         public const int PropertyTypeNameMaxLength = 80;
 
-        // Rule
         public const int RuleNameMaxLength = 80;
 
-        // Town
         public const int TownNameMaxLength = 80;
 
         public const int MinTownId = 1;
 
         public const string TownDisplayName = "Towns";
 
-        // Offer
         public const string ValidFromDisplayName = "Valid from";
 
         public const string ValidToDisplayName = "Valid to";
@@ -91,7 +78,6 @@
 
         public static class ErrorMessages
         {
-            // Properies
             public const string PropertyName = "Name must be between 3 and 150 characters long.";
 
             public const string PropertyNameIsAlreadyUsed = "This property name is already used. Try different one!";
@@ -102,22 +88,21 @@
 
             public const string PropertyDescription = "Description can't be more than 500 characters long.";
 
-            // Properties Categories
             public const string PropertyCategories = "Choose property category.";
 
-            // Town
             public const string Town = "Choose a town.";
 
-            // Country
             public const string Country = "Choose a country.";
 
-            // Images
             public const string ImageExtention = "Invalid image extension";
 
-            // Consts
             public const string EditErrorKey = "EditError";
 
             public const string EditErrorValue = "You don't have permission to make any changes to this property or it doesn't exists.";
+
+            public const string BookingErrorKey = "BookingError";
+
+            public const string BookingErrorValue = "Something went wrong. Try again!";
 
             public const string ByIdErrorKey = "ByIdError";
 
@@ -135,7 +120,6 @@
 
             public const string DeleteErrorValue = "Cannot delete someone else property!";
 
-            // Offers
             public const string OfferPrice = "Price is required. It must be more than 1.00.";
 
             public const string OfferValidFrom = "The date cannot be before today.";
@@ -153,7 +137,6 @@
 
         public static class SuccessMessages
         {
-            // Property
             public const string AddKey = "Add";
 
             public const string AddValue = "Property was successfully created.";
@@ -166,7 +149,6 @@
 
             public const string DeleteValue = "Property was successfully deleted.";
 
-            // Offer
             public const string AddOfferKey = "AddOffer";
 
             public const string AddOfferValue = "The offer was successfully added.";
@@ -178,6 +160,10 @@
             public const string DeleteOfferKey = "DeleteOffer";
 
             public const string DeleteOfferValue = "The offer was successfully deleted.";
+
+            public const string BookingKey = "Booking";
+
+            public const string BookingValue = "Booking was successfully canceled!";
         }
     }
 }

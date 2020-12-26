@@ -1,17 +1,19 @@
-﻿@model Booking.Web.ViewModels.Bookings.BookingsListViewModel
+﻿@using Booking.Common
+@model Booking.Web.ViewModels.Bookings.BookingsListViewModel
 @{
     this.ViewData["Title"] = "All bookings";
 }
 
 <h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
-@if (this.TempData.ContainsKey("Error"))
+
+@if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.BookingErrorKey))
 {
-    <div class="alert alert-danger">@this.TempData["Error"]</div>
+    <div class="alert alert-danger">@this.TempData[GlobalConstants.ErrorMessages.BookingErrorKey]</div>
 }
 
-@if (this.TempData.ContainsKey("Message"))
+@if (this.TempData.ContainsKey(GlobalConstants.SuccessMessages.BookingKey))
 {
-    <div class="alert alert-success">@this.TempData["Message"]</div>
+    <div class="alert alert-danger">@this.TempData[GlobalConstants.SuccessMessages.BookingKey]</div>
 }
 
 @if (Model.Bookings == null || !Model.Bookings.Any())

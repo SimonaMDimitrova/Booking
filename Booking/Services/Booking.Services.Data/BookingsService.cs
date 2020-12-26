@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.Bookings;
@@ -37,8 +38,8 @@
                     PropertyName = a.Offer.Property.Name,
                     Members = a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
                     Price = a.Offer.PricePerPerson * a.Offer.OfferBedTypes.Sum(b => b.BedType.Capacity),
-                    CheckIn = a.CheckIn.ToString("dd/MM/yyyy"),
-                    CheckOut = a.CheckOut.ToString("dd/MM/yyyy"),
+                    CheckIn = a.CheckIn.ToString(GlobalConstants.DateFormat),
+                    CheckOut = a.CheckOut.ToString(GlobalConstants.DateFormat),
                 })
                 .ToList();
 
@@ -54,7 +55,7 @@
 
             if (booking == null)
             {
-                throw new Exception("Something went wrong. Try again!");
+                throw new Exception(GlobalConstants.ErrorMessages.BookingErrorValue);
             }
 
             this.bookingsRepository.Delete(booking);
@@ -63,12 +64,16 @@
 
         public async Task AddAsync(BookingInputModel input, string userId)
         {
-            var offer = this.offersRepository.All().FirstOrDefault(o => o.Id == input.OfferId);
+            var offer = this.offersRepository.All()
+                .FirstOrDefault(o =>
+                    o.Id == input.OfferId
+                    && o.Property.ApplicationUserId != userId
+                    && o.Count > 0);
             if (offer == null
-                || offer.ValidTo.AddDays(2) >= input.CheckIn
-                || offer.ValidFrom <= input.CheckOut)
+                || offer.ValidFrom.AddDays(2) < input.CheckIn
+                || offer.ValidTo < input.CheckOut)
             {
-                throw new Exception("Something went wrong. Try again!");
+                throw new Exception(GlobalConstants.ErrorMessages.BookingErrorValue);
             }
 
             var applicationUserOffer = new Booking
@@ -78,6 +83,8 @@
                 CheckIn = input.CheckIn,
                 CheckOut = input.CheckOut,
             };
+
+            offer.Count--;
 
             offer.Bookings.Add(applicationUserOffer);
             await this.offersRepository.SaveChangesAsync();

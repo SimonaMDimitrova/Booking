@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
+    using Booking.Common;
     using Booking.Data.Models;
     using Booking.Services.Data;
     using Booking.Web.ViewModels.Bookings;
@@ -40,7 +41,7 @@
         {
             if (!this.ModelState.IsValid)
             {
-                this.TempData["Error"] = "Something went wrong. Try again!";
+                this.TempData[GlobalConstants.ErrorMessages.BookingErrorKey] = GlobalConstants.ErrorMessages.BookingErrorValue;
                 return this.RedirectToAction(
                     "ById",
                     "SearchProperties",
@@ -60,7 +61,7 @@
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.BookingErrorKey] = ex.Message;
                 return this.RedirectToAction(
                     "ById",
                     "SearchProperties",
@@ -87,11 +88,11 @@
             }
             catch (Exception ex)
             {
-                this.TempData["Error"] = ex.Message;
+                this.TempData[GlobalConstants.ErrorMessages.BookingErrorKey] = ex.Message;
                 return this.RedirectToAction(nameof(this.All));
             }
 
-            this.TempData["Message"] = "Booking was successfully canceled!";
+            this.TempData[GlobalConstants.SuccessMessages.BookingKey] = GlobalConstants.SuccessMessages.BookingValue;
             return this.RedirectToAction(nameof(this.All));
         }
     }

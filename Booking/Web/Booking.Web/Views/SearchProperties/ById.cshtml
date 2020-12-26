@@ -1,4 +1,5 @@
-﻿@model Booking.Web.ViewModels.SearchProperties.SearchedPropertyByIdViewModel
+﻿@using Booking.Common
+@model Booking.Web.ViewModels.SearchProperties.SearchedPropertyByIdViewModel
 @inject Booking.Services.IDictionariesService dictionariesService
 @{
     this.ViewData["Title"] = this.Model.Name;
@@ -8,9 +9,9 @@
 <h2 class="h2 text-center padding-headings">@this.ViewData["Title"]</h2>
 <div class="row">
     <div class="col-md-12 margins-temp">
-        @if (this.TempData.ContainsKey("Error"))
+        @if (this.TempData.ContainsKey(GlobalConstants.ErrorMessages.BookingErrorKey))
         {
-            <div class="alert alert-danger">@this.TempData["Error"]</div>
+            <div class="alert alert-danger">@this.TempData[GlobalConstants.ErrorMessages.BookingErrorKey]</div>
         }
     </div>
     <div class="col-md-6 byid">
