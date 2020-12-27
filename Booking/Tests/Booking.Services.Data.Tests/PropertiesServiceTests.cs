@@ -151,67 +151,6 @@
             Assert.Null(actualResult);
         }
 
-        [Fact]
-        //public async Task CheckGetBySearchRequirementsWhenInputIsRight()
-        //{
-        //    var property = await this.GetAddedToDbProperty();
-        //    var input = new IndexInputModel
-        //    {
-        //        CheckIn = DateTime.UtcNow.AddDays(2),
-        //        CheckOut = DateTime.UtcNow.AddDays(6),
-        //        CountryId = property.Town.Country.Id.ToString(),
-        //        TownId = property.Town.Id.ToString(),
-        //        MaxBudget = 0,
-        //        MinBudget = 0,
-        //        Members = 2,
-        //    };
-
-        //    var expectedResult = new SearchIndexListViewModel
-        //    {
-        //        CheckIn = (DateTime)input.CheckIn,
-        //        CheckOut = (DateTime)input.CheckOut,
-        //        Members = input.Members,
-        //        Properties = new List<SearchIndexInListViewModel>()
-        //        {
-        //            new SearchIndexInListViewModel
-        //            {
-        //                Country = property.Town.Country.Name,
-        //                Id = property.Id,
-        //                Name = property.Name,
-        //                OffersCount = property.Offers.Sum(o => o.Count),
-        //                PropertyCategory = property.PropertyCategory.Name,
-        //                Stars = property.Stars,
-        //                Town = property.Town.Name,
-        //                Image = property.PropertyImages.FirstOrDefault(pi => pi.PropertyId == property.Id) != null ?
-        //                    $"../..{GlobalConstants.PropertyImagesPath}{property.PropertyImages.FirstOrDefault(pi => pi.PropertyId == property.Id).Id}.{property.PropertyImages.FirstOrDefault(pi => pi.PropertyId == property.Id).Extension}"
-        //                    : property.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault() != null ?
-        //                    $"../..{GlobalConstants.OfferImagesPath}{property.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Id}.{property.Offers.Select(o => o.OfferImages.FirstOrDefault()).FirstOrDefault().Extension}"
-        //                    : $"../..{GlobalConstants.DefaultImagePath}",
-        //            },
-        //        },
-        //    };
-
-        //    var actualResult = this.Service.GetBySearchRequirements(input, property.ApplicationUser.Email);
-
-        //    Assert.Equal(expectedResult.Properties.Count(), actualResult.Properties.Count());
-        //}
-
-        /*
-
-        Task CreateAsync(AddPropertyInputModel input, string userId, string imagePath);
-
-        EditPropertyInputModel GetById(string propertyId, string userId);
-
-        Task UpdateAsync(EditPropertyInputModel input);
-
-        Task DeleteAsync(string propertyId, string userId, string imagePath);
-
-        PropertyByIdViewModel GetPropertyAndOffersById(string propertyId, string userId);
-
-        SearchedPropertyByIdViewModel GetByIdBasedOnSearchRequirements(SearchedInputModel input);
-
-         */
-
         private async Task<Property> GetAddedToDbProperty()
         {
             var user = new ApplicationUser
