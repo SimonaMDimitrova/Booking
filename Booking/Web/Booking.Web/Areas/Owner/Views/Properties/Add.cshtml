@@ -109,7 +109,7 @@
                 @foreach (var rule in Model.Rules)
                 {
                 <div class="col-md-6">
-                    @if (Model.FacilitiesIds != null && Model.RulesIds.Contains(rule.Id))
+                    @if (Model.RulesIds != null && Model.RulesIds.Contains(rule.Id))
                     {
                         <input id="rule_@rule.Id"
                                type="checkbox"
