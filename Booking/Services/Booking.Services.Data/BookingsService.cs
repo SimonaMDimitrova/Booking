@@ -70,7 +70,7 @@
                     && o.Property.ApplicationUserId != userId
                     && o.Count > 0);
             if (offer == null
-                || offer.ValidFrom.AddDays(2) < input.CheckIn
+                || offer.ValidFrom.AddDays(2) > input.CheckIn
                 || offer.ValidTo < input.CheckOut)
             {
                 throw new Exception(GlobalConstants.ErrorMessages.BookingErrorValue);
