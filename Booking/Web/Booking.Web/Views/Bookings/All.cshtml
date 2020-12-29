@@ -59,8 +59,7 @@
                 </td>
                 <td>
                     <strong>Guests:</strong> @booking.Members<br />
-                    <strong>Single price:</strong> @((booking.Price * (decimal)((DateTime.Parse(booking.CheckOut) - DateTime.Parse(booking.CheckIn)).TotalDays - 1)).ToString("f2")) @booking.CurrencyCode <br />
-                    <strong>All price:</strong> @((booking.Price * booking.Members * (decimal)((DateTime.Parse(booking.CheckOut) - DateTime.Parse(booking.CheckIn)).TotalDays - 1)).ToString("f2")) @booking.CurrencyCode
+                    <strong>Price:</strong> @((booking.Price * (decimal)((DateTime.Parse(booking.CheckOut) - DateTime.Parse(booking.CheckIn)).TotalDays)).ToString("f2")) @booking.CurrencyCode <br />
                 </td>
             </tr>
         </tbody>

@@ -195,8 +195,8 @@
                     </td>
                     <td>
                         <strong>Guests:</strong> @offer.Guests<br />
-                        <strong>Single price:</strong> @(offer.Price * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays - 1)) @Model.CurrencyCode <br />
-                        <strong>All price:</strong> @(offer.Price * offer.Guests * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays - 1)) @Model.CurrencyCode
+                        <strong>Single price:</strong> @(offer.Price * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays)) @Model.CurrencyCode <br />
+                        <strong>All price:</strong> @(offer.Price * offer.Guests * (decimal)((DateTime.Parse(offer.CheckOut) - DateTime.Parse(offer.CheckIn)).TotalDays)) @Model.CurrencyCode
                     </td>
                     <td>
                         @{var rooms = dictionariesService.CreateBedTypes(offer.Rooms)
