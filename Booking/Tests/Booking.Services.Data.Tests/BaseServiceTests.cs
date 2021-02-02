@@ -12,7 +12,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    public abstract class BaseServiceTests : IDisposable
+    public abstract class BaseServiceTests
     {
         protected BaseServiceTests()
         {

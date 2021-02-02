@@ -5,8 +5,8 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Web.ViewModels.PropertiesViewModels.Add;
-    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
+    using Booking.Web.InputModels.PropertiesInputModels.Add;
+    using Booking.Web.InputModels.PropertiesInputModels.Edit;
 
     public class RulesService : IRulesService
     {

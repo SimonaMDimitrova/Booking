@@ -2,11 +2,11 @@
 {
     using System.Threading.Tasks;
 
+    using Booking.Web.InputModels.PropertiesInputModels.Add;
+    using Booking.Web.InputModels.PropertiesInputModels.Edit;
     using Booking.Web.ViewModels.Home;
-    using Booking.Web.ViewModels.PropertiesViewModels.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.All;
     using Booking.Web.ViewModels.PropertiesViewModels.ById;
-    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Booking.Web.ViewModels.SearchProperties;
     using Booking.Web.ViewModels.ViewComponents.SearchResults;
 

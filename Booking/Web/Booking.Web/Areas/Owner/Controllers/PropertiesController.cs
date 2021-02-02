@@ -7,9 +7,9 @@
     using Booking.Data.Models;
     using Booking.Services.Data;
     using Booking.Web.Controllers;
-    using Booking.Web.ViewModels.PropertiesViewModels.Add;
+    using Booking.Web.InputModels.PropertiesInputModels.Add;
+    using Booking.Web.InputModels.PropertiesInputModels.Edit;
     using Booking.Web.ViewModels.PropertiesViewModels.All;
-    using Booking.Web.ViewModels.PropertiesViewModels.Edit;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
