@@ -8,8 +8,8 @@
     using Booking.Common;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Web.ViewModels.Offers.Add;
-    using Booking.Web.ViewModels.Offers.Edit;
+    using Booking.Web.InputModels.Offers.Add;
+    using Booking.Web.InputModels.Offers.Edit;
 
     public class OffersService : IOffersService
     {

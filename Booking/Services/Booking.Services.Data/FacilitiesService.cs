@@ -5,9 +5,9 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
+    using Booking.Web.InputModels.Offers.Add;
     using Booking.Web.InputModels.PropertiesInputModels.Add;
     using Booking.Web.InputModels.PropertiesInputModels.Edit;
-    using Booking.Web.ViewModels.Offers.Add;
 
     public class FacilitiesService : IFacilitiesService
     {

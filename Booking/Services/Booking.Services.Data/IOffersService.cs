@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
 
-    using Booking.Web.ViewModels.Offers.Add;
-    using Booking.Web.ViewModels.Offers.Edit;
+    using Booking.Web.InputModels.Offers.Add;
+    using Booking.Web.InputModels.Offers.Edit;
 
     public interface IOffersService
     {

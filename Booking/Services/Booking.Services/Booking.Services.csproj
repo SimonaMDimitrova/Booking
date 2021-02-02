@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Web\Booking.Web.InputModels\Booking.Web.InputModels.csproj" />
     <ProjectReference Include="..\..\Web\Booking.Web.ViewModels\Booking.Web.ViewModels.csproj" />
   </ItemGroup>
 

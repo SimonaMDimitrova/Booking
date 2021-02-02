@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using Booking.Services.Models;
-    using Booking.Web.ViewModels.Offers.Add;
+    using Booking.Web.InputModels.Offers.Add;
     using Booking.Web.ViewModels.PropertiesViewModels.ById;
 
     public interface IDictionariesService
