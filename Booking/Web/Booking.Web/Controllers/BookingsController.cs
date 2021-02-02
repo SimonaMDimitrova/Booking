@@ -6,8 +6,8 @@
     using Booking.Common;
     using Booking.Data.Models;
     using Booking.Services.Data;
+    using Booking.Web.InputModels.SearchProperties;
     using Booking.Web.ViewModels.Bookings;
-    using Booking.Web.ViewModels.SearchProperties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;

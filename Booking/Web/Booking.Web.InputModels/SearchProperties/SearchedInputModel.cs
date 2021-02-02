@@ -1,4 +1,4 @@
-﻿namespace Booking.Web.ViewModels.SearchProperties
+﻿namespace Booking.Web.InputModels.SearchProperties
 {
     using System;
     using System.ComponentModel.DataAnnotations;

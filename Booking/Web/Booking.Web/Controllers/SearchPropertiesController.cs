@@ -1,10 +1,8 @@
 ﻿namespace Booking.Web.Controllers
 {
-    using System;
-    using Booking.Common;
     using Booking.Services.Data;
+    using Booking.Web.InputModels.SearchProperties;
     using Booking.Web.ViewModels.Home;
-    using Booking.Web.ViewModels.SearchProperties;
     using Microsoft.AspNetCore.Mvc;
 
     public class SearchPropertiesController : BaseController

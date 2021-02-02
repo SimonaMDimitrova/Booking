@@ -11,6 +11,7 @@
     using Booking.Data.Models;
     using Booking.Web.InputModels.PropertiesInputModels.Add;
     using Booking.Web.InputModels.PropertiesInputModels.Edit;
+    using Booking.Web.InputModels.SearchProperties;
     using Booking.Web.ViewModels.Home;
     using Booking.Web.ViewModels.PropertiesViewModels.All;
     using Booking.Web.ViewModels.PropertiesViewModels.ById;
