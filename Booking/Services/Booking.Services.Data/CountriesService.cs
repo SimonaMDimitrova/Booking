@@ -1,14 +1,18 @@
 ﻿namespace Booking.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Booking.Common;
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
     using Booking.Web.ViewModels.ViewComponents.Countries;
 
     public class CountriesService : ICountriesService
     {
+        private const int RequiredCountriesCount = 6;
+
         private readonly IRepository<Country> countriesRepository;
         private readonly IDeletableEntityRepository<Property> propertiesRepository;
         private readonly IRepository<PropertyImage> propertyImagesRepository;
@@ -25,28 +29,12 @@
 
         public IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs()
         {
-            return this.countriesRepository.All()
-                .Where(c => c.Towns.Count != 0)
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Name,
-                })
-                .OrderBy(c => c.Name)
-                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
+            return this.GetAllByFilter(c => c.Towns.Count != 0);
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs()
         {
-            return this.countriesRepository.All()
-                .Where(c => c.Towns.Count != 0 && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)))
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Name,
-                })
-                .OrderBy(c => c.Name)
-                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
+            return this.GetAllByFilter(c => c.Towns.Count != 0 && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)));
         }
 
         public IEnumerable<CountryInListViewModel> GetTheSixMostVisited()
@@ -54,12 +42,16 @@
             var countriesDb = this.countriesRepository
                 .All()
                 .AsQueryable();
+            var propertiesDb = this.propertiesRepository
+                .All()
+                .AsQueryable();
+            var imagesDb = this.propertyImagesRepository
+                .All()
+                .AsQueryable();
             var countries = new List<CountryInListViewModel>();
-
             foreach (var countryDb in countriesDb)
             {
-                var propertiesCount = this.propertiesRepository
-                    .All()
+                var propertiesCount = propertiesDb
                     .Where(p => p.Town.Country.Name == countryDb.Name && p.Offers.Count > 0)
                     .ToList()
                     .Count;
@@ -68,15 +60,14 @@
                     continue;
                 }
 
-                var imageDb = this.propertyImagesRepository
-                    .All()
+                var imageDb = imagesDb
                     .Where(p => p.Property.Town.Country.Name == countryDb.Name)
                     .FirstOrDefault();
 
                 var image =
                     imageDb == null ?
-                    "assets/images/defaults/default.png"
-                    : $"images/properties/{imageDb.Id}.{imageDb.Extension}";
+                    GlobalConstants.DefaultImagePath
+                    : $"{GlobalConstants.PropertyImagesPath}{imageDb.Id}.{imageDb.Extension}";
 
                 var country = new CountryInListViewModel
                 {
@@ -89,10 +80,9 @@
             }
 
             int countriesCount = countries.Count();
-
             return countries
                 .OrderByDescending(c => c.PropertiesCount)
-                .Take(countriesCount >= 6 ? 6 : countriesCount);
+                .Take(countriesCount >= RequiredCountriesCount ? RequiredCountriesCount : countriesCount);
         }
 
         public IEnumerable<string> GetTheSixMostVisitedNames()
@@ -100,6 +90,19 @@
             return this.GetTheSixMostVisited()
                 .Select(c => c.Name)
                 .ToList();
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetAllByFilter(Func<Country, bool> filter)
+        {
+            return this.countriesRepository.All()
+                .Where(filter)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                })
+                .OrderBy(c => c.Name)
+                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
         }
     }
 }

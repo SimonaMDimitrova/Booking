@@ -11,7 +11,10 @@
     {
         private readonly ICountriesService countriesService;
 
-        public HomeController(ICountriesService countriesService, ITownsService townsService, ICurrenciesService currenciesService)
+        public HomeController(
+            ICountriesService countriesService,
+            ITownsService townsService,
+            ICurrenciesService currenciesService)
             : base(townsService, currenciesService)
         {
             this.countriesService = countriesService;
