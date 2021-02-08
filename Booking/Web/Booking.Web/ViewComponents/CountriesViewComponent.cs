@@ -15,7 +15,7 @@
 
         public IViewComponentResult Invoke()
         {
-            var countries = this.countriesService.GetTheSixMostVisited();
+            var countries = this.countriesService.GetMostPopular();
             var viewModel = new CountriesListViewModel
             {
                 Countries = countries,

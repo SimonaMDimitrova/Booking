@@ -34,10 +34,12 @@
 
         public IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs()
         {
-            return this.GetAllByFilter(c => c.Towns.Count != 0 && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)));
+            return this.GetAllByFilter(
+                c => c.Towns.Count != 0
+                && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)));
         }
 
-        public IEnumerable<CountryInListViewModel> GetTheSixMostVisited()
+        public IEnumerable<CountryInListViewModel> GetMostPopular()
         {
             var countriesDb = this.countriesRepository
                 .All()
@@ -85,9 +87,9 @@
                 .Take(countriesCount >= RequiredCountriesCount ? RequiredCountriesCount : countriesCount);
         }
 
-        public IEnumerable<string> GetTheSixMostVisitedNames()
+        public IEnumerable<string> GetMostPopularByNames()
         {
-            return this.GetTheSixMostVisited()
+            return this.GetMostPopular()
                 .Select(c => c.Name)
                 .ToList();
         }

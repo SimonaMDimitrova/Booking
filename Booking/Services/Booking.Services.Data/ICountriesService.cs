@@ -6,9 +6,9 @@
 
     public interface ICountriesService
     {
-        IEnumerable<CountryInListViewModel> GetTheSixMostVisited();
+        IEnumerable<CountryInListViewModel> GetMostPopular();
 
-        IEnumerable<string> GetTheSixMostVisitedNames();
+        IEnumerable<string> GetMostPopularByNames();
 
         IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs();
 
