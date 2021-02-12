@@ -4,6 +4,6 @@
 
     public interface IBedTypesService
     {
-        IEnumerable<KeyValuePair<int, string>> GetAll();
+        IEnumerable<KeyValuePair<int, string>> GetAllByKeyValuePairs();
     }
 }
