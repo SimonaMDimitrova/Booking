@@ -30,6 +30,7 @@
                     Id = r.Id,
                     Name = r.Name,
                 })
+                .OrderBy(r => r.Name)
                 .ToList();
         }
 
@@ -44,6 +45,7 @@
                     Name = r.Rule.Name,
                     IsAllowed = r.IsAllowed,
                 })
+                .OrderBy(r => r.Name)
                 .ToList();
         }
     }

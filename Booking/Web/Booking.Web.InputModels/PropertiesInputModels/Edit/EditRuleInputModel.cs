@@ -1,6 +1,9 @@
 ﻿namespace Booking.Web.InputModels.PropertiesInputModels.Edit
 {
-    public class EditRuleInputModel
+    using Booking.Data.Models;
+    using Booking.Services.Mapping;
+
+    public class EditRuleInputModel : IMapFrom<PropertyRule>
     {
         public int Id { get; set; }
 

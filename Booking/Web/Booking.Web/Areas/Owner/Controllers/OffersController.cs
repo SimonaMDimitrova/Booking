@@ -61,7 +61,7 @@
                 PropertyId = id,
                 PropertyName = this.propertiesService.GetNameById(id),
                 OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory(),
-                BedTypes = this.bedTypesService.GetAll(),
+                BedTypes = this.bedTypesService.GetAllByKeyValuePairs(),
                 CurrencyCode = this.currenciesService.GetByPropertyId(id),
             };
 
@@ -84,7 +84,7 @@
             if (!this.ModelState.IsValid)
             {
                 input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
-                input.BedTypes = this.bedTypesService.GetAll();
+                input.BedTypes = this.bedTypesService.GetAllByKeyValuePairs();
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(input.PropertyId);
                 input.PropertyName = this.propertiesService.GetNameById(input.PropertyId);
 
@@ -107,7 +107,7 @@
                 }
 
                 input.OfferFacilities = this.facilitiesService.GetAllExeptInGeneralCategory();
-                input.BedTypes = this.bedTypesService.GetAll();
+                input.BedTypes = this.bedTypesService.GetAllByKeyValuePairs();
                 input.CurrencyCode = this.currenciesService.GetByPropertyId(input.PropertyId);
 
                 return this.View(input);
