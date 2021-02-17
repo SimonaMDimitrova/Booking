@@ -29,14 +29,29 @@
 
         public IEnumerable<KeyValuePair<string, string>> GetAllByKeyValuePairs()
         {
-            return this.GetAllByFilter(c => c.Towns.Count != 0);
+            return this.countriesRepository.All()
+                .Where(c => c.Towns.Count != 0)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                })
+                .OrderBy(c => c.Name)
+                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetMostPopularByKeyValuePairs()
         {
-            return this.GetAllByFilter(
-                c => c.Towns.Count != 0
-                && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)));
+            return this.countriesRepository.All()
+                .Where(c => c.Towns.Count != 0
+                    && c.Towns.Any(t => t.Properties.Any(p => p.Offers.Count > 0)))
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Name,
+                })
+                .OrderBy(c => c.Name)
+                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
         }
 
         public IEnumerable<CountryInListViewModel> GetMostPopular()
@@ -92,19 +107,6 @@
             return this.GetMostPopular()
                 .Select(c => c.Name)
                 .ToList();
-        }
-
-        private IEnumerable<KeyValuePair<string, string>> GetAllByFilter(Func<Country, bool> filter)
-        {
-            return this.countriesRepository.All()
-                .Where(filter)
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Name,
-                })
-                .OrderBy(c => c.Name)
-                .ToList().Select(c => new KeyValuePair<string, string>(c.Id.ToString(), c.Name));
         }
     }
 }
