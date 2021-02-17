@@ -66,7 +66,7 @@
             viewModel.Countries = this.countriesService.GetAllByKeyValuePairs();
             viewModel.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
             viewModel.Facilities = this.facilitiesService.GetAllInGeneralCategory();
-            viewModel.Rules = this.rulesService.GetAll();
+            viewModel.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
             return this.View(viewModel);
         }
@@ -84,7 +84,7 @@
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
                 input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
-                input.Rules = this.rulesService.GetAll();
+                input.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
                 return this.View(input);
             }
@@ -101,7 +101,7 @@
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
                 input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
-                input.Rules = this.rulesService.GetAll();
+                input.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
                 return this.View(input);
             }
@@ -121,7 +121,7 @@
             }
 
             viewModel.Facilities = this.facilitiesService.GetAllByPropertyId(id);
-            viewModel.Rules = this.rulesService.GetAllByPropertyId(id);
+            viewModel.Rules = this.rulesService.GetAllByPropertyId<EditRuleInputModel>(id);
 
             return this.View(viewModel);
         }
@@ -144,7 +144,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                input.Rules = this.rulesService.GetAllByPropertyId(input.Id);
+                input.Rules = this.rulesService.GetAllByPropertyId<EditRuleInputModel>(input.Id);
                 input.Facilities = this.facilitiesService.GetAllByPropertyId(input.Id);
 
                 return this.View(input);

@@ -5,9 +5,9 @@
 
     public class EditRuleInputModel : IMapFrom<PropertyRule>
     {
-        public int Id { get; set; }
+        public int RuleId { get; set; }
 
-        public string Name { get; set; }
+        public string RuleName { get; set; }
 
         public bool IsAllowed { get; set; }
     }

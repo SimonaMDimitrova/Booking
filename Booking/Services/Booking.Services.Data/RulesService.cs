@@ -5,8 +5,7 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Web.InputModels.PropertiesInputModels.Add;
-    using Booking.Web.InputModels.PropertiesInputModels.Edit;
+    using Booking.Services.Mapping;
 
     public class RulesService : IRulesService
     {
@@ -21,31 +20,22 @@
             this.propertyRulesRepository = propertyRulesRepository;
         }
 
-        public IEnumerable<RuleInputModel> GetAll()
+        public IEnumerable<T> GetAll<T>()
         {
             return this.rulesRepository
                 .All()
-                .Select(r => new RuleInputModel
-                {
-                    Id = r.Id,
-                    Name = r.Name,
-                })
                 .OrderBy(r => r.Name)
+                .To<T>()
                 .ToList();
         }
 
-        public IEnumerable<EditRuleInputModel> GetAllByPropertyId(string id)
+        public IEnumerable<T> GetAllByPropertyId<T>(string id)
         {
             return this.propertyRulesRepository
                 .All()
                 .Where(r => r.PropertyId == id)
-                .Select(r => new EditRuleInputModel
-                {
-                    Id = r.RuleId,
-                    Name = r.Rule.Name,
-                    IsAllowed = r.IsAllowed,
-                })
-                .OrderBy(r => r.Name)
+                .OrderBy(r => r.Rule.Name)
+                .To<T>()
                 .ToList();
         }
     }

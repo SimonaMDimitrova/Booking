@@ -12,9 +12,9 @@
 
         public IEnumerable<KeyValuePair<string, string>> Countries { get; set; }
 
-        public IEnumerable<RuleInputModel> Rules { get; set; }
+        public IEnumerable<AddRuleInputModel> Rules { get; set; }
 
-        public IEnumerable<FacilityIdNameInputModel> Facilities { get; set; }
+        public IEnumerable<AddFacilityIdNameInputModel> Facilities { get; set; }
 
         [Required]
         [Range(GlobalConstants.MinCountryId, int.MaxValue, ErrorMessage = GlobalConstants.ErrorMessages.Country)]

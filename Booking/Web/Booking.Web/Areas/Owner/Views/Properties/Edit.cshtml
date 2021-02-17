@@ -79,22 +79,22 @@
                     if (rule.IsAllowed == true)
                     {
                         <div class="col-md-6">
-                            <input id="rule_@rule.Id"
+                            <input id="rule_@rule.RuleId"
                                    type="checkbox"
                                    checked
                                    name="RulesIds"
-                                   value="@rule.Id" />
-                            <label for="rule_@rule.Id">@rule.Name</label>
+                                   value="@rule.RuleId" />
+                            <label for="rule_@rule.RuleId">@rule.RuleName</label>
                         </div>
                     }
                     else
                     {
                         <div class="col-md-6">
-                            <input id="rule_@rule.Id"
+                            <input id="rule_@rule.RuleId"
                                    type="checkbox"
                                    name="RulesIds"
-                                   value="@rule.Id" />
-                            <label for="rule_@rule.Id">@rule.Name</label>
+                                   value="@rule.RuleId" />
+                            <label for="rule_@rule.RuleId">@rule.RuleName</label>
                         </div>
                     }
                 }

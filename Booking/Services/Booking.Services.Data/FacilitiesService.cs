@@ -22,12 +22,12 @@
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;
         }
 
-        public IEnumerable<FacilityIdNameInputModel> GetAllInGeneralCategory()
+        public IEnumerable<AddFacilityIdNameInputModel> GetAllInGeneralCategory()
         {
             return this.facilitiesRepository
                 .AllAsNoTracking()
                 .Where(f => f.FacilityCategory.Name == "General")
-                .Select(f => new FacilityIdNameInputModel
+                .Select(f => new AddFacilityIdNameInputModel
                 {
                     Name = f.Name,
                     Id = f.Id,
@@ -35,16 +35,16 @@
                 .ToList();
         }
 
-        public IEnumerable<PropertyFacilityInputModel> GetAllByPropertyId(string id)
+        public IEnumerable<EditPropertyFacilityInputModel> GetAllByPropertyId(string id)
         {
-            var facilitiesInListViewModel = new List<PropertyFacilityInputModel>();
+            var facilitiesInListViewModel = new List<EditPropertyFacilityInputModel>();
             var facilities = this.GetAllInGeneralCategory();
             foreach (var facility in facilities)
             {
                 var isChecked = this.propertyFaciltiesRepository
                     .All()
                     .Any(p => p.PropertyId == id && p.Facility.Name == facility.Name);
-                var facilityViewModel = new PropertyFacilityInputModel
+                var facilityViewModel = new EditPropertyFacilityInputModel
                 {
                     Name = facility.Name,
                     Id = facility.Id,

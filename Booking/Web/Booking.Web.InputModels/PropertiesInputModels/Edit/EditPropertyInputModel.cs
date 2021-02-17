@@ -8,6 +8,6 @@
 
         public IEnumerable<EditRuleInputModel> Rules { get; set; }
 
-        public IEnumerable<PropertyFacilityInputModel> Facilities { get; set; }
+        public IEnumerable<EditPropertyFacilityInputModel> Facilities { get; set; }
     }
 }
