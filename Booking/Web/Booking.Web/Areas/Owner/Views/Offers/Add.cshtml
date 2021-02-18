@@ -87,7 +87,7 @@
                     <div class="form-group row">
                         @for (int i = 0; i < facility.Value.Count; i++)
                         {
-                            var currentFacility = facility.Value[i];
+                            var currentFacility = facility.Value.ToList()[i];
                             <div class="col-md-6">
                                 @if (Model.OfferFacilitiesIds != null && Model.OfferFacilitiesIds.Contains(currentFacility.Id))
                                 {

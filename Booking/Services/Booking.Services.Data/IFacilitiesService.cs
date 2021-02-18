@@ -2,15 +2,13 @@
 {
     using System.Collections.Generic;
 
-    using Booking.Web.InputModels.Offers.Add;
-    using Booking.Web.InputModels.PropertiesInputModels.Add;
     using Booking.Web.InputModels.PropertiesInputModels.Edit;
 
     public interface IFacilitiesService
     {
-        IEnumerable<AddFacilityIdNameInputModel> GetAllInGeneralCategory();
+        IEnumerable<T> GetAllInGeneralCategory<T>();
 
-        IEnumerable<OfferFacilityInputModel> GetAllExeptInGeneralCategory();
+        IEnumerable<T> GetAllExeptInGeneralCategory<T>();
 
         IEnumerable<EditPropertyFacilityInputModel> GetAllByPropertyId(string id);
     }

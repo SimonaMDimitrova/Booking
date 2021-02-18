@@ -65,7 +65,7 @@
             var viewModel = new AddPropertyInputModel();
             viewModel.Countries = this.countriesService.GetAllByKeyValuePairs();
             viewModel.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-            viewModel.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+            viewModel.Facilities = this.facilitiesService.GetAllInGeneralCategory<AddFacilityIdNameInputModel>();
             viewModel.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
             return this.View(viewModel);
@@ -83,7 +83,7 @@
             {
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+                input.Facilities = this.facilitiesService.GetAllInGeneralCategory<AddFacilityIdNameInputModel>();
                 input.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
                 return this.View(input);
@@ -100,7 +100,7 @@
 
                 input.Countries = this.countriesService.GetAllByKeyValuePairs();
                 input.PropertyCategories = this.propertyCategoriesService.GetAllByKeyValuePairs();
-                input.Facilities = this.facilitiesService.GetAllInGeneralCategory();
+                input.Facilities = this.facilitiesService.GetAllInGeneralCategory<AddFacilityIdNameInputModel>();
                 input.Rules = this.rulesService.GetAll<AddRuleInputModel>();
 
                 return this.View(input);

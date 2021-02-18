@@ -66,11 +66,11 @@
         [Fact]
         public void CheckCreateFacilitiesInputMethod()
         {
-            List<OfferFacilityInputModel> facilities = new List<OfferFacilityInputModel>
+            List<AddOfferFacilityInputModel> facilities = new List<AddOfferFacilityInputModel>
             {
-                new OfferFacilityInputModel { Id = 1, Category = "First cat", Name = "First facility", },
-                new OfferFacilityInputModel { Id = 2, Category = "Thrid cat", Name = "First facility", },
-                new OfferFacilityInputModel { Id = 3, Category = "General", Name = "First general" },
+                new AddOfferFacilityInputModel { Id = 1, Category = "First cat", Name = "First facility", },
+                new AddOfferFacilityInputModel { Id = 2, Category = "Thrid cat", Name = "First facility", },
+                new AddOfferFacilityInputModel { Id = 3, Category = "General", Name = "First general" },
             };
 
             var expectedResult = new Dictionary<string, List<FacilityIdNameServiceModel>>()

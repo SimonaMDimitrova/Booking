@@ -5,7 +5,7 @@
 
     using Booking.Data.Common.Repositories;
     using Booking.Data.Models;
-    using Booking.Web.InputModels.Offers.Add;
+    using Booking.Services.Mapping;
     using Booking.Web.InputModels.PropertiesInputModels.Add;
     using Booking.Web.InputModels.PropertiesInputModels.Edit;
 
@@ -22,53 +22,45 @@
             this.propertyFaciltiesRepository = propertyFaciltiesRepository;
         }
 
-        public IEnumerable<AddFacilityIdNameInputModel> GetAllInGeneralCategory()
+        public IEnumerable<T> GetAllInGeneralCategory<T>()
         {
             return this.facilitiesRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(f => f.FacilityCategory.Name == "General")
-                .Select(f => new AddFacilityIdNameInputModel
-                {
-                    Name = f.Name,
-                    Id = f.Id,
-                })
+                .To<T>()
                 .ToList();
         }
 
         public IEnumerable<EditPropertyFacilityInputModel> GetAllByPropertyId(string id)
         {
-            var facilitiesInListViewModel = new List<EditPropertyFacilityInputModel>();
-            var facilities = this.GetAllInGeneralCategory();
-            foreach (var facility in facilities)
+            var facilities = new List<EditPropertyFacilityInputModel>();
+            var generalFacilities = this.GetAllInGeneralCategory<AddFacilityIdNameInputModel>();
+            var propertyFacilitiesDb = this.propertyFaciltiesRepository.All();
+            foreach (var facility in generalFacilities)
             {
-                var isChecked = this.propertyFaciltiesRepository
-                    .All()
+                var isChecked = propertyFacilitiesDb
                     .Any(p => p.PropertyId == id && p.Facility.Name == facility.Name);
-                var facilityViewModel = new EditPropertyFacilityInputModel
+                var facilityInputModel = new EditPropertyFacilityInputModel
                 {
                     Name = facility.Name,
                     Id = facility.Id,
                     IsChecked = isChecked,
                 };
 
-                facilitiesInListViewModel.Add(facilityViewModel);
+                facilities.Add(facilityInputModel);
             }
 
-            return facilitiesInListViewModel;
+            return facilities
+                .OrderBy(f => f.Name);
         }
 
-        public IEnumerable<OfferFacilityInputModel> GetAllExeptInGeneralCategory()
+        public IEnumerable<T> GetAllExeptInGeneralCategory<T>()
         {
             return this.facilitiesRepository
                 .All()
                 .Where(f => f.FacilityCategory.Name != "General")
-                .Select(f => new OfferFacilityInputModel
-                {
-                    Name = f.Name,
-                    Id = f.Id,
-                    Category = f.FacilityCategory.Name,
-                })
                 .OrderBy(f => f.Name)
+                .To<T>()
                 .ToList();
         }
     }

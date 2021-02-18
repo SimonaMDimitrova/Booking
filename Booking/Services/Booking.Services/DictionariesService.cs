@@ -40,17 +40,17 @@
             return facilitiesDictionary;
         }
 
-        public IDictionary<string, List<FacilityIdNameServiceModel>> CreateFacilitiesInput(IEnumerable<OfferFacilityInputModel> facilities)
+        public IDictionary<string, ICollection<FacilityIdNameServiceModel>> CreateFacilitiesInput(IEnumerable<AddOfferFacilityInputModel> facilities)
         {
-            var facilitiesDictionary = new Dictionary<string, List<FacilityIdNameServiceModel>>();
+            var facilitiesDictionary = new SortedDictionary<string, ICollection<FacilityIdNameServiceModel>>();
             foreach (var facility in facilities)
             {
-                if (!facilitiesDictionary.ContainsKey(facility.Category))
+                if (!facilitiesDictionary.ContainsKey(facility.FacilityCategoryName))
                 {
-                    facilitiesDictionary[facility.Category] = new List<FacilityIdNameServiceModel>();
+                    facilitiesDictionary[facility.FacilityCategoryName] = new List<FacilityIdNameServiceModel>();
                 }
 
-                facilitiesDictionary[facility.Category]
+                facilitiesDictionary[facility.FacilityCategoryName]
                     .Add(new FacilityIdNameServiceModel { Name = facility.Name, Id = facility.Id });
             }
 

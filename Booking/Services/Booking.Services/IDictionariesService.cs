@@ -12,6 +12,6 @@
 
         IDictionary<string, List<string>> CreateFacilities(IEnumerable<OfferFacilityViewModel> facilities);
 
-        IDictionary<string, List<FacilityIdNameServiceModel>> CreateFacilitiesInput(IEnumerable<OfferFacilityInputModel> facilities);
+        IDictionary<string, ICollection<FacilityIdNameServiceModel>> CreateFacilitiesInput(IEnumerable<AddOfferFacilityInputModel> facilities);
     }
 }

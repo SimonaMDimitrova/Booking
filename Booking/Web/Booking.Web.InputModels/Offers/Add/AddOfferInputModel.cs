@@ -8,7 +8,7 @@
     {
         public IEnumerable<int> OfferFacilitiesIds { get; set; }
 
-        public IEnumerable<OfferFacilityInputModel> OfferFacilities { get; set; }
+        public IEnumerable<AddOfferFacilityInputModel> OfferFacilities { get; set; }
 
         public IEnumerable<KeyValuePair<int, string>> BedTypes { get; set; }
 
