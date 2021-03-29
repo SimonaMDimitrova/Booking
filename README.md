@@ -5,8 +5,8 @@ Booking project is a web application that's used by people to list their place a
 - ASP.NET Core 5.0
 - Entity Framwork Core 5.0
 - Repository Pattern
-- Auto Мapping
 - MSSQL Server
+- Auto Мapping
 - Bootstrap
 - JavaScript
 
