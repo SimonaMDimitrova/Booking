@@ -1,4 +1,4 @@
-# Booking Project
+# Booking
 Booking project is a web application that's used by people to list their place and book unique accommodations around the world. The project is a defense project for ASP.NET Core course, which is part of the C# Web Module at Software University.
 
 ## Built With
