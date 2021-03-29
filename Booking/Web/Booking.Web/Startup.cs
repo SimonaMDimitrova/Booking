@@ -56,6 +56,7 @@
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
+            services.AddResponseCompression();
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -102,6 +103,8 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseResponseCompression();
 
             app.Use(async (context, next) =>
             {
